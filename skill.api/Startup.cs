@@ -147,6 +147,17 @@ namespace skills
             app.UseDeveloperExceptionPage();
          }
 
+         app.UseCors();
+
+         // Shows UseCors with CorsPolicyBuilder.
+         app.UseCors(builder =>
+         {
+            builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+         });
+
          app.UseHttpsRedirection();
          app.UseMiddleware<AuthenticationMiddleware>();
 
