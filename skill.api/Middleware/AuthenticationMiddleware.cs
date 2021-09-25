@@ -24,7 +24,7 @@ namespace skills.Middleware
 
       public async Task Invoke(HttpContext context)
       {
-         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
          if (token != null)
             AttachAccountToContext(context, token);

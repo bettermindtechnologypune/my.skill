@@ -18,7 +18,8 @@ namespace skills
          //CreateHostBuilder(args).Build().Run();
          var host = CreateHostBuilder(args).Build();
          // Resolve the StartupTasks from the ServiceProvider
-         var startupTasks = host.Services.GetService<IStartupTask>();
+         var service = host.Services.CreateScope();
+         var startupTasks = service.ServiceProvider.GetService<IStartupTaskManager>();
          startupTasks.Execute();
 
          host.Run();

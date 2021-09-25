@@ -5,9 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="AuthProvider\Operation\**" />
     <Compile Remove="Model\**" />
+    <Content Remove="AuthProvider\Operation\**" />
     <Content Remove="Model\**" />
+    <EmbeddedResource Remove="AuthProvider\Operation\**" />
     <EmbeddedResource Remove="Model\**" />
+    <None Remove="AuthProvider\Operation\**" />
     <None Remove="Model\**" />
   </ItemGroup>
 
@@ -22,7 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\skill.common\skill.common.csproj" />
     <ProjectReference Include="..\skill.manager\skill.manager.csproj" />
-    <ProjectReference Include="..\skill.repostory\skill.repostory.csproj" />
+  
   </ItemGroup>
 
   <ItemGroup>

@@ -21,9 +21,9 @@ namespace skills.Controllers
       }
       [AllowAnonymous]
       [HttpPost(nameof(Authentication))]
-      public IActionResult Authentication([FromBody] Login login)
+      public async Task<IActionResult> Authentication([FromBody] Login login)
       {
-         var token = _auth.Authentication(login.UserName, login.Password);
+         var token = await _auth.Authentication(login.UserName, login.Password);
          if (token == null)
             return Unauthorized();
          return Ok(token);

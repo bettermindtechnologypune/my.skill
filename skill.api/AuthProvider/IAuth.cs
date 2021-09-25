@@ -7,6 +7,6 @@ namespace skills.AuthProvider
 {
    public interface IAuth
    {
-      string Authentication(string username, string password);
+      Task<string> Authentication(string username, string password);
    }
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,10 +17,12 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using skill.manager.Implementation;
 using skill.manager.Interface;
-using skill.repostory.Implementation;
-using skill.repostory.Interface;
+using skill.repository.Interface;
+using skill.repository.Implementation;
+using skill.repository.Interface;
 using skills.AuthProvider;
 using skills.Middleware;
+
 
 namespace skills
 {
@@ -36,6 +39,10 @@ namespace skills
       public void ConfigureServices(IServiceCollection services)
       {
          services.AddControllers();
+
+         //string mySqlConnectionStr = Configuration.GetConnectionString("ConnectionStrings:DBContext");
+         string mySqlConnectionStr = "Data Source=DESKTOP-CA5OS4F; database=skills_db; user=root; password=root; Persist Security Info=False; Connect Timeout=300";
+         services.AddDbContextPool<ApplicationDBContext>(options => options.UseMySql(mySqlConnectionStr, ServerVersion.AutoDetect(mySqlConnectionStr)));
 
          // Register the Swagger generator, defining 1 or more Swagger documents  
          //services.AddSwaggerGen();
@@ -75,12 +82,26 @@ namespace skills
                 });
          });
          #endregion
-         services.AddTransient<ICommonRepository>(_ => new CommonRepostioryImpl(Configuration["ConnectionStrings:Default"]));
+         services.AddTransient<ICommonRepository>(_ => new CommonRepostioryImpl(Configuration));
 
-         services.AddScoped<IOrganizationRepository, OrganizationRepositoryImpl>();
+        
+         services.AddScoped<IOrganizationManager, OrganizationManagerImpl>();
+         services.AddScoped<IUserIdentityManager, UserIdentityManagerImpl>();
+         services.AddScoped<IUserIdentityManager, UserIdentityManagerImpl>();
+         services.AddScoped<IEmailManager, EmailManagerImpl>();
+
          services.AddScoped<IAuth, Auth>();
+         
+         services.AddScoped(typeof(IBaseRepositoy<>), typeof(BaseRepository<>));
 
-         services.AddTransient<IStartupTask, StartupTask>();
+         //Repostories Injection//
+         services.AddScoped<ICommonRepository, CommonRepostioryImpl>();
+         services.AddScoped<IOrganizationRepository, OrganizationRepositoryImpl>();
+         services.AddScoped<IEmailSettingsRepository, EmailSettingRepository>();
+         services.AddScoped<IUserIdentityRepository, UserIdentityRepositoryImpl>();
+         services.AddScoped<IUserRepository, UserRepositoryImpl>();
+
+         services.AddScoped<IStartupTaskManager, StartupTaskManagerImpl>();
 
          #region Authentication
          services.AddAuthentication(option =>
@@ -116,7 +137,7 @@ namespace skills
          app.UseHttpsRedirection();
          app.UseMiddleware<AuthenticationMiddleware>();
 
-       
+
          app.UseRouting();
 
          app.UseAuthentication();
