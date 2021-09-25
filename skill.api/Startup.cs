@@ -103,6 +103,19 @@ namespace skills
 
          services.AddScoped<IStartupTaskManager, StartupTaskManagerImpl>();
 
+         services.AddCors();
+
+         services.AddCors(options =>
+         {
+            options.AddDefaultPolicy(
+                builder =>
+                {
+                   builder.WithOrigins("https://localhost:19006s", "http://localhost:4200")
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                });
+         });
+
          #region Authentication
          services.AddAuthentication(option =>
          {
