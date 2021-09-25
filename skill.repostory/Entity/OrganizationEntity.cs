@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace skill.repostory.Entity
+namespace skill.repository.Entity
 {
    public class OrganizationEntity
    {

@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skill.manager", "skill.mana
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skills", "skill.api\skills.csproj", "{42A29B43-EA86-4A4C-B832-5CCFA9781B62}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skill.repostory", "skill.repostory\skill.repostory.csproj", "{95BC4348-A4B3-419A-A26E-E643A8209D6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skill.repository", "skill.repostory\skill.repository.csproj", "{95BC4348-A4B3-419A-A26E-E643A8209D6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "skill.common", "skill.common\skill.common.csproj", "{92016052-F4EB-415A-8A72-C1085F86417E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "skill.common", "skill.common\skill.common.csproj", "{92016052-F4EB-415A-8A72-C1085F86417E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using skill.common.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace skill.repostory.Entity
+namespace skill.repository.Entity
 {
    public class UserIdentityEntity
    {
@@ -23,5 +24,8 @@ namespace skill.repostory.Entity
       public DateTime CreatedAt { get; set; }
       public DateTime ModifiedAt { get; set; }
       public bool IsLoginLocked { get; set; }
+      public bool IsOrgAdmin { get; set; }
+      public UserType UserType { get; set; }
+      public Guid OrgId { get; set; }
    }
 }

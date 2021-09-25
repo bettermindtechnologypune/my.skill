@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace skill.repostory.Entity
+namespace skill.repository.Entity
 {
-   public class UserEntity
+   public class UserEntity : IBaseEntity
    {
       public Guid Id { get; set; }
-
       public Guid OrgId { get; set; }
 
       public bool IsDeleted { get; set; }
@@ -35,8 +34,9 @@ namespace skill.repostory.Entity
 
       public string UserCode { get; set; }
 
-      public string IsOrgAdmin { get; set; }
+      public bool IsOrgAdmin { get; set; }
 
       public UserType UserType { get; set; }
+     
    }
 }

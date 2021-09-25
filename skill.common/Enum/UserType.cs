@@ -10,6 +10,8 @@ namespace skill.common.Enum
    {
       Super_Admin,
       Org_Admin,
-
+      Hr_Admin,
+      Manager,
+      Worker,
    }
 }

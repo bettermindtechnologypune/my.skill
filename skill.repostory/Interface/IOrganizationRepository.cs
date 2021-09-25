@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace skill.repostory.Interface
+namespace skill.repository.Interface
 {
    public interface IOrganizationRepository
    {

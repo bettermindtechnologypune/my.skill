@@ -1,4 +1,4 @@
-﻿using skill.repostory.Entity;
+﻿using skill.repository.Entity;
 using skills.common.Model;
 
 using System;

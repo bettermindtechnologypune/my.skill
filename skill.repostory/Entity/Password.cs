@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace skill.repostory.Entity
+namespace skill.repository.Entity
 {
    public class Password
    {

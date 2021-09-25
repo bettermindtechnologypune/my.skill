@@ -34,7 +34,7 @@ namespace skills.common.Model
 
       public string UserCode { get; set; }
 
-      public string IsOrgAdmin { get; set; }
+      public bool IsOrgAdmin { get; set; }
 
       public UserType UserType { get; set;}
    }

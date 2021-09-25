@@ -1,13 +1,16 @@
-﻿using System;
+﻿using skill.repository.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace skill.repostory.Interface
+namespace skill.repository.Interface
 {
    public interface IUserIdentityRepository
    {
-     
+      Task CreateUserIdentity(UserIdentityEntity userIdentityEntity);
+
+      Task<UserIdentityEntity> GetUserIdentityByEmail(string email, string password = null);
    }
 }
