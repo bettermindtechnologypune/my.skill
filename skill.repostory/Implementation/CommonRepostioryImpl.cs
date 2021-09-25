@@ -1,17 +1,21 @@
-﻿using MySql.Data.MySqlClient;
-using skill.repostory.Interface;
+﻿using Microsoft.Extensions.Configuration;
+using MySql.Data.MySqlClient;
+using skill.repository.Entity;
+using skill.repository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace skill.repostory.Implementation
+namespace skill.repository.Implementation
 {
    public class CommonRepostioryImpl : ICommonRepository
    {
       public MySqlConnection Connection;
-      public CommonRepostioryImpl(string connectionString)
+      private readonly IConfiguration _configuration;
+      public CommonRepostioryImpl(IConfiguration configuration)
       {
-         Connection = new MySqlConnection(connectionString);         
+         _configuration = configuration;
+         Connection = new MySqlConnection(configuration["ConnectionStrings:Default"]);         
       }
     
       public void Dispose()
