@@ -20,7 +20,8 @@ namespace skills.Controllers
          _auth = auth;
       }
       [AllowAnonymous]
-      [HttpPost(nameof(Authentication))]      
+      [HttpPost(nameof(Authentication))]
+      [Produces("application/json", "application/xml")]
       public async Task<IActionResult> Authentication([FromBody] Login login)
       {
          var token = await _auth.Authentication(login.UserName, login.Password);

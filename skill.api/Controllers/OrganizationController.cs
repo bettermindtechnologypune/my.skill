@@ -62,6 +62,7 @@ namespace skills.Controllers
 
       //[Authorize]
       [HttpPost(nameof(Create))]
+      [Produces("application/json", "application/xml")]
       public async Task<IActionResult> Create([FromBody] OrganizationEntity organizationEntity)
       {
          if(organizationEntity!=null)
