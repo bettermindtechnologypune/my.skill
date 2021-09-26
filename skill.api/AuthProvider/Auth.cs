@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using skill.common.ResponseModel;
 using skill.repository.Interface;
 using skills.common.Operation;
 using System;
@@ -23,8 +24,9 @@ namespace skills.AuthProvider
          _userIdentityRepository = userIdentityRepository;
          _emailSettingsRepository = emailSettingsRepository;
       }
-      public async Task<string> Authentication(string username, string password)
+      public async Task<AuthResponseModel> Authentication(string username, string password)
       {
+         AuthResponseModel authResponseModel = null;
          var key = await _emailSettingsRepository.GetSymmetricKey();
          var dpass = AesOperation.EncryptString(key, password);
          var user =await _userIdentityRepository.GetUserIdentityByEmail(username, dpass);
@@ -52,7 +54,12 @@ namespace skills.AuthProvider
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             // 5. Return Token from method
-            return tokenHandler.WriteToken(token);
+            authResponseModel = new AuthResponseModel
+            {
+               Token = tokenHandler.WriteToken(token),
+               UserType = user.UserType
+            };
+            return authResponseModel;
          }
          return null;
       }

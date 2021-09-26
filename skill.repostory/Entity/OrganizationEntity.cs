@@ -21,10 +21,10 @@ namespace skill.repository.Entity
       public string? BillingEmail { get; set; }
 
       [StringLength(50)]
-      public string CreatedBy { get; set; }
+      public Guid CreatedBy { get; set; }
 
       [StringLength(50)]
-      public string ModifiedBy { get; set; }
+      public Guid ModifiedBy { get; set; }
 
       [DataType(DataType.DateTime)]
       public DateTime CreateDate { get; set; }

@@ -24,10 +24,10 @@ namespace skills.Controllers
       [Produces("application/json", "application/xml")]
       public async Task<IActionResult> Authentication([FromBody] Login login)
       {
-         var token = await _auth.Authentication(login.UserName, login.Password);
-         if (token == null)
+         var authResponseModel = await _auth.Authentication(login.UserName, login.Password);
+         if (authResponseModel == null)
             return Unauthorized();
-         return Ok(token);
+         return Ok(authResponseModel);
       }
    }
 }
