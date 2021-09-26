@@ -60,7 +60,7 @@ namespace skills.Controllers
          return Ok("API Validated");
       }
 
-      //[Authorize]
+      [Authorize]
       [HttpPost(nameof(Create))]
       [Produces("application/json", "application/xml")]
       public async Task<IActionResult> Create([FromBody] OrganizationEntity organizationEntity)
