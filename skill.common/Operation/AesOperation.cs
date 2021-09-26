@@ -10,6 +10,7 @@ namespace skills.common.Operation
 {
    public class AesOperation
    {
+      private readonly Random _random = new Random();
       public static string EncryptString(string key, string plainText)
       {
          byte[] iv = new byte[16];
@@ -61,6 +62,61 @@ namespace skills.common.Operation
                }
             }
          }
+      }
+
+      // Generates a random password.  
+      // 4-LowerCase + 4-Digits + 2-UpperCase  
+      public static string RandomPassword()
+      {
+         var passwordBuilder = new StringBuilder();
+         AesOperation aesOperation = new AesOperation();
+         // 4-Letters lower case   
+         passwordBuilder.Append(aesOperation.RandomString(4, true));
+
+         // 4-Digits between 1000 and 9999  
+         passwordBuilder.Append(aesOperation.RandomNumber(1000, 9999));
+
+         // 2-Letters upper case  
+         passwordBuilder.Append(aesOperation.RandomString(2));
+         string special = "@#$-=/";
+         passwordBuilder.Append(aesOperation.getRandomChar(special));
+
+
+         return passwordBuilder.ToString();
+      }
+
+
+      private string getRandomChar(string fullString)
+      {
+         return fullString.ToCharArray()[(int)Math.Floor(_random.NextDouble() * fullString.Length)].ToString();
+      }
+
+     
+      public string RandomNumber(int min, int max)
+      {
+         return _random.Next(min, max).ToString();
+      }
+
+      public string RandomString(int size, bool lowerCase = false)
+      {
+         var builder = new StringBuilder(size);
+
+         // Unicode/ASCII Letters are divided into two blocks
+         // (Letters 65–90 / 97–122):   
+         // The first group containing the uppercase letters and
+         // the second group containing the lowercase.  
+
+         // char is a single Unicode character  
+         char offset = lowerCase ? 'a' : 'A';
+         const int lettersOffset = 26; // A...Z or a..z: length = 26  
+
+         for (var i = 0; i < size; i++)
+         {
+            var @char = (char)_random.Next(offset, offset + lettersOffset);
+            builder.Append(@char);
+         }
+
+         return lowerCase ? builder.ToString().ToLower() : builder.ToString();
       }
    }
 }

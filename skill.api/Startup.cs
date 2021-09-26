@@ -150,7 +150,7 @@ namespace skills
 
          app.UseCors();
 
-         UpdateDatabase(app);
+         //UpdateDatabase(app);
          applicationDBContext.Database.EnsureCreated();
          //applicationDBContext.Database.Migrate();
         
