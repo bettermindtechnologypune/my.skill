@@ -20,7 +20,7 @@ namespace skill.repository.Implementation
       public async Task<EmailSettingEntity> GetEmailSetting()
       {
          EmailSettingEntity entity = null;
-         string query = "select value from tbl_global_config_param where category = 'SMTP SETTINGS' ";
+         string query = "select value from global_config where CATAGORY = 'SMTP SETTINGS' ";
          using (var command = new MySqlCommand(query, Connection))
          {
             await Connection.OpenAsync();
@@ -47,7 +47,7 @@ namespace skill.repository.Implementation
       {
          try
          {
-            string query = "select value from tbl_global_config_param where CATEGORY = 'SYMMETRIC_KEY' ";
+            string query = "select value from global_config where CATAGORY = 'SYMMETRIC_KEY' ";
             string key = null;
             using (var command = new MySqlCommand(query, Connection))
             {

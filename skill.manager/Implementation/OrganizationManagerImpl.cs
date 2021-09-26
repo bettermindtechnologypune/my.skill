@@ -30,6 +30,7 @@ namespace skill.manager.Implementation
       {
          entity.CreateDate = DateTime.UtcNow;
          entity.Id = Guid.NewGuid();
+         entity.CreatedBy = Guid.NewGuid().ToString();
 
          var isOrgSuccess = await _organizationRepository.InsertAsync(entity);
 

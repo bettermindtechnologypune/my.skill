@@ -43,7 +43,7 @@ namespace skills.AuthProvider
             //3. Create JETdescriptor
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-               Subject = new ClaimsIdentity(new[] { new Claim("id", username) }),
+               Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
                Issuer = _configuration["Jwt:Issuer"],
                Audience = _configuration["Jwt:Audience"],
                Expires = DateTime.UtcNow.AddHours(1),
