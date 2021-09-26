@@ -14,8 +14,6 @@ namespace skills.AuthProvider
 {
    public class Auth : IAuth
    {
-      private readonly string _username = "Demo1";
-      private readonly string _password = "Demo1";
       private readonly IConfiguration _configuration;
       IUserIdentityRepository _userIdentityRepository;
       private readonly IEmailSettingsRepository _emailSettingsRepository;

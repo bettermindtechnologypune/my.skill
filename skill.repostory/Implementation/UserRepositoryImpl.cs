@@ -16,10 +16,10 @@ namespace skill.repository.Implementation
          
       }
 
-      public override void InsertAsync(UserEntity userEntity)
-      {
-         base.InsertAsync(userEntity);
-      }
+      //public override void InsertAsync(UserEntity userEntity)
+      //{
+      //   base.InsertAsync(userEntity);
+      //}
 
       public async Task<UserEntity> GetByEmail(string email)
       {

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,7 +22,7 @@ using skill.repository.Implementation;
 using skill.repository.Interface;
 using skills.AuthProvider;
 using skills.Middleware;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace skills
 {
@@ -40,8 +40,8 @@ namespace skills
       {
          services.AddControllers();
 
-         //string mySqlConnectionStr = Configuration.GetConnectionString("ConnectionStrings:DBContext");
-         string mySqlConnectionStr = "Data Source=DESKTOP-CA5OS4F; database=skills_db; user=root; password=root; Persist Security Info=False; Connect Timeout=300";
+         string mySqlConnectionStr = "server = localhost; port = 3306; database = skill_db; user = root; password = root; Persist Security Info = False; Connect Timeout = 300";
+         //string mySqlConnectionStr = "Data Source=DESKTOP-CA5OS4F; database=skills_db; user=root; password=root; Persist Security Info=False; Connect Timeout=300";
          services.AddDbContextPool<ApplicationDBContext>(options => options.UseMySql(mySqlConnectionStr, ServerVersion.AutoDetect(mySqlConnectionStr)));
 
          // Register the Swagger generator, defining 1 or more Swagger documents  
@@ -49,6 +49,7 @@ namespace skills
          #region Swagger Configuration
          services.AddSwaggerGen(swagger =>
          {
+            swagger.MapType<Guid>(() => new OpenApiSchema { Type = "string", Format = null });
             //This is to generate the Default UI of Swagger Documentation
             swagger.SwaggerDoc("v1", new OpenApiInfo
             {
@@ -110,7 +111,7 @@ namespace skills
             options.AddDefaultPolicy(
                 builder =>
                 {
-                   builder.WithOrigins("https://localhost:19006s", "http://localhost:4200")
+                   builder.AllowAnyOrigin()
                                .AllowAnyHeader()
                                .AllowAnyMethod();
                 });
@@ -140,7 +141,7 @@ namespace skills
       }
 
       // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-      public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+      public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDBContext applicationDBContext)
       {
          if (env.IsDevelopment())
          {
@@ -148,6 +149,11 @@ namespace skills
          }
 
          app.UseCors();
+
+         UpdateDatabase(app);
+         applicationDBContext.Database.EnsureCreated();
+         //applicationDBContext.Database.Migrate();
+        
 
          // Shows UseCors with CorsPolicyBuilder.
          app.UseCors(builder =>
@@ -192,6 +198,19 @@ namespace skills
          {
             await next.Invoke();
          });
+      }
+
+      private static void UpdateDatabase(IApplicationBuilder app)
+      {
+         using (var serviceScope = app.ApplicationServices
+             .GetRequiredService<IServiceScopeFactory>()
+             .CreateScope())
+         {
+            using (var context = serviceScope.ServiceProvider.GetService<ApplicationDBContext>())
+            {
+               context.Database.Migrate();
+            }
+         }
       }
    }
 }

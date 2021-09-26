@@ -24,7 +24,7 @@ namespace skill.repository.Implementation
       }
       public void Dispose()
       {
-         throw new NotImplementedException();
+         Connection.Dispose();
       }
 
       public async Task CreateUserIdentity(UserIdentityEntity userIdentityEntity)

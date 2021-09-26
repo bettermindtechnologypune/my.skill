@@ -10,7 +10,7 @@ namespace skill.repository.Interface
    {
       IEnumerable<T> GetAll();
       T GetAsync(Guid id);
-      void InsertAsync(T entity);
+      Task<Boolean> InsertAsync(T entity);
       void UpdateAsync(T entity);
       void DeleteAsync(T entity);  
    

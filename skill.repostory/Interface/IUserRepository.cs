@@ -10,6 +10,6 @@ namespace skill.repository.Interface
    {
       Task<UserEntity> GetByEmail(string email);
 
-      void InsertAsync(UserEntity userEntity);
+      //void InsertAsync(UserEntity userEntity);
    }
 }

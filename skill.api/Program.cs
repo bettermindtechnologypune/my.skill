@@ -20,7 +20,7 @@ namespace skills
          // Resolve the StartupTasks from the ServiceProvider
          var service = host.Services.CreateScope();
          var startupTasks = service.ServiceProvider.GetService<IStartupTaskManager>();
-         startupTasks.Execute();
+         //startupTasks.Execute();
 
          host.Run();
       }

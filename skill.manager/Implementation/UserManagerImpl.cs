@@ -22,7 +22,7 @@ namespace skills.manager
          {
             var userEntity = UserMapper.ToEntity(userResource);
 
-             _userRepository.InsertAsync(userEntity);
+             //_userRepository.InsertAsync(userEntity);
          }
          catch
          {

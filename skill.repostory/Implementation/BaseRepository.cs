@@ -24,7 +24,7 @@ namespace skill.repository.Implementation
 
       public void Dispose()
       {
-         throw new NotImplementedException();
+         Connection.Dispose();
       }
 
       public BaseRepository(ApplicationDBContext context, IConfiguration configuration)
@@ -56,14 +56,16 @@ namespace skill.repository.Implementation
          return entities.SingleOrDefault(s => s.Id == id);
       }
 
-      public virtual void InsertAsync(T entity)
+      public virtual async Task<Boolean> InsertAsync(T entity)
       {
          if (entity == null)
          {
             throw new ArgumentNullException("entity");
          }
          entities.Add(entity);
-         _context.SaveChanges();
+         await _context.SaveChangesAsync();
+
+         return true;
       }
 
       public virtual void UpdateAsync(T entity)

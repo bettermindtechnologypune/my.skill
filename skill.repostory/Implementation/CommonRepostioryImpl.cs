@@ -17,10 +17,10 @@ namespace skill.repository.Implementation
          _configuration = configuration;
          Connection = new MySqlConnection(configuration["ConnectionStrings:Default"]);         
       }
-    
+
       public void Dispose()
       {
-         throw new NotImplementedException();
+         Connection.Dispose();
       }
    }
 }

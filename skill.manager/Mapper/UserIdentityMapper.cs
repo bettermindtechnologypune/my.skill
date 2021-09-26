@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace skill.manager.Mapper
 {
-   public class UserIdentityMapper
+   public class UserIdentityMapper  
    {
       public static UserIdentityEntity ToEntity(UserIdentityResource resource)
       {

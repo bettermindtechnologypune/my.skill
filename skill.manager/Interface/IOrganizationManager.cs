@@ -1,4 +1,5 @@
-﻿using System;
+﻿using skill.repository.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace skill.manager.Interface
 {
    public interface IOrganizationManager
    {
+      Task<bool> CreateOrganization(OrganizationEntity entity);
    }
 }
