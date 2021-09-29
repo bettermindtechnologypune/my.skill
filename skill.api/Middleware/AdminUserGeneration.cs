@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using skill.manager.Interface;
-using skills.manager;
+using skill.manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace skills.Middleware
+namespace skill.Middleware
 {
    public class AdminUserGeneration
    {

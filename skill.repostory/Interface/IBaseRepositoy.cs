@@ -9,7 +9,7 @@ namespace skill.repository.Interface
    public interface IBaseRepositoy<T> where T : class
    {
       IEnumerable<T> GetAll();
-      T GetAsync(Guid id);
+      Task<T> GetAsync(Guid id);
       Task<Boolean> InsertAsync(T entity);
       void UpdateAsync(T entity);
       void DeleteAsync(T entity);  

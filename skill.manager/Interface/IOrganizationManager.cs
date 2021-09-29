@@ -1,4 +1,5 @@
 ﻿using skill.repository.Entity;
+using skill.common.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace skill.manager.Interface
 {
    public interface IOrganizationManager
    {
-      Task<bool> CreateOrganization(OrganizationEntity entity);
+      Task<bool> CreateOrganization(OrganizationResource resource);
    }
 }

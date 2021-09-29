@@ -51,9 +51,9 @@ namespace skill.repository.Implementation
          return entities.AsEnumerable();
       }
 
-      public T GetAsync(Guid id)
+      public async Task<T> GetAsync(Guid id)
       {
-         return entities.SingleOrDefault(s => s.Id == id);
+         return await entities.SingleOrDefaultAsync(s => s.Id == id);
       }
 
       public virtual async Task<Boolean> InsertAsync(T entity)

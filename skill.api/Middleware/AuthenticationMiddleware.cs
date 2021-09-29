@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using skills.manager;
+using skill.repository.Interface;
+using skill.manager;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,31 +10,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace skills.Middleware
+namespace skill.Middleware
 {
    public class AuthenticationMiddleware
    {
       private readonly RequestDelegate _next;
-      private readonly IConfiguration _configuration;     
+      private readonly IConfiguration _configuration;
 
       public AuthenticationMiddleware(RequestDelegate next, IConfiguration configuration)
       {
          _next = next;
-         _configuration = configuration;        
+         _configuration = configuration;
       }
 
-      public async Task Invoke(HttpContext context)
+      public async Task Invoke(HttpContext context, IUserIdentityRepository userIdentityRepository)
       {
-            var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
          if (token != null)
-            AttachAccountToContext(context, token);
+            AttachAccountToContext(context, token, userIdentityRepository);
 
          await _next(context);
       }
 
 
-      private void AttachAccountToContext(HttpContext context, string token)
+      private async void AttachAccountToContext(HttpContext context, string token, IUserIdentityRepository userIdentityRepository)
       {
          try
          {
@@ -44,7 +45,7 @@ namespace skills.Middleware
                ValidateIssuerSigningKey = true,
                IssuerSigningKey = new SymmetricSecurityKey(key),
                ValidateIssuer = true,
-               ValidIssuer = _configuration["Jwt:Issuer"],               
+               ValidIssuer = _configuration["Jwt:Issuer"],
                ValidateAudience = true,
                ValidAudience = _configuration["Jwt:Audience"],
                // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
@@ -53,13 +54,21 @@ namespace skills.Middleware
 
             var jwtToken = (JwtSecurityToken)validatedToken;
             var accountId = jwtToken.Claims.First(x => x.Type == "id").Value;
-
-            // attach account to context on successful jwt validation
-            context.Items["User"] = "test";
-         }
-         catch(Exception ex)
-         {
+            var orgId = jwtToken.Claims.First(x => x.Type == "orgId").Value;
+            var userType = jwtToken.Claims.First(x => x.Type == "userType").Value;
+           
+            if (context.Items["Org_Id"] == null)
+            {
+               // attach account to context on successful jwt validation
+               context.Items["Org_Id"] = orgId;
+               context.Items["UserId"] = accountId;
+               context.Items["Usertype"] = userType;               
+            }
             
+         }
+         catch (Exception ex)
+         {
+            throw;
          }
       }
    }

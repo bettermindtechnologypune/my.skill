@@ -56,6 +56,6 @@ namespace skill.repository.Entity
       public string WebSite { get; set; }
 
       [Required]
-      public bool HasMultipleBU { get; set; }
+      public bool HasMultipleBU { get; set; }     
    }
 }

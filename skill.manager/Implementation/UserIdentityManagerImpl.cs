@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using skill.manager.Mapper;
 using skill.repository.Interface;
-using skills.common.Model;
+using skill.common.Model;
 using System;
 using System.Threading.Tasks;
 using skill.manager.Interface;

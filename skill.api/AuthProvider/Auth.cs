@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using skill.common.ResponseModel;
 using skill.repository.Interface;
-using skills.common.Operation;
+using skill.common.Operation;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace skills.AuthProvider
+namespace skill.AuthProvider
 {
    public class Auth : IAuth
    {
@@ -43,7 +43,7 @@ namespace skills.AuthProvider
             //3. Create JETdescriptor
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-               Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+               Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()), new Claim("orgId", user.OrgId.ToString()), new Claim("userType", user.UserType.ToString()) }),
                Issuer = _configuration["Jwt:Issuer"],
                Audience = _configuration["Jwt:Audience"],
                Expires = DateTime.UtcNow.AddHours(1),

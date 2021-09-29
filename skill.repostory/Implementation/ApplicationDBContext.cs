@@ -12,11 +12,13 @@ namespace skill.repository.Implementation
    {
       // This is the run time configuration of 
       public DbSet<OrganizationEntity> Orgnization { get; set; }
-      //public DbSet<UserEntity> Orders { get; set; }
+      public DbSet<GlobalConfig> GlobalConfig { get; set; }
+
+      public DbSet<BusinessUnitEntity> BusinessUnit { get; set; }
       public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
           : base(options)
       {
-        
+
       }
 
       protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,14 +28,8 @@ namespace skill.repository.Implementation
          //modelBuilder.HasDefaultSchema("skill_db");
 
          modelBuilder.Entity<OrganizationEntity>();
-
-         
-
          modelBuilder.Entity<GlobalConfig>();
-
-         //modelBuilder.Entity<UserIdentityEntity>();
-         //modelBuilder.Entity<UserEntity>();
-
+         modelBuilder.Entity<BusinessUnitEntity>();
 
          // Configure Primary Keys  
          modelBuilder.Entity<OrganizationEntity>().HasKey(ug => ug.Id).HasName("Idx_PK_Organization");
@@ -46,12 +42,8 @@ namespace skill.repository.Implementation
          modelBuilder.Entity<OrganizationEntity>().Property(ug => ug.Email).IsRequired();
          modelBuilder.Entity<OrganizationEntity>().Property(ug => ug.Name).IsRequired();
 
-       
+         base.OnModelCreating(modelBuilder);
 
-
-
-                  base.OnModelCreating(modelBuilder);
-         
       }
    }
 }

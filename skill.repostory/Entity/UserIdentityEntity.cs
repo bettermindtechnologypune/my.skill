@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace skill.repository.Entity
 {
-   public class UserIdentityEntity
+   public class UserIdentityEntity : IBaseEntity
    {
       public Guid Id { get; set; }
       public string Name { get; set; }

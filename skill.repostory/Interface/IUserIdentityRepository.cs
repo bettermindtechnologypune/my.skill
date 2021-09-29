@@ -12,5 +12,7 @@ namespace skill.repository.Interface
       Task CreateUserIdentity(UserIdentityEntity userIdentityEntity);
 
       Task<UserIdentityEntity> GetUserIdentityByEmail(string email, string password = null);
+
+      Task<UserIdentityEntity> GetUserIdentityById(string Id);
    }
 }

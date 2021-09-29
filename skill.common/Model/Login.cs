@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace skills.common.Model
+namespace skill.common.Model
 {
    public class Login
    {

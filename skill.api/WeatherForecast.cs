@@ -1,6 +1,6 @@
 using System;
 
-namespace skills
+namespace skill
 {
    public class WeatherForecast
    {

@@ -17,8 +17,15 @@ namespace skill.repository.Implementation
       }
 
       public override async Task<bool> InsertAsync(OrganizationEntity entity)
-      {         
-         return await base.InsertAsync(entity);        
+      {
+         try
+         {
+            return await base.InsertAsync(entity);
+         }
+         catch(Exception ex)
+         {
+            throw new Exception(ex.Message,ex.InnerException);
+         }
       }
       public void Get()
       {

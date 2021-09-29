@@ -6,10 +6,13 @@
 
   <ItemGroup>
     <Compile Remove="Interface\EmailSettingRepository.cs" />
+    <Compile Remove="Migrations\20210929140647_BusinessUnit.cs" />
+    <Compile Remove="Migrations\20210929140647_BusinessUnit.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

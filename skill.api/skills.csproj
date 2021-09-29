@@ -7,19 +7,29 @@
   <ItemGroup>
     <Compile Remove="AuthProvider\Operation\**" />
     <Compile Remove="Model\**" />
+    <Compile Remove="TenantConfiguration\**" />
     <Content Remove="AuthProvider\Operation\**" />
     <Content Remove="Model\**" />
+    <Content Remove="TenantConfiguration\**" />
     <EmbeddedResource Remove="AuthProvider\Operation\**" />
     <EmbeddedResource Remove="Model\**" />
+    <EmbeddedResource Remove="TenantConfiguration\**" />
     <None Remove="AuthProvider\Operation\**" />
     <None Remove="Model\**" />
+    <None Remove="TenantConfiguration\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.1" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.12.2" />
   </ItemGroup>

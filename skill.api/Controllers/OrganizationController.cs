@@ -5,53 +5,40 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using skill.common.Enum;
+using skill.common.TenantContext;
 using skill.manager.Interface;
 using skill.repository.Entity;
-using skills.Filters;
+using skill.common.Model;
+using skill.Filters;
 
 
-namespace skills.Controllers
+namespace skill.Controllers
 {
    [Route("api/[controller]")]
    [ApiController]
    public class OrganizationController : ControllerBase
    {
       IOrganizationManager _organizationManager;
-      public OrganizationController(IOrganizationManager organizationManager)
+      private readonly ILogger<OrganizationController> _logger;
+
+      ITenantContext _tenantContext;
+      public OrganizationController(IOrganizationManager organizationManager, ILogger<OrganizationController> logger, ITenantContext tenantContext)
       {
          _organizationManager = organizationManager;
-      }
-      // GET: api/Organization
-      [HttpGet]
-      public IEnumerable<string> Get()
-      {
-         return new string[] { "value1", "value2" };
+         _logger = logger;
+         _tenantContext = tenantContext;
       }
 
-      // GET: api/Organization/5
-      [HttpGet("{id}", Name = "Get")]
-      public string Get(int id)
+      Guid OrgId
       {
-         return "value";
+         get
+         {
+            return _tenantContext == null? Guid.Empty : _tenantContext.OrgId;
+         }
       }
-
-      // POST: api/Organization
-      //[HttpPost]
-      //public void Post([FromBody] string value)
-      //{
-      //}
-
-      // PUT: api/Organization/5
-      [HttpPut("{id}")]
-      public void Put(int id, [FromBody] string value)
-      {
-      }
-
-      // DELETE: api/ApiWithActions/5
-      [HttpDelete("{id}")]
-      public void Delete(int id)
-      {
-      }
+     
 
       [Authorize]
       [HttpGet(nameof(GetResult))]
@@ -60,19 +47,27 @@ namespace skills.Controllers
          return Ok("API Validated");
       }
 
-      //[Authorize]
+      [Authorize(UserType.Super_Admin)]
       [HttpPost(nameof(Create))]
       [Produces("application/json", "application/xml")]
-      public async Task<IActionResult> Create([FromBody] OrganizationEntity organizationEntity)
+      public async Task<IActionResult> Create([FromBody] OrganizationResource resource)
       {
-         if(organizationEntity!=null)
-         {
-            var result = await _organizationManager.CreateOrganization(organizationEntity);
-            return Ok(result);
+         try
+         {           
+            if (resource != null)
+            {
+               var result = await _organizationManager.CreateOrganization(resource);
+               return Ok(result);
+            }
+            else
+            {
+               return StatusCode(400, "Organization is null");
+            }
          }
-         else
+         catch(Exception ex)
          {
-            return Ok("Organization is null");
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
          }
       }
    }

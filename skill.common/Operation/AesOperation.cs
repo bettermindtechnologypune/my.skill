@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace skills.common.Operation
+namespace skill.common.Operation
 {
    public class AesOperation
    {

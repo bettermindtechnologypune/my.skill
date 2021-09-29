@@ -20,11 +20,16 @@ using skill.manager.Interface;
 using skill.repository.Interface;
 using skill.repository.Implementation;
 using skill.repository.Interface;
-using skills.AuthProvider;
-using skills.Middleware;
+using skill.AuthProvider;
+using skill.Middleware;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+using skill.common.TenantContext;
+using skill.manager.Validator.Implementation;
+using skill.manager.Validator.Interface;
+using skill.common.Model;
 
-namespace skills
+namespace skill
 {
    public class Startup
    {
@@ -85,13 +90,15 @@ namespace skills
          #endregion
          services.AddTransient<ICommonRepository>(_ => new CommonRepostioryImpl(Configuration));
 
-        
+         services.AddHttpContextAccessor();
          services.AddScoped<IOrganizationManager, OrganizationManagerImpl>();
          services.AddScoped<IUserIdentityManager, UserIdentityManagerImpl>();
          services.AddScoped<IUserIdentityManager, UserIdentityManagerImpl>();
          services.AddScoped<IEmailManager, EmailManagerImpl>();
 
          services.AddScoped<IAuth, Auth>();
+
+         services.AddScoped<ITenantContext, TenantContext>();
          
          services.AddScoped(typeof(IBaseRepositoy<>), typeof(BaseRepository<>));
 
@@ -103,6 +110,9 @@ namespace skills
          services.AddScoped<IUserRepository, UserRepositoryImpl>();
 
          services.AddScoped<IStartupTaskManager, StartupTaskManagerImpl>();
+
+
+         services.AddScoped<IValidator<OrganizationResource>, OrganizationValidationImpl>();
 
          services.AddCors();
 
@@ -141,12 +151,15 @@ namespace skills
       }
 
       // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-      public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDBContext applicationDBContext)
+      public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDBContext applicationDBContext , ILoggerFactory loggerFactory)
       {
          if (env.IsDevelopment())
          {
             app.UseDeveloperExceptionPage();
          }
+
+         var path = Directory.GetCurrentDirectory();
+         loggerFactory.AddFile($"{path}\\Logs\\Log.txt");
 
          app.UseCors();
 

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using skill.manager.Interface;
 
-namespace skills
+namespace skill
 {
    public class Program
    {

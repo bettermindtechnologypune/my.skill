@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace skills.Controllers
+namespace skill.Controllers
 {
    [Route("api/[controller]")]
    [ApiController]

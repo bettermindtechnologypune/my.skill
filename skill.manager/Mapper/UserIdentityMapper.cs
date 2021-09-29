@@ -1,5 +1,5 @@
 ﻿using skill.repository.Entity;
-using skills.common.Model;
+using skill.common.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
