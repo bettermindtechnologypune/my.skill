@@ -28,6 +28,6 @@ namespace skill.repository.Entity
       public UserType UserType { get; set; }
       public Guid OrgId { get; set; }
       public Guid CreatedBy { get; set; }
-      public Guid ModifiedBy { get; set; }
+      public Guid ModifiedBy { get; set; }      
    }
 }

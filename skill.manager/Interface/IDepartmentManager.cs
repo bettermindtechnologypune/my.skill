@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace skill.manager.Interface
 {
-   public interface IBusinessUnitManager
+   public interface IDepartmentManager
    {
-      Task<BusinessUnitResource> Create(BusinessUnitResource resource);
+      Task<DepartmentResource> Create(DepartmentResource resource);
    }
 }

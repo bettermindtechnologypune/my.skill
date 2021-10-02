@@ -56,7 +56,7 @@ namespace skill.repository.Implementation
          return await entities.SingleOrDefaultAsync(s => s.Id == id);
       }
 
-      public virtual async Task<Boolean> InsertAsync(T entity)
+      public virtual async Task<T> InsertAsync(T entity)
       {
          if (entity == null)
          {
@@ -65,7 +65,7 @@ namespace skill.repository.Implementation
          entities.Add(entity);
          await _context.SaveChangesAsync();
 
-         return true;
+         return entity;
       }
 
       public virtual void UpdateAsync(T entity)

@@ -16,7 +16,7 @@ namespace skill.repository.Implementation
 
       }
 
-      public override async Task<bool> InsertAsync(OrganizationEntity entity)
+      public override async Task<OrganizationEntity> InsertAsync(OrganizationEntity entity)
       {
          try
          {

@@ -45,63 +45,79 @@ namespace skill.manager.Implementation
          }
       }
 
-      Guid UserId         
+      Guid UserId
       {
          get
          {
             return _tenantContext == null ? Guid.Empty : _tenantContext.UserId;
          }
       }
-      public async  Task<bool> CreateOrganization(OrganizationResource resource)
+      public async Task<OrganizationResource> CreateOrganization(OrganizationResource resource)
       {
          var errors = _validator.Validate(resource);
-         if(errors.Any())
+         if (errors.Any())
          {
             throw new ValidationException(string.Join(",", errors));
          }
-         resource.Id = Guid.NewGuid();     
+         resource.Id = Guid.NewGuid();
 
          var entity = OrganizationMapper.ToEntity(resource);
          entity.CreateDate = DateTime.UtcNow;
          entity.CreatedBy = UserId.ToString();
 
-         var isOrgSuccess = await _organizationRepository.InsertAsync(entity);
+         var response = await _organizationRepository.InsertAsync(entity);
 
-         if(isOrgSuccess == true)
+         var orgnizationResource = OrganizationMapper.ToResource(response);
+
+         if (orgnizationResource != null && orgnizationResource.Id != Guid.Empty)
+         {
+            await CreateUser(orgnizationResource);
+
+            return orgnizationResource;
+         }
+         return null;
+      }
+
+      private async Task<bool> CreateUser(OrganizationResource organizationResource)
+      {
+         try
          {
             var key = await _emailSettingsRepository.GetSymmetricKey();
             var plainText = AesOperation.RandomPassword();
             var encPassword = AesOperation.EncryptString(key, plainText);
             var userEntity = new UserIdentityEntity
             {
-               PhoneNumber = entity.ContactNumber,
-               CreatedBy= Guid.NewGuid(),
-               CreatedAt = DateTime.UtcNow,               
-               Email = entity.Email,
+               PhoneNumber = organizationResource.ContactNumber,
+               CreatedBy = UserId,
+               CreatedAt = DateTime.UtcNow,
+               Email = organizationResource.Email,
                Id = Guid.NewGuid(),
-               FullName =entity.Name,
-               OrgId = Guid.NewGuid(),
-               Name = entity.Name,
+               FullName = organizationResource.Name,
+               OrgId = organizationResource.Id,
+               Name = organizationResource.Name,
                IsOrgAdmin = true,
                UserType = UserType.Org_Admin,
                Password = encPassword,
                IsDeleted = false,
-               IsLoginLocked = false,               
+               IsLoginLocked = false,
             };
 
             await _userIdentityRepository.CreateUserIdentity(userEntity);
 
             var emailRequest = new EmailRequest();
 
-            emailRequest.ToEmail = entity.Email;
+            emailRequest.ToEmail = organizationResource.Email;
             emailRequest.Subject = "Default Password for System Admin";
-            emailRequest.Body = $"Hi {entity.Email},/n Your username is {entity.Email} and Password for skill application login is {plainText}. Please do not share the password with any one, Thank you!!";
+            emailRequest.Body = $"Hi {organizationResource.Name},/n Your username is {organizationResource.Email} and Password for skill application login is {plainText}. Please do not share the password with any one, Thank you!!";
 
             await _emailManager.SendEmailAsync(emailRequest);
 
             return true;
          }
-         return false;
+         catch
+         {
+            throw;
+         }
       }
    }
 }

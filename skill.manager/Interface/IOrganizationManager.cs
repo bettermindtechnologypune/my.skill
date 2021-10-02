@@ -10,6 +10,6 @@ namespace skill.manager.Interface
 {
    public interface IOrganizationManager
    {
-      Task<bool> CreateOrganization(OrganizationResource resource);
+      Task<OrganizationResource> CreateOrganization(OrganizationResource resource);
    }
 }

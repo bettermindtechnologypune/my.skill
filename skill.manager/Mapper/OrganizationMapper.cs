@@ -33,7 +33,7 @@ namespace skill.manager.Mapper
          return entity;
       }
 
-      public static OrganizationResource ToEntity(OrganizationEntity entity)
+      public static OrganizationResource ToResource(OrganizationEntity entity)
       {
          if (entity == null)
          {

@@ -45,7 +45,8 @@ namespace skill
       {
          services.AddControllers();
 
-         string mySqlConnectionStr = "server = localhost; port = 3306; database = skill_db; user = root; password = root; Persist Security Info = False; Connect Timeout = 300";
+         var mySqlConnectionStr = Configuration["ConnectionStrings:Default"];
+         //string mySqlConnectionStr = "server = localhost; port = 3306; database = skill_db; user = root; password = root; Persist Security Info = False; Connect Timeout = 300";
          //string mySqlConnectionStr = "Data Source=DESKTOP-CA5OS4F; database=skills_db; user=root; password=root; Persist Security Info=False; Connect Timeout=300";
          services.AddDbContextPool<ApplicationDBContext>(options => options.UseMySql(mySqlConnectionStr, ServerVersion.AutoDetect(mySqlConnectionStr)));
 
@@ -91,28 +92,33 @@ namespace skill
          services.AddTransient<ICommonRepository>(_ => new CommonRepostioryImpl(Configuration));
 
          services.AddHttpContextAccessor();
+
+         //Manager Injection//
          services.AddScoped<IOrganizationManager, OrganizationManagerImpl>();
          services.AddScoped<IUserIdentityManager, UserIdentityManagerImpl>();
          services.AddScoped<IUserIdentityManager, UserIdentityManagerImpl>();
          services.AddScoped<IEmailManager, EmailManagerImpl>();
+         services.AddScoped<IBusinessUnitManager, BusinessUnitManagerImpl>();
+         services.AddScoped<IStartupTaskManager, StartupTaskManagerImpl>();
 
+         //Auth injection//
          services.AddScoped<IAuth, Auth>();
 
+         //Tenant Context Injection//
          services.AddScoped<ITenantContext, TenantContext>();
-         
-         services.AddScoped(typeof(IBaseRepositoy<>), typeof(BaseRepository<>));
 
          //Repostories Injection//
+         services.AddScoped(typeof(IBaseRepositoy<>), typeof(BaseRepository<>));
          services.AddScoped<ICommonRepository, CommonRepostioryImpl>();
          services.AddScoped<IOrganizationRepository, OrganizationRepositoryImpl>();
          services.AddScoped<IEmailSettingsRepository, EmailSettingRepository>();
          services.AddScoped<IUserIdentityRepository, UserIdentityRepositoryImpl>();
          services.AddScoped<IUserRepository, UserRepositoryImpl>();
+         services.AddScoped<IBusinessUnitRepository, BusinessUnitRepositoryImpl>();      
 
-         services.AddScoped<IStartupTaskManager, StartupTaskManagerImpl>();
-
-
+         //Validation Injection//
          services.AddScoped<IValidator<OrganizationResource>, OrganizationValidationImpl>();
+         services.AddScoped<IValidator<BusinessUnitResource>, BusinessUnitValidationImpl>();
 
          services.AddCors();
 
@@ -211,19 +217,6 @@ namespace skill
          {
             await next.Invoke();
          });
-      }
-
-      private static void UpdateDatabase(IApplicationBuilder app)
-      {
-         using (var serviceScope = app.ApplicationServices
-             .GetRequiredService<IServiceScopeFactory>()
-             .CreateScope())
-         {
-            using (var context = serviceScope.ServiceProvider.GetService<ApplicationDBContext>())
-            {
-               context.Database.Migrate();
-            }
-         }
-      }
+      }      
    }
 }

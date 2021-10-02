@@ -39,5 +39,8 @@ namespace skill.repository.Entity
       [StringLength(50)]
       [Required]
       public string WebSite { get; set; }
+
+      [Required]
+      public Guid AdminId { get; set; }
    }
 }

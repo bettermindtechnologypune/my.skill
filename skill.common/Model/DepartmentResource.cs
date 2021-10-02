@@ -8,14 +8,20 @@ using System.Threading.Tasks;
 
 namespace skill.common.Model
 {
-   public class BaseResource
+   public class DepartmentResource
    {
       [Required]
       [JsonIgnore]
       public Guid Id { get; set; }
 
       [Required]
-      [JsonIgnore]
-      public Guid OrgId { get; set; }
+      public Guid BusinessUnitId { get; set; }
+
+      [Required]
+      public string Name { get; set; }
+
+      public Guid ManagerId { get; set; }
+
+
    }
 }

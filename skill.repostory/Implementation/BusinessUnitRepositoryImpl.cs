@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using skill.common.Model;
 using skill.repository.Entity;
 using skill.repository.Interface;
@@ -17,7 +18,12 @@ namespace skill.repository.Implementation
 
       }
 
-      public async override Task<bool> InsertAsync(BusinessUnitEntity entity)
+      public async Task<BusinessUnitEntity> GetByAdminId(Guid id)
+      {
+         return await entities.SingleOrDefaultAsync(s => s.AdminId == id);
+      }
+
+      public async override Task<BusinessUnitEntity> InsertAsync(BusinessUnitEntity entity)
       {
          try
          {

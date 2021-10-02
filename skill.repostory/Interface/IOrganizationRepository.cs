@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace skill.repository.Interface
 {
-   public interface IOrganizationRepository
+   public interface IOrganizationRepository : IBaseRepositoy<OrganizationEntity>
    {
-      Task<bool> InsertAsync(OrganizationEntity entity);
-      void Get();
+     
    }
 }
