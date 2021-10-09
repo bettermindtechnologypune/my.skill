@@ -51,14 +51,18 @@ namespace skill.manager.Implementation
 
       public async Task<DepartmentResource> Create(DepartmentResource resource)
       {
-
-         resource.Id = Guid.NewGuid();
-         resource.BusinessUnitId = BUID;
-
-         var entity = DepartmentMapper.ToEntity(resource);
-         entity.CreatedBy = UserId.ToString();
-         entity.CreatedDate = DateTime.UtcNow;
-         var result = await _departmentRepository.InsertAsync(entity);
+         List<DepartmentEntity> entities = new List<DepartmentEntity>();
+         foreach(var name in resource.Names)
+         {
+            resource.Id = Guid.NewGuid();
+            resource.BusinessUnitId = BUID;
+            var entity = DepartmentMapper.ToEntity(resource);
+            entity.CreatedBy = UserId.ToString();
+            entity.CreatedDate = DateTime.UtcNow;
+            entities.Add(entity);
+         }
+         
+         var result = await _departmentRepository.BulkInsertAsync(entities);
          if (result != null)
             return resource;
 

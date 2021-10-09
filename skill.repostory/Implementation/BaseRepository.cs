@@ -61,7 +61,7 @@ namespace skill.repository.Implementation
          if (entity == null)
          {
             throw new ArgumentNullException("entity");
-         }
+         }       
          entities.Add(entity);
          await _context.SaveChangesAsync();
 
@@ -75,6 +75,18 @@ namespace skill.repository.Implementation
             throw new ArgumentNullException("entity");
          }
          _context.SaveChanges();
+      }
+
+      public async Task<List<T>> BulkInsertAsync(List<T> entities)
+      {
+         if (entities.Any())
+         {
+            throw new ArgumentNullException("entity");
+         }
+         entities.AddRange(entities);
+         await _context.SaveChangesAsync();
+
+         return entities;
       }
    }
 }

@@ -17,10 +17,6 @@ namespace skill.common.Model
       public Guid BusinessUnitId { get; set; }
 
       [Required]
-      public string Name { get; set; }
-
-      public Guid ManagerId { get; set; }
-
-
+      public List<string> Names { get; set; }
    }
 }
