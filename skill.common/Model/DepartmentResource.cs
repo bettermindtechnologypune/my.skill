@@ -17,6 +17,6 @@ namespace skill.common.Model
       public Guid BusinessUnitId { get; set; }
 
       [Required]
-      public List<string> Names { get; set; }
+      public string Name { get; set; }
    }
 }

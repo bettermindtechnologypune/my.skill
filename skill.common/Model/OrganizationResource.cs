@@ -44,8 +44,7 @@ namespace skill.common.Model
 
       [StringLength(50)]     
       public string WebSite { get; set; }
-
-      [Required]
+    
       public bool HasMultipleBU { get; set; }
 
 
