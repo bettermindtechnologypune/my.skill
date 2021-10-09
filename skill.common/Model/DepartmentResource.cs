@@ -10,11 +10,10 @@ namespace skill.common.Model
 {
    public class DepartmentResource
    {
-      [Required]
+      
       [JsonIgnore]
       public Guid Id { get; set; }
-
-      [Required]
+      
       public Guid BusinessUnitId { get; set; }
 
       [Required]

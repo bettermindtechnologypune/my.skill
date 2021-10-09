@@ -27,9 +27,10 @@ namespace skill.Filters
       }
       public void OnAuthorization(AuthorizationFilterContext context)
       {
-         var account = context.HttpContext.Items["UserId"];
-         Enum.TryParse("Active", out UserType userType);
-         if (account == null || (_roles.Any() && !_roles.Contains(userType)))
+         var account = context.HttpContext.Items["UserId"]; 
+         var userType =(string)context.HttpContext.Items["UserType"];
+         Enum.TryParse(userType, out UserType userTypeEnum);
+         if (account == null || (_roles.Any() && !_roles.Contains(userTypeEnum)))
          {
             // not logged in
             context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };

@@ -29,7 +29,7 @@ namespace skill.Middleware
 
          if (token != null)
             AttachAccountToContext(context, token, userIdentityRepository);
-
+         
          await _next(context);
       }
 
@@ -50,19 +50,22 @@ namespace skill.Middleware
                ValidAudience = _configuration["Jwt:Audience"],
                // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                ClockSkew = TimeSpan.Zero
-            }, out SecurityToken validatedToken);
+            }, out SecurityToken validatedToken);            
 
             var jwtToken = (JwtSecurityToken)validatedToken;
+        
             var accountId = jwtToken.Claims.First(x => x.Type == "id").Value;
             var orgId = jwtToken.Claims.First(x => x.Type == "orgId").Value;
             var userType = jwtToken.Claims.First(x => x.Type == "userType").Value;
-           
+            var buId = jwtToken.Claims.Where(x => x.Type == "BUID").Select(x => x.Value).FirstOrDefault();
             if (context.Items["Org_Id"] == null)
             {
                // attach account to context on successful jwt validation
                context.Items["Org_Id"] = orgId;
                context.Items["UserId"] = accountId;
-               context.Items["Usertype"] = userType;               
+               context.Items["UserType"] = userType;
+               if(buId !=null)
+               context.Items["BUID"] = buId;
             }
             
          }

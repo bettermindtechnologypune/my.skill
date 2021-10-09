@@ -11,5 +11,6 @@ namespace skill.common.TenantContext
       Guid OrgId { get; }
 
       Guid UserId { get; }
+      Guid BUId { get; }
    }
 }

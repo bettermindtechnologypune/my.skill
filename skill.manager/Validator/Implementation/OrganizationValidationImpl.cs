@@ -1,5 +1,6 @@
 ﻿using skill.common.ErrorModel;
 using skill.common.Model;
+using skill.manager.Validator.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace skill.manager.Validator.Implementation
 {
-   public class OrganizationValidationImpl : BaseValidator<OrganizationResource>
+   public class OrganizationValidationImpl : BaseValidator<OrganizationResource>, IOrganizationValidator
    {
       List<Error> _Errors;
-      public new IList<Error> Validate(OrganizationResource resource)
+      public override IList<Error> Validate(OrganizationResource resource)
       {
          _Errors = new List<Error>();
 

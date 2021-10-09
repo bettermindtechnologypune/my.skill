@@ -40,7 +40,7 @@ namespace skill.Controllers
          {
             _logger.LogError("AuthController::"+ex.Message, ex.InnerException);
             _logger.LogError($"AuthController::StackTrace", ex.InnerException);
-            return StatusCode(500, ex.Message);
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
          }
       }
    }

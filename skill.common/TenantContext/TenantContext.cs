@@ -23,6 +23,21 @@ namespace skill.common.TenantContext
       }
 
 
-      public Guid UserId => throw new NotImplementedException();
+      public Guid UserId
+      {
+         get
+         {
+            return new Guid(_httpContext.HttpContext.Items["UserId"].ToString());
+         }
+      }
+
+
+      public Guid BUId
+      {
+         get
+         {
+            return _httpContext.HttpContext.Items["BUID"] != null? new Guid(_httpContext.HttpContext.Items["BUID"].ToString()) : Guid.Empty;
+         }
+      }
    }
 }

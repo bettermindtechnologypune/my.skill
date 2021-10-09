@@ -2,6 +2,7 @@
 using skill.common.TenantContext;
 using skill.manager.Interface;
 using skill.manager.Mapper;
+using skill.repository.Entity;
 using skill.repository.Interface;
 using System;
 using System.Collections.Generic;
@@ -40,23 +41,34 @@ namespace skill.manager.Implementation
          }
       }
 
+      Guid BUID
+      {
+         get
+         {
+            return _tenantContext == null ? Guid.Empty : _tenantContext.BUId;
+         }
+      }
+
       public async Task<DepartmentResource> Create(DepartmentResource resource)
       {
-         var businessUnit = await  _businessUnitRepository.GetByAdminId(UserId);
-         if(businessUnit !=null && businessUnit.Id != Guid.Empty)
-         {
-            resource.Id = Guid.NewGuid();
-            resource.BusinessUnitId = businessUnit.Id;            
-         }
+
+         resource.Id = Guid.NewGuid();
+         resource.BusinessUnitId = BUID;
 
          var entity = DepartmentMapper.ToEntity(resource);
          entity.CreatedBy = UserId.ToString();
          entity.CreatedDate = DateTime.UtcNow;
-         var result = _departmentRepository.InsertAsync(entity);
+         var result = await _departmentRepository.InsertAsync(entity);
          if (result != null)
             return resource;
 
          return null;
+      }
+
+      public List<DepartmentEntity> GetList()
+      {
+         return _departmentRepository.GetDepartmentListByBUID(BUID);
+         
       }
    }
 }

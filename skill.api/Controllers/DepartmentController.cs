@@ -48,5 +48,24 @@ namespace skills.Controllers
             return StatusCode(500, ex.Message);
          }
       }
+
+
+      [Authorize(UserType.Hr_Admin)]
+      [HttpGet(nameof(GetList))]
+      public IActionResult GetList()
+      {
+         try
+         {
+            var result = _departmentManager.GetList();
+            if (result != null)
+               return Ok(result);
+            return NotFound();
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+      }
    }
 }

@@ -9,5 +9,6 @@ namespace skill.repository.Interface
 {
    public interface IDepartmentRepository : IBaseRepositoy<DepartmentEntity>
    {
+      List<DepartmentEntity> GetDepartmentListByBUID(Guid BUID);
    }
 }

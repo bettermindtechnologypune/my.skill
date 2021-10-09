@@ -18,6 +18,7 @@ namespace skill.AuthProvider
       private readonly IConfiguration _configuration;
       IUserIdentityRepository _userIdentityRepository;
       private readonly IEmailSettingsRepository _emailSettingsRepository;
+    
       public Auth(IConfiguration configuration, IUserIdentityRepository userIdentityRepository, IEmailSettingsRepository emailSettingsRepository)
       {
          _configuration = configuration;
@@ -26,7 +27,7 @@ namespace skill.AuthProvider
       }
       public async Task<AuthResponseModel> Authentication(string username, string password)
       {
-         AuthResponseModel authResponseModel = null;
+         
          var key = await _emailSettingsRepository.GetSymmetricKey();
          var dpass = AesOperation.EncryptString(key, password);
          var user =await _userIdentityRepository.GetUserIdentityByEmail(username, dpass);
@@ -40,10 +41,16 @@ namespace skill.AuthProvider
             // 2. Create Private Key to Encrypted
             var tokenKey = Encoding.ASCII.GetBytes(_configuration["Jwt:key"]);
 
+            Claim buIdClaim = null;
+            if (user.UserType == common.Enum.UserType.Hr_Admin)
+            {
+               buIdClaim = new Claim("BUID", user.Id.ToString());
+            }
             //3. Create JETdescriptor
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-               Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()), new Claim("orgId", user.OrgId.ToString()), new Claim("userType", user.UserType.ToString()) }),
+
+               Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()), new Claim("orgId", user.OrgId.ToString()), new Claim("userType", user.UserType.ToString()), buIdClaim }),
                Issuer = _configuration["Jwt:Issuer"],
                Audience = _configuration["Jwt:Audience"],
                Expires = DateTime.UtcNow.AddHours(1),
@@ -54,7 +61,7 @@ namespace skill.AuthProvider
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             // 5. Return Token from method
-            authResponseModel = new AuthResponseModel
+            AuthResponseModel authResponseModel = new AuthResponseModel
             {
                Token = tokenHandler.WriteToken(token),
                UserType = user.UserType

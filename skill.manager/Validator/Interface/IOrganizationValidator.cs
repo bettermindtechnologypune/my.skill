@@ -5,12 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace skill.manager.Interface
+namespace skill.manager.Validator.Interface
 {
-   public interface IBusinessUnitManager
+   public interface IOrganizationValidator : IValidator<OrganizationResource>
    {
-      Task<BusinessUnitResource> Create(BusinessUnitResource resource);
-
-
    }
 }

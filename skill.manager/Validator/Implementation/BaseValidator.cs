@@ -16,7 +16,7 @@ namespace skill.manager.Validator.Implementation
       public const string EMPTY_FIELD_ERROR = "{0} should not be empty.";
       public const string INVALID_PHONE = "Invalid contact number";
 
-      public IList<Error> Validate(R resource)
+      public virtual IList<Error> Validate(R resource)
       {
          throw new NotImplementedException();
       }

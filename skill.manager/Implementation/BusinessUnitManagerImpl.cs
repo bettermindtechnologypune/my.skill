@@ -20,11 +20,11 @@ namespace skill.manager.Implementation
    {
       IBusinessUnitRepository _businessUnitRepository;
       ITenantContext _tenantContext;
-      IValidator<BusinessUnitResource> _validator;
+      IBusinessUnitValidator _validator;
       IUserIdentityRepository _userIdentityRepository;
       private readonly IEmailSettingsRepository _emailSettingsRepository;
       private readonly IEmailManager _emailManager;
-      public BusinessUnitManagerImpl(IBusinessUnitRepository businessUnitRepository, ITenantContext tenantContext, IValidator<BusinessUnitResource> validator,
+      public BusinessUnitManagerImpl(IBusinessUnitRepository businessUnitRepository, ITenantContext tenantContext, IBusinessUnitValidator validator,
          IUserIdentityRepository userIdentityRepository,
          IEmailSettingsRepository emailSettingsRepository, IEmailManager emailManager)
       {        

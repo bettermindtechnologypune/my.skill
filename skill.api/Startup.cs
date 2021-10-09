@@ -99,6 +99,7 @@ namespace skill
          services.AddScoped<IUserIdentityManager, UserIdentityManagerImpl>();
          services.AddScoped<IEmailManager, EmailManagerImpl>();
          services.AddScoped<IBusinessUnitManager, BusinessUnitManagerImpl>();
+         services.AddScoped<IDepartmentManager, DepartmentManagerImpl>();
          services.AddScoped<IStartupTaskManager, StartupTaskManagerImpl>();
 
          //Auth injection//
@@ -114,11 +115,12 @@ namespace skill
          services.AddScoped<IEmailSettingsRepository, EmailSettingRepository>();
          services.AddScoped<IUserIdentityRepository, UserIdentityRepositoryImpl>();
          services.AddScoped<IUserRepository, UserRepositoryImpl>();
-         services.AddScoped<IBusinessUnitRepository, BusinessUnitRepositoryImpl>();      
+         services.AddScoped<IBusinessUnitRepository, BusinessUnitRepositoryImpl>();
+         services.AddScoped<IDepartmentRepository, DepartmentRepositoryImpl>();
 
          //Validation Injection//
-         services.AddScoped<IValidator<OrganizationResource>, OrganizationValidationImpl>();
-         services.AddScoped<IValidator<BusinessUnitResource>, BusinessUnitValidationImpl>();
+         services.AddScoped<IOrganizationValidator, OrganizationValidationImpl>();
+         services.AddScoped<IBusinessUnitValidator, BusinessUnitValidationImpl>();
 
          services.AddCors();
 

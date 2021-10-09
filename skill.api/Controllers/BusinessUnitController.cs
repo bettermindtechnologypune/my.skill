@@ -26,7 +26,7 @@ namespace skills.Controllers
          _businessUnitManager = businessUnitManager;
       }
 
-      [Authorize(UserType.Super_Admin, UserType.Org_Admin)]
+      [Authorize(UserType.Org_Admin, UserType.Hr_Admin)]
       [HttpPost(nameof(Create))]     
       public async Task<IActionResult> Create([FromBody] BusinessUnitResource resource)
       {
@@ -47,6 +47,6 @@ namespace skills.Controllers
             _logger.LogError(ex.Message, ex.InnerException);
             return StatusCode(500, ex.Message);
          }
-      }
+      }     
    }
 }

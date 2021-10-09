@@ -23,11 +23,13 @@ namespace skill.manager.Implementation
       IUserIdentityRepository _userIdentityRepository;
       private readonly IEmailSettingsRepository _emailSettingsRepository;
       private readonly IEmailManager _emailManager;
+      IBusinessUnitRepository _businessUnitRepository;
       ITenantContext _tenantContext;
-      IValidator<OrganizationResource> _validator;
+      IOrganizationValidator _validator;
 
       public OrganizationManagerImpl(IOrganizationRepository organizationRepository, IUserIdentityRepository userIdentityRepository,
-         IEmailSettingsRepository emailSettingsRepository, IEmailManager emailManager, ITenantContext tenantContext, IValidator<OrganizationResource> validator)
+         IEmailSettingsRepository emailSettingsRepository, IEmailManager emailManager, ITenantContext tenantContext, IOrganizationValidator validator,
+         IBusinessUnitRepository businessUnitRepository)
       {
          _organizationRepository = organizationRepository;
          _userIdentityRepository = userIdentityRepository;
@@ -35,6 +37,7 @@ namespace skill.manager.Implementation
          _emailManager = emailManager;
          _tenantContext = tenantContext;
          _validator = validator;
+         _businessUnitRepository = businessUnitRepository;
       }
 
       Guid OrgId
@@ -65,20 +68,38 @@ namespace skill.manager.Implementation
          entity.CreateDate = DateTime.UtcNow;
          entity.CreatedBy = UserId.ToString();
 
-         var response = await _organizationRepository.InsertAsync(entity);
+         var response = await _organizationRepository.InsertAsync(entity);       
 
-         var orgnizationResource = OrganizationMapper.ToResource(response);
-
-         if (orgnizationResource != null && orgnizationResource.Id != Guid.Empty)
+         if (response != null && response.Id != Guid.Empty)
          {
-            await CreateUser(orgnizationResource);
+            var userEntity = await CreateUser(resource);
+            if(userEntity?.Id != Guid.Empty && resource.HasMultipleBU == false)
+            {
+               var bu = new BusinessUnitEntity
+               {
+                  ContactNumber = resource.ContactNumber,
+                  CompanyAddress = resource.CompanyAddress,
+                  AdminId = userEntity.Id,
+                  City = resource.City,
+                  CreatedBy = UserId.ToString(),
+                  CreatedDate = DateTime.UtcNow,
+                  Email = resource.Email,
+                  Id = Guid.NewGuid(),
+                  Name = resource.Name,
+                  OrgId = resource.Id,
+                  PostalCode = resource.PostalCode,
+                  State = resource.State,
+                  WebSite = resource.WebSite                  
+               };
 
-            return orgnizationResource;
+               await _businessUnitRepository.InsertAsync(bu);
+            }
+            return resource;
          }
          return null;
       }
 
-      private async Task<bool> CreateUser(OrganizationResource organizationResource)
+      private async Task<UserIdentityEntity> CreateUser(OrganizationResource organizationResource)
       {
          try
          {
@@ -96,7 +117,7 @@ namespace skill.manager.Implementation
                OrgId = organizationResource.Id,
                Name = organizationResource.Name,
                IsOrgAdmin = true,
-               UserType = UserType.Org_Admin,
+               UserType = organizationResource.HasMultipleBU == true? UserType.Org_Admin:UserType.Hr_Admin,
                Password = encPassword,
                IsDeleted = false,
                IsLoginLocked = false,
@@ -112,7 +133,7 @@ namespace skill.manager.Implementation
 
             await _emailManager.SendEmailAsync(emailRequest);
 
-            return true;
+            return userEntity;
          }
          catch
          {
