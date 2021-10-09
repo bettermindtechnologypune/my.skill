@@ -28,13 +28,13 @@ namespace skills.Controllers
 
       [Authorize(UserType.Hr_Admin)]
       [HttpPost(nameof(Create))]
-      public async Task<IActionResult> Create([FromBody] DepartmentResource resource)
+      public async Task<IActionResult> Create([FromBody] List<DepartmentResource> resources)
       {
          try
          {
-            if (resource != null)
+            if (resources.Any())
             {
-               var result = await _departmentManager.Create(resource);
+               var result = await _departmentManager.Create(resources);
                return Ok(result);
             }
             else

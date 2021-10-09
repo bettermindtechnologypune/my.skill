@@ -17,9 +17,6 @@ namespace skill.repository.Entity
 
       [Required]
       public string Name { get; set; }
-
-      public Guid ManagerId { get; set; }
-
       [Required]
       [StringLength(50)]
       public string CreatedBy { get; set; }

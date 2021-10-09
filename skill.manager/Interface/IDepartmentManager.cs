@@ -10,7 +10,7 @@ namespace skill.manager.Interface
 {
    public interface IDepartmentManager
    {
-      Task<DepartmentResource> Create(DepartmentResource resource);
+      Task<List<DepartmentResource>> Create(List<DepartmentResource> resource);
 
       List<DepartmentEntity> GetList();
    }

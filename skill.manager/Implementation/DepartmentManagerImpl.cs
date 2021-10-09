@@ -49,10 +49,10 @@ namespace skill.manager.Implementation
          }
       }
 
-      public async Task<DepartmentResource> Create(DepartmentResource resource)
+      public async Task<List<DepartmentResource>> Create(List<DepartmentResource> resources)
       {
          List<DepartmentEntity> entities = new List<DepartmentEntity>();
-         foreach(var name in resource.Names)
+         foreach(var resource in resources)
          {
             resource.Id = Guid.NewGuid();
             resource.BusinessUnitId = BUID;
@@ -64,7 +64,7 @@ namespace skill.manager.Implementation
          
          var result = await _departmentRepository.BulkInsertAsync(entities);
          if (result != null)
-            return resource;
+            return resources;
 
          return null;
       }

@@ -18,8 +18,7 @@ namespace skill.manager.Mapper
          DepartmentEntity entity = new DepartmentEntity()
          {
             BusinessUnitId = resource.BusinessUnitId,
-            Id = resource.Id,
-            ManagerId = resource.ManagerId,
+            Id = resource.Id,           
             Name = resource.Name
          };
 
@@ -34,8 +33,7 @@ namespace skill.manager.Mapper
          DepartmentResource resource = new DepartmentResource()
          {
             BusinessUnitId = entity.BusinessUnitId,
-            Id = entity.Id,
-            ManagerId = entity.ManagerId,
+            Id = entity.Id,           
             Name = entity.Name
          };
 
