@@ -60,6 +60,7 @@ namespace skill.manager.Implementation
             entity.CreatedBy = UserId.ToString();
             entity.CreatedDate = DateTime.UtcNow;
             entities.Add(entity);
+            await _departmentRepository.InsertAsync(entity);
          }
          
          var result = await _departmentRepository.BulkInsertAsync(entities);

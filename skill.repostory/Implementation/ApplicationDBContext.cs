@@ -17,6 +17,8 @@ namespace skill.repository.Implementation
       public DbSet<BusinessUnitEntity> BusinessUnit { get; set; }
 
       public DbSet<DepartmentEntity> Department { get; set; }
+
+      public DbSet<EmployeeEntity> employee { get; set; }
       public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
           : base(options)
       {
@@ -33,6 +35,7 @@ namespace skill.repository.Implementation
          modelBuilder.Entity<GlobalConfig>();
          modelBuilder.Entity<BusinessUnitEntity>();
          modelBuilder.Entity<DepartmentEntity>();
+         modelBuilder.Entity<EmployeeEntity>();
 
          // Configure Primary Keys  
          modelBuilder.Entity<OrganizationEntity>().HasKey(ug => ug.Id).HasName("Idx_PK_Organization");

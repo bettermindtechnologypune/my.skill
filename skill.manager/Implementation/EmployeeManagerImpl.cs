@@ -16,25 +16,26 @@ using System.Threading.Tasks;
 
 namespace skill.manager.Implementation
 {
-   public class BusinessUnitManagerImpl : IBusinessUnitManager
+   public class EmployeeManagerImpl : IEmployeeManager
    {
-      IBusinessUnitRepository _businessUnitRepository;
       ITenantContext _tenantContext;
-      IBusinessUnitValidator _validator;
+      IEmployeeRepository _employeeRepository;
       IUserIdentityRepository _userIdentityRepository;
       private readonly IEmailSettingsRepository _emailSettingsRepository;
       private readonly IEmailManager _emailManager;
-      public BusinessUnitManagerImpl(IBusinessUnitRepository businessUnitRepository, ITenantContext tenantContext, IBusinessUnitValidator validator,
-         IUserIdentityRepository userIdentityRepository,
+      IEmployeeValidator _validator;
+      public EmployeeManagerImpl(IEmployeeRepository employeeRepository, ITenantContext tenantContext,
+         IUserIdentityRepository userIdentityRepository, IEmployeeValidator validator,
          IEmailSettingsRepository emailSettingsRepository, IEmailManager emailManager)
-      {        
-         _businessUnitRepository = businessUnitRepository;
+      {
+         _employeeRepository = employeeRepository;
          _tenantContext = tenantContext;
          _validator = validator;
          _userIdentityRepository = userIdentityRepository;
          _emailSettingsRepository = emailSettingsRepository;
          _emailManager = emailManager;
       }
+
 
       Guid OrgId
       {
@@ -52,23 +53,29 @@ namespace skill.manager.Implementation
          }
       }
 
-      public async Task<BusinessUnitResource> Create(BusinessUnitResource resource)
+      Guid BUID
+      {
+         get
+         {
+            return _tenantContext == null ? Guid.Empty : _tenantContext.BUId;
+         }
+      }
+
+      public async Task<EmployeeResource> Create(EmployeeResource resource)
       {
          var errors = _validator.Validate(resource);
-         var adminUserId = Guid.NewGuid();
          if (errors.Any())
          {
             throw new ValidationException(string.Join(",", errors));
          }
+
          resource.Id = Guid.NewGuid();
-         var entity = BusinessUnitMapper.ToEntity(resource);
+         resource.BUID = BUID;
+         var entity = EmployeeMapper.ToEntity(resource);
          entity.CreatedBy = UserId.ToString();
-         entity.OrgId = OrgId;
-         entity.CreatedDate = DateTime.UtcNow;
-         entity.AdminId = adminUserId;
-         var result = await _businessUnitRepository.InsertAsync(entity);
-         var BUResource = BusinessUnitMapper.ToResource(result);
-         if (BUResource !=null && BUResource.Id != Guid.Empty )
+         entity.CreateDate = DateTime.UtcNow;
+         var result = await _employeeRepository.InsertAsync(entity);
+         if (result !=null && result.Id !=Guid.Empty)
          {
             var key = await _emailSettingsRepository.GetSymmetricKey();
             var plainText = AesOperation.RandomPassword();
@@ -79,15 +86,15 @@ namespace skill.manager.Implementation
                CreatedBy = UserId,
                CreatedAt = DateTime.UtcNow,
                Email = entity.Email,
-               Id = adminUserId,
-               FullName = entity.Name,
+               Id = Guid.NewGuid(),
+               FullName = $"{entity.FirstName} {entity.LastName}",
                OrgId = OrgId,
-               Name = entity.Name,
+               Name = entity.FirstName,
                IsOrgAdmin = false,
-               UserType = UserType.Hr_Admin,
+               UserType = UserType.Worker,
                Password = encPassword,
                IsDeleted = false,
-               IsLoginLocked = false,             
+               IsLoginLocked = false,
             };
 
             await _userIdentityRepository.CreateUserIdentity(userEntity);
@@ -95,16 +102,15 @@ namespace skill.manager.Implementation
             var emailRequest = new EmailRequest();
 
             emailRequest.ToEmail = entity.Email;
-            emailRequest.Subject = "Default Password for Businesss unit Admin";
-            emailRequest.Body = $"Hi {entity.Name},/n Your username is {entity.Email} and Password for skill application login is {plainText} . Please do not share the password with any one, Thank you!!";
+            emailRequest.Subject = "Default Password for Skill Application";
+            emailRequest.Body = $"Hi {entity.FirstName},/n Your username is {entity.Email} and Password for skill application login is {plainText} . Please do not share the password with any one, Thank you!!";
 
             await _emailManager.SendEmailAsync(emailRequest);
 
-            return BUResource;
+            return resource;
          }
 
          return null;
-
       }
    }
 }

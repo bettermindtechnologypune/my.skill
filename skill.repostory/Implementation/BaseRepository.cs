@@ -79,7 +79,7 @@ namespace skill.repository.Implementation
 
       public async Task<List<T>> BulkInsertAsync(List<T> entities)
       {
-         if (entities.Any())
+         if (!entities.Any())
          {
             throw new ArgumentNullException("entity");
          }

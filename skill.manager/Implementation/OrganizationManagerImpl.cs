@@ -128,7 +128,7 @@ namespace skill.manager.Implementation
             var emailRequest = new EmailRequest();
 
             emailRequest.ToEmail = organizationResource.Email;
-            emailRequest.Subject = "Default Password for System Admin";
+            emailRequest.Subject = $"Default Password for {organizationResource.Name}'s Admin";
             emailRequest.Body = $"Hi {organizationResource.Name},/n Your username is {organizationResource.Email} and Password for skill application login is {plainText}. Please do not share the password with any one, Thank you!!";
 
             await _emailManager.SendEmailAsync(emailRequest);
