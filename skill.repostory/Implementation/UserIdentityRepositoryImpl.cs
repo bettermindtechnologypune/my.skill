@@ -195,7 +195,7 @@ namespace skill.repository.Implementation
                   OrgId = new Guid((string)reader["ORG_ID"]),
                   IsOrgAdmin = Convert.ToBoolean((sbyte)reader["IS_ORG_ADMIN"]),
                   UserType = (UserType)reader["USER_TYPE"],
-                  BUID = new Guid((string)reader["BU_ID"]),
+                  BUID = reader["BU_ID"] == DBNull.Value ? Guid.Empty : new Guid((string)reader["BU_ID"]),
                };
 
             }
