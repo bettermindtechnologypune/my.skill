@@ -18,9 +18,9 @@ namespace skill.repository.Implementation
 
       }
 
-      public async Task<BusinessUnitEntity> GetByAdminId(Guid id)
+      public async Task<BusinessUnitEntity> GetByAdminId(Guid adminId)
       {
-         return await entities.SingleOrDefaultAsync(s => s.AdminId == id);
+         return await _entities.SingleOrDefaultAsync(s => s.Id == adminId);
       }
 
       public async override Task<BusinessUnitEntity> InsertAsync(BusinessUnitEntity entity)

@@ -21,13 +21,14 @@ namespace skill.repository.Entity
       public DateTime LastLoginAttemptAt { get; set; }
       public DateTime LastSuccessfulLoginAt { get; set; }
       public DateTime PasswordChangedAt { get; set; }
-      public DateTime CreatedAt { get; set; }
-      public DateTime ModifiedAt { get; set; }
+      public DateTime CreatedDate { get; set; }
+      public DateTime ModifiedDate { get; set; }
       public bool IsLoginLocked { get; set; }
       public bool IsOrgAdmin { get; set; }
       public UserType UserType { get; set; }
       public Guid OrgId { get; set; }
       public Guid CreatedBy { get; set; }
-      public Guid ModifiedBy { get; set; }      
+      public Guid ModifiedBy { get; set; } 
+      public Guid BUID { get; set; }
    }
 }

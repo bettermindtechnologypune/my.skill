@@ -14,7 +14,7 @@ namespace skill.repository.Implementation
    public class BaseRepository<T> : ICommonRepository, IBaseRepositoy<T> where T : class, IBaseEntity 
    {
       protected readonly ApplicationDBContext _context;
-      protected DbSet<T> entities;
+      protected DbSet<T> _entities;
       string errorMessage = string.Empty;
 
       protected MySqlConnection Connection;
@@ -32,7 +32,7 @@ namespace skill.repository.Implementation
          _configuration = configuration;
            Connection = new MySqlConnection(configuration["ConnectionStrings:Default"]);
          _context = context;
-         entities = _context.Set<T>();
+         _entities = _context.Set<T>();
       }
 
 
@@ -42,18 +42,20 @@ namespace skill.repository.Implementation
          {
             throw new ArgumentNullException("entity");
          }
-         entities.Remove(entity);
+         _entities.Remove(entity);
          _context.SaveChanges();
       }
 
       public IEnumerable<T> GetAll()
       {
-         return entities.AsEnumerable();
+         return _entities.AsEnumerable();
       }
 
       public async Task<T> GetAsync(Guid id)
       {
-         return await entities.SingleOrDefaultAsync(s => s.Id == id);
+       
+
+         return await _entities.SingleOrDefaultAsync(s => s.Id == id);
       }
 
       public virtual async Task<T> InsertAsync(T entity)
@@ -62,7 +64,7 @@ namespace skill.repository.Implementation
          {
             throw new ArgumentNullException("entity");
          }       
-         entities.Add(entity);
+         _entities.Add(entity);
          await _context.SaveChangesAsync();
 
          return entity;
@@ -77,16 +79,25 @@ namespace skill.repository.Implementation
          _context.SaveChanges();
       }
 
-      public async Task<List<T>> BulkInsertAsync(List<T> entities)
+      public async Task<List<T>> BulkInsertAsync(List<T> entityList)
       {
-         if (!entities.Any())
+         if (!entityList.Any())
          {
             throw new ArgumentNullException("entity");
          }
-         entities.AddRange(entities);
+
+         _entities.AddRange(entityList);
          await _context.SaveChangesAsync();
 
-         return entities;
+         return entityList;
+      }
+
+      public async Task<List<T>> GetPaginatedList(Guid BUID,int pageNumber, int pageSize)
+      {
+        return await _entities.AsNoTracking()
+          .OrderBy(x => x.CreatedDate)
+          .Skip((pageNumber - 1) * pageSize)
+          .Take(pageSize).ToListAsync();
       }
    }
 }

@@ -9,5 +9,7 @@ namespace skill.repository.Entity
    public interface IBaseEntity
    {
       public Guid Id { get; set; }
+
+      public DateTime CreatedDate { get; set; }
    }
 }

@@ -23,9 +23,6 @@ namespace skill.repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("AdminId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -139,12 +136,12 @@ namespace skill.repository.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("DOB")
                         .IsRequired()
@@ -217,6 +214,9 @@ namespace skill.repository.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("DefaultValue")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
@@ -236,6 +236,78 @@ namespace skill.repository.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Global_Config");
+                });
+
+            modelBuilder.Entity("skill.repository.Entity.LevelOneEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("BUID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsLastLevel")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LevelOne");
+                });
+
+            modelBuilder.Entity("skill.repository.Entity.LevelTwoEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsLastLevel")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("LevelOneId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LevelTwo");
                 });
 
             modelBuilder.Entity("skill.repository.Entity.OrganizationEntity", b =>
@@ -262,12 +334,12 @@ namespace skill.repository.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -312,6 +384,75 @@ namespace skill.repository.Migrations
                         .HasDatabaseName("Idx_UQ_OrgEmail");
 
                     b.ToTable("Organization");
+                });
+
+            modelBuilder.Entity("skill.repository.Entity.RatingEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("EmpId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("IsManagerRating")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TaskId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rating");
+                });
+
+            modelBuilder.Entity("skill.repository.Entity.TaskEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("LevelId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ModifiedBy")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int>("Wattage")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Task");
                 });
 #pragma warning restore 612, 618
         }

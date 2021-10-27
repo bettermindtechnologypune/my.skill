@@ -11,6 +11,8 @@ namespace skill.manager.Interface
    {
       Task<BusinessUnitResource> Create(BusinessUnitResource resource);
 
+      Task<BusinessUnitResource> GetByAdminId(Guid adminId);
 
+      Task<BusinessUnitResource> GetById(Guid id);
    }
 }

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using skill.common.Enum;
 
 namespace skill.AuthProvider
 {
@@ -42,9 +43,9 @@ namespace skill.AuthProvider
             var tokenKey = Encoding.ASCII.GetBytes(_configuration["Jwt:key"]);
 
             Claim buIdClaim = null;
-            if (user.UserType == common.Enum.UserType.Hr_Admin)
+            if (user.UserType == UserType.Hr_Admin || user.UserType == UserType.Manager || user.UserType == UserType.Manager)
             {
-               buIdClaim = new Claim("BUID", user.Id.ToString());
+               buIdClaim = new Claim("BUID", user.BUID.ToString());
             }
             //3. Create JETdescriptor
             var tokenDescriptor = new SecurityTokenDescriptor()

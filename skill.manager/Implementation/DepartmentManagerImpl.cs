@@ -59,8 +59,7 @@ namespace skill.manager.Implementation
             var entity = DepartmentMapper.ToEntity(resource);
             entity.CreatedBy = UserId.ToString();
             entity.CreatedDate = DateTime.UtcNow;
-            entities.Add(entity);
-            await _departmentRepository.InsertAsync(entity);
+            entities.Add(entity);            
          }
          
          var result = await _departmentRepository.BulkInsertAsync(entities);

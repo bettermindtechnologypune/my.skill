@@ -65,7 +65,7 @@ namespace skill.manager.Implementation
          resource.Id = Guid.NewGuid();
 
          var entity = OrganizationMapper.ToEntity(resource);
-         entity.CreateDate = DateTime.UtcNow;
+         entity.CreatedDate = DateTime.UtcNow;
          entity.CreatedBy = UserId.ToString();
 
          var response = await _organizationRepository.InsertAsync(entity);       
@@ -78,8 +78,7 @@ namespace skill.manager.Implementation
                var bu = new BusinessUnitEntity
                {
                   ContactNumber = resource.ContactNumber,
-                  CompanyAddress = resource.CompanyAddress,
-                  AdminId = userEntity.Id,
+                  CompanyAddress = resource.CompanyAddress,               
                   City = resource.City,
                   CreatedBy = UserId.ToString(),
                   CreatedDate = DateTime.UtcNow,
@@ -110,7 +109,7 @@ namespace skill.manager.Implementation
             {
                PhoneNumber = organizationResource.ContactNumber,
                CreatedBy = UserId,
-               CreatedAt = DateTime.UtcNow,
+               CreatedDate = DateTime.UtcNow,
                Email = organizationResource.Email,
                Id = Guid.NewGuid(),
                FullName = organizationResource.Name,

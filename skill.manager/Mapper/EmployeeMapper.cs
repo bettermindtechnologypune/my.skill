@@ -69,3 +69,4 @@ namespace skill.manager.Mapper
       }
    }
 }
+      

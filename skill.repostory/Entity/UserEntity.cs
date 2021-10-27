@@ -14,7 +14,7 @@ namespace skill.repository.Entity
 
       public bool IsDeleted { get; set; }
 
-      public DateTime CreatedTime { get; set; }
+      public DateTime CreatedDate { get; set; }
 
       public Guid Createdby { get; set; }
 

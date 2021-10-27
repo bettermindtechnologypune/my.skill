@@ -23,7 +23,7 @@ namespace skill.repository.Implementation
 
       public async Task<UserEntity> GetByEmail(string email)
       {
-        var entity = await entities.FirstOrDefaultAsync(x => x.Email == email);
+        var entity = await _entities.FirstOrDefaultAsync(x => x.Email == email);
 
          return entity;
       }

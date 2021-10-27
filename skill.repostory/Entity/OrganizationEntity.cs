@@ -27,7 +27,7 @@ namespace skill.repository.Entity
       public string? ModifiedBy { get; set; }
 
       [DataType(DataType.DateTime)]
-      public DateTime CreateDate { get; set; }
+      public DateTime CreatedDate { get; set; }
 
       [DataType(DataType.DateTime)]
       public DateTime? ModifiedDate { get; set; }

@@ -20,7 +20,7 @@ namespace skill.manager.Mapper
          {
             Contact = resource.Contact,
             Createdby = resource.Createdby,
-            CreatedTime = resource.CreatedTime,
+            CreatedDate = resource.CreatedTime,
             Email = resource.Email,
             Id = resource.Id,
             IdentityUserId = resource.IdentityUserId,
@@ -46,7 +46,7 @@ namespace skill.manager.Mapper
          {
             Contact = entity.Contact,
             Createdby = entity.Createdby,
-            CreatedTime = entity.CreatedTime,
+            CreatedTime = entity.CreatedDate,
             Email = entity.Email,
             Id = entity.Id,
             IdentityUserId = entity.IdentityUserId,

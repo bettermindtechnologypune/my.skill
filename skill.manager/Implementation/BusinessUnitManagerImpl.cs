@@ -27,7 +27,7 @@ namespace skill.manager.Implementation
       public BusinessUnitManagerImpl(IBusinessUnitRepository businessUnitRepository, ITenantContext tenantContext, IBusinessUnitValidator validator,
          IUserIdentityRepository userIdentityRepository,
          IEmailSettingsRepository emailSettingsRepository, IEmailManager emailManager)
-      {        
+      {
          _businessUnitRepository = businessUnitRepository;
          _tenantContext = tenantContext;
          _validator = validator;
@@ -54,8 +54,7 @@ namespace skill.manager.Implementation
 
       public async Task<BusinessUnitResource> Create(BusinessUnitResource resource)
       {
-         var errors = _validator.Validate(resource);
-         var adminUserId = Guid.NewGuid();
+         var errors = _validator.Validate(resource);       
          if (errors.Any())
          {
             throw new ValidationException(string.Join(",", errors));
@@ -65,10 +64,10 @@ namespace skill.manager.Implementation
          entity.CreatedBy = UserId.ToString();
          entity.OrgId = OrgId;
          entity.CreatedDate = DateTime.UtcNow;
-         entity.AdminId = adminUserId;
+        
          var result = await _businessUnitRepository.InsertAsync(entity);
          var BUResource = BusinessUnitMapper.ToResource(result);
-         if (BUResource !=null && BUResource.Id != Guid.Empty )
+         if (BUResource != null && BUResource.Id != Guid.Empty)
          {
             var key = await _emailSettingsRepository.GetSymmetricKey();
             var plainText = AesOperation.RandomPassword();
@@ -77,9 +76,9 @@ namespace skill.manager.Implementation
             {
                PhoneNumber = entity.ContactNumber,
                CreatedBy = UserId,
-               CreatedAt = DateTime.UtcNow,
+               CreatedDate = DateTime.UtcNow,
                Email = entity.Email,
-               Id = adminUserId,
+               Id = Guid.NewGuid(),
                FullName = entity.Name,
                OrgId = OrgId,
                Name = entity.Name,
@@ -87,7 +86,8 @@ namespace skill.manager.Implementation
                UserType = UserType.Hr_Admin,
                Password = encPassword,
                IsDeleted = false,
-               IsLoginLocked = false,             
+               IsLoginLocked = false,
+               BUID = entity.Id
             };
 
             await _userIdentityRepository.CreateUserIdentity(userEntity);
@@ -105,6 +105,30 @@ namespace skill.manager.Implementation
 
          return null;
 
+      }
+
+      public async Task<BusinessUnitResource> GetByAdminId(Guid adminId)
+      {
+         BusinessUnitResource resource = null;
+         var entity = await _businessUnitRepository.GetByAdminId(adminId);
+         if (entity != null && entity.Id != Guid.Empty)
+         {
+            resource = BusinessUnitMapper.ToResource(entity);
+         }
+
+         return resource;
+      }
+
+      public async Task<BusinessUnitResource> GetById(Guid id)
+      {
+         BusinessUnitResource resource = null;
+         var entity = await _businessUnitRepository.GetAsync(id);
+         if (entity != null && entity.Id != Guid.Empty)
+         {
+            resource = BusinessUnitMapper.ToResource(entity);
+         }
+
+         return resource;
       }
    }
 }

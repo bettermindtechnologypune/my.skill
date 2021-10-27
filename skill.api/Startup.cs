@@ -102,6 +102,10 @@ namespace skill
          services.AddScoped<IDepartmentManager, DepartmentManagerImpl>();
          services.AddScoped<IStartupTaskManager, StartupTaskManagerImpl>();
          services.AddScoped<IEmployeeManager, EmployeeManagerImpl>();
+         services.AddScoped<ILevelOneManager, LevelOneManagerImpl>();
+         services.AddScoped<IlevelTwoManager, LevelTwoManagerImpl>();
+         services.AddScoped<ITaskManager, TaskManagerImpl>();
+         services.AddScoped<IRatingManager, RatingManagerImpl>();
 
          //Auth injection//
          services.AddScoped<IAuth, Auth>();
@@ -119,6 +123,10 @@ namespace skill
          services.AddScoped<IBusinessUnitRepository, BusinessUnitRepositoryImpl>();
          services.AddScoped<IDepartmentRepository, DepartmentRepositoryImpl>();
          services.AddScoped<IEmployeeRepository, EmployeeRepositoryImpl>();
+         services.AddScoped<ILevelOneRepository, LevelOneRepositoryImpl>();
+         services.AddScoped<ILevelTwoRepository, LevelTwoRepositoryImpl>();
+         services.AddScoped<ITaskRepository, TaskRepositoryImpl>();
+         services.AddScoped<IRatingRepository, RatingRepositoryImpl>();
 
          //Validation Injection//
          services.AddScoped<IOrganizationValidator, OrganizationValidationImpl>();

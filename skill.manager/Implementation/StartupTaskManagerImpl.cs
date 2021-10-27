@@ -43,7 +43,7 @@ namespace skill.manager.Implementation
                userIdentity = new UserIdentityEntity
                {
                   Email = _configuration["auc:email"],
-                  CreatedAt = DateTime.UtcNow,
+                  CreatedDate = DateTime.UtcNow,
                   FailedLoginCount = 0,
                   FullName = _configuration["auc:name"],
                   Id = Guid.NewGuid(),

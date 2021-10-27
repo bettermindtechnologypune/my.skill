@@ -10,6 +10,6 @@ namespace skill.repository.Interface
 {
    public interface IBusinessUnitRepository : IBaseRepositoy<BusinessUnitEntity>
    {
-      Task<BusinessUnitEntity> GetByAdminId(Guid id);
+      Task<BusinessUnitEntity> GetByAdminId(Guid adminId);
    }
 }

@@ -18,7 +18,7 @@ namespace skill.repository.Implementation
 
       public List<DepartmentEntity> GetDepartmentListByBUID(Guid BUID)
       {
-         return  entities.Where(x => x.BusinessUnitId == BUID).ToList();
+         return  _entities.Where(x => x.BusinessUnitId == BUID).ToList();
       }
 
       public async override Task<DepartmentEntity> InsertAsync(DepartmentEntity entity)

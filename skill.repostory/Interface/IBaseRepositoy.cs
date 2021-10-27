@@ -11,10 +11,10 @@ namespace skill.repository.Interface
       IEnumerable<T> GetAll();
       Task<T> GetAsync(Guid id);
       Task<T> InsertAsync(T entity);
-
       Task<List<T>> BulkInsertAsync(List<T> entity);
       void UpdateAsync(T entity);
-      void DeleteAsync(T entity);  
-   
+      void DeleteAsync(T entity);
+      Task<List<T>> GetPaginatedList(Guid BUID, int pageNumber, int pageSize);
+
    }
 }

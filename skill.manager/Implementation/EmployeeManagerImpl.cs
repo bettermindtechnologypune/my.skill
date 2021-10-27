@@ -73,7 +73,7 @@ namespace skill.manager.Implementation
          resource.BUID = BUID;
          var entity = EmployeeMapper.ToEntity(resource);
          entity.CreatedBy = UserId.ToString();
-         entity.CreateDate = DateTime.UtcNow;
+         entity.CreatedDate = DateTime.UtcNow;
          var result = await _employeeRepository.InsertAsync(entity);
          if (result !=null && result.Id !=Guid.Empty)
          {
@@ -84,7 +84,7 @@ namespace skill.manager.Implementation
             {
                PhoneNumber = entity.ContactNumber,
                CreatedBy = UserId,
-               CreatedAt = DateTime.UtcNow,
+               CreatedDate = DateTime.UtcNow,
                Email = entity.Email,
                Id = Guid.NewGuid(),
                FullName = $"{entity.FirstName} {entity.LastName}",
@@ -95,6 +95,7 @@ namespace skill.manager.Implementation
                Password = encPassword,
                IsDeleted = false,
                IsLoginLocked = false,
+               BUID = BUID
             };
 
             await _userIdentityRepository.CreateUserIdentity(userEntity);

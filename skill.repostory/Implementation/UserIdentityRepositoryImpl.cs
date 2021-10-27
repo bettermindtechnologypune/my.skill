@@ -33,9 +33,9 @@ namespace skill.repository.Implementation
          {
             string query = @"INSERT INTO user_identity(`Id`,`NAME`,`PHONE_NUMBER`,`EMAIL`,`PASSWORD`,`IS_DELETED`,`FAILED_LOGIN_COUNT`,
                         `LAST_LOGIN_ATTEMPT_AT`,`LAST_SUCCESSFUL_LOGIN_AT`, `PASSWORD_CHANGED_AT`,`CREATED_AT`,`MODIFIED_AT`,
-                        `IS_LOGIN_LOCKED`,`FULL_NAME`,`ORG_ID`,`IS_ORG_ADMIN`,`USER_TYPE`)
+                        `IS_LOGIN_LOCKED`,`FULL_NAME`,`ORG_ID`,`IS_ORG_ADMIN`,`USER_TYPE`, `BU_ID`)
                      VALUES(@Id, @Name, @PhoneNumber, @Email, @Password, @IsDeleted, @FailedLoginCount, @LastLoginAttemptAt,
-                              @LastSuccessfulLoginAt, @PasswordChangedAt, @CreatedAt, @ModifiedAt, @IsloginLocked, @FullName , @OrgId, @IsOrgAdmin, @UserType)";
+                              @LastSuccessfulLoginAt, @PasswordChangedAt, @CreatedAt, @ModifiedAt, @IsloginLocked, @FullName , @OrgId, @IsOrgAdmin, @UserType, @BUID)";
 
             using (var command = new MySqlCommand(query, Connection))
             {
@@ -49,13 +49,14 @@ namespace skill.repository.Implementation
                command.Parameters.AddWithValue("@LastSuccessfulLoginAt", userIdentityEntity.LastSuccessfulLoginAt);
                command.Parameters.AddWithValue("@Name", userIdentityEntity.Name);
                command.Parameters.AddWithValue("@PasswordChangedAt", userIdentityEntity.PasswordChangedAt);
-               command.Parameters.AddWithValue("@CreatedAt", userIdentityEntity.CreatedAt);
-               command.Parameters.AddWithValue("@ModifiedAt", userIdentityEntity.ModifiedAt);
+               command.Parameters.AddWithValue("@CreatedAt", userIdentityEntity.CreatedDate);
+               command.Parameters.AddWithValue("@ModifiedAt", userIdentityEntity.ModifiedDate);
                command.Parameters.AddWithValue("@IsloginLocked", userIdentityEntity.IsLoginLocked);
                command.Parameters.AddWithValue("@FullName", userIdentityEntity.FullName);
                command.Parameters.AddWithValue("@IsOrgAdmin", userIdentityEntity.IsOrgAdmin);
                command.Parameters.AddWithValue("@OrgId", userIdentityEntity.OrgId);
                command.Parameters.AddWithValue("@UserType", userIdentityEntity.UserType);
+               command.Parameters.AddWithValue("@BUID", userIdentityEntity.BUID);
 
                await Connection.OpenAsync();
 
@@ -177,7 +178,7 @@ namespace skill.repository.Implementation
             {
                userIdentityEntity = new UserIdentityEntity
                {
-                  CreatedAt = (DateTime)reader["CREATED_AT"],
+                  CreatedDate = (DateTime)reader["CREATED_AT"],
                   Email = (string)reader["EMAIL"],
                   FailedLoginCount = (int)reader["FAILED_LOGIN_COUNT"],
                   FullName = (string)reader["FULL_NAME"],
@@ -185,7 +186,7 @@ namespace skill.repository.Implementation
                   IsLoginLocked = Convert.ToBoolean((bool)reader["IS_LOGIN_LOCKED"]),
                   LastLoginAttemptAt = (DateTime)reader["LAST_LOGIN_ATTEMPT_AT"],
                   LastSuccessfulLoginAt = (DateTime)reader["LAST_SUCCESSFUL_LOGIN_AT"],
-                  ModifiedAt = (DateTime)reader["MODIFIED_AT"],
+                  ModifiedDate = (DateTime)reader["MODIFIED_AT"],
                   Name = (string)reader["NAME"],
                   Password = (string)reader["PASSWORD"],
                   PasswordChangedAt = (DateTime)reader["PASSWORD_CHANGED_AT"],
@@ -193,7 +194,8 @@ namespace skill.repository.Implementation
                   Id = new Guid((string)reader["Id"]),
                   OrgId = new Guid((string)reader["ORG_ID"]),
                   IsOrgAdmin = Convert.ToBoolean((sbyte)reader["IS_ORG_ADMIN"]),
-                  UserType = (UserType)reader["USER_TYPE"]
+                  UserType = (UserType)reader["USER_TYPE"],
+                  BUID = new Guid((string)reader["BU_ID"]),
                };
 
             }

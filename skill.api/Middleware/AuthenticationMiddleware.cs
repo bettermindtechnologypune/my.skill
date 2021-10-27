@@ -28,13 +28,13 @@ namespace skill.Middleware
          var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
          if (token != null)
-            AttachAccountToContext(context, token, userIdentityRepository);
+            AttachAccountToContext(context, token);
          
          await _next(context);
       }
 
 
-      private async void AttachAccountToContext(HttpContext context, string token, IUserIdentityRepository userIdentityRepository)
+      private async void AttachAccountToContext(HttpContext context, string token)
       {
          try
          {
@@ -69,7 +69,7 @@ namespace skill.Middleware
             }
             
          }
-         catch (Exception ex)
+         catch (Exception)
          {
             throw;
          }
