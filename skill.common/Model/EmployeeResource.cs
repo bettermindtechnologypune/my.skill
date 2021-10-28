@@ -40,8 +40,7 @@ namespace skill.common.Model
       [Required]
       [StringLength(50)]
       public string OrgEmpId { get; set; }
-
-      [Required]     
+      
       public bool IsManager { get; set; }
 
       [Required]
@@ -61,10 +60,7 @@ namespace skill.common.Model
 
       [Required]
       [StringLength(50)]
-      public string Education { get; set; }
-      
-      [StringLength(20)]
-      public string Category { get; set; }
+      public string Education { get; set; }    
 
       [StringLength(50)]
       public string Address { get; set; }

@@ -62,10 +62,7 @@ namespace skill.repository.Entity
 
       [Required]
       [StringLength(50)]
-      public string Education { get; set; }
-     
-      [StringLength(20)]
-      public string Category { get; set; }
+      public string Education { get; set; }     
 
       [StringLength(50)]
       public string CreatedBy { get; set; }

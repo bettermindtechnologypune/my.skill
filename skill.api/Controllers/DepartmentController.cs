@@ -50,7 +50,7 @@ namespace skills.Controllers
       }
 
 
-      [Authorize(UserType.Hr_Admin)]
+      [Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
       [HttpGet(nameof(GetList))]
       public IActionResult GetList()
       {

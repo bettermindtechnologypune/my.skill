@@ -43,7 +43,7 @@ namespace skill.AuthProvider
             var tokenKey = Encoding.ASCII.GetBytes(_configuration["Jwt:key"]);
 
             Claim buIdClaim = null;
-            if (user.UserType == UserType.Hr_Admin || user.UserType == UserType.Manager || user.UserType == UserType.Manager)
+            if (user.UserType == UserType.Hr_Admin || user.UserType == UserType.Manager || user.UserType == UserType.Worker)
             {
                buIdClaim = new Claim("BUID", user.BUID.ToString());
             }
