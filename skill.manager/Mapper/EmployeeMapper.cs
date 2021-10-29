@@ -19,8 +19,7 @@ namespace skill.manager.Mapper
          EmployeeEntity entity = new EmployeeEntity()
          {
             Age = resource.Age,
-            BUID = resource.BUID,
-            Category = resource.Category,
+            BUID = resource.BUID,            
             ContactNumber = resource.ContactNumber,
             Email = resource.Email,
             DepartmentId = resource.DepartmentId,
@@ -48,8 +47,7 @@ namespace skill.manager.Mapper
          EmployeeResource resource = new EmployeeResource()
          {
             Age = entity.Age,
-            BUID = entity.BUID,
-            Category = entity.Category,
+            BUID = entity.BUID,           
             ContactNumber = entity.ContactNumber,
             Email = entity.Email,
             DepartmentId = entity.DepartmentId,
