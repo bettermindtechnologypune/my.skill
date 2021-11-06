@@ -47,5 +47,25 @@ namespace skills.Controllers
             return StatusCode(500, ex.Message);
          }
       }
+
+      [Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
+      [HttpGet]
+      [Route("{managerId}")]
+      public IActionResult GetListByManagerId(Guid managerId)
+      {
+         try
+         {
+            var result = _employeeManager.GetListByManagerId(managerId);
+            if (result != null)
+               return Ok(result);
+            return NotFound();
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+
+      }
    }
 }
