@@ -76,6 +76,15 @@ namespace skill.manager.Implementation
          var entity = EmployeeMapper.ToEntity(resource);
          entity.CreatedBy = UserId.ToString();
          entity.CreatedDate = DateTime.UtcNow;
+         if(resource.IsManager == false)
+         {
+            var managerId = _employeeRepository.GetListByDepartmentId(resource.DepartmentId, true).Select(x => x.Id).FirstOrDefault();
+            if (managerId != Guid.Empty)
+            {
+               entity.ManagerId = managerId;
+            }
+         }
+        
          var result = await _employeeRepository.InsertAsync(entity);
          if (result !=null && result.Id !=Guid.Empty)
          {
@@ -105,7 +114,7 @@ namespace skill.manager.Implementation
 
             if (resource.IsManager)
             {
-               var employees = _employeeRepository.GetListByDepartmentId(resource.DepartmentId);
+               var employees = _employeeRepository.GetListByDepartmentId(resource.DepartmentId, false);
                if (employees.Any())
                {
                   foreach (var emp in employees)

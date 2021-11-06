@@ -40,11 +40,11 @@ namespace skill.repository.Implementation
          }
       }
 
-      public List<EmployeeEntity> GetListByDepartmentId(Guid depatmentId)
+      public List<EmployeeEntity> GetListByDepartmentId(Guid depatmentId , bool? isManager)
       {
          try
          {
-            return _entities.Where(x => x.DepartmentId == depatmentId).ToList();
+            return _entities.Where(x => x.DepartmentId == depatmentId && x.IsManager == isManager).ToList();
          }
          catch (Exception ex)
          {

@@ -13,6 +13,6 @@ namespace skill.repository.Interface
 
       EmployeeEntity GetByBUIDAndEmail(Guid buid, string email);
 
-      List<EmployeeEntity> GetListByDepartmentId(Guid depatmentId);
+      List<EmployeeEntity> GetListByDepartmentId(Guid depatmentId, bool? isManager);
    }
 }
