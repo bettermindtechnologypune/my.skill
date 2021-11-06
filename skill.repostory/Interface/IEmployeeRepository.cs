@@ -9,5 +9,8 @@ namespace skill.repository.Interface
 {
    public interface IEmployeeRepository : IBaseRepositoy<EmployeeEntity>
    {
+      List<EmployeeEntity> GetListByManagerId(Guid managerId);
+
+      EmployeeEntity GetListByBUIDAndEmail(Guid buid, string email);
    }
 }

@@ -11,5 +11,7 @@ namespace skill.manager.Interface
    public interface IEmployeeManager
    {
       Task<EmployeeResource> Create(EmployeeResource resource);
+
+      List<EmployeeResource> GetListByManagerId(Guid managerId);
    }
 }

@@ -12,5 +12,13 @@ namespace skill.common.ResponseModel
       public string Token { get; set; }
 
       public UserType UserType { get; set; }
+
+      public Guid EmpId { get; set; }
+
+      public Guid BUID { get; set; }
+
+      public string BUName { get; set; }
+
+      public string EmpName { get; set; }
    }
 }

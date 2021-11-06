@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using skill.common.Enum;
+using skill.repository.Entity;
 
 namespace skill.AuthProvider
 {
@@ -19,12 +20,17 @@ namespace skill.AuthProvider
       private readonly IConfiguration _configuration;
       IUserIdentityRepository _userIdentityRepository;
       private readonly IEmailSettingsRepository _emailSettingsRepository;
+      IBusinessUnitRepository _businessUnitRepository;
+      IEmployeeRepository _employeeRepository;
     
-      public Auth(IConfiguration configuration, IUserIdentityRepository userIdentityRepository, IEmailSettingsRepository emailSettingsRepository)
+      public Auth(IConfiguration configuration, IUserIdentityRepository userIdentityRepository, IEmailSettingsRepository emailSettingsRepository,
+         IBusinessUnitRepository businessUnitRepository, IEmployeeRepository employeeRepository)
       {
          _configuration = configuration;
          _userIdentityRepository = userIdentityRepository;
          _emailSettingsRepository = emailSettingsRepository;
+         _businessUnitRepository = businessUnitRepository;
+         _employeeRepository = employeeRepository;
       }
       public async Task<AuthResponseModel> Authentication(string username, string password)
       {
@@ -41,11 +47,15 @@ namespace skill.AuthProvider
 
             // 2. Create Private Key to Encrypted
             var tokenKey = Encoding.ASCII.GetBytes(_configuration["Jwt:key"]);
-
+             BusinessUnitEntity businessUnitEntity = null;
+            EmployeeEntity employeeEntity = null;
             Claim buIdClaim = null;
             if (user.UserType == UserType.Hr_Admin || user.UserType == UserType.Manager || user.UserType == UserType.Worker)
             {
                buIdClaim = new Claim("BUID", user.BUID.ToString());
+               businessUnitEntity =await  _businessUnitRepository.GetAsync(user.BUID);
+               employeeEntity = _employeeRepository.GetListByBUIDAndEmail(user.BUID, user.Email);
+
             }
             //3. Create JETdescriptor
             var tokenDescriptor = new SecurityTokenDescriptor()
@@ -65,7 +75,11 @@ namespace skill.AuthProvider
             AuthResponseModel authResponseModel = new AuthResponseModel
             {
                Token = tokenHandler.WriteToken(token),
-               UserType = user.UserType
+               UserType = user.UserType,
+               BUID = businessUnitEntity.Id == Guid.Empty ? Guid.Empty : businessUnitEntity.Id,
+               BUName = businessUnitEntity?.Name,
+               EmpId = employeeEntity.Id == Guid.Empty ? Guid.Empty : employeeEntity.Id,
+               EmpName = employeeEntity?.FirstName
             };
             return authResponseModel;
          }

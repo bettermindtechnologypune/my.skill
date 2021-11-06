@@ -91,11 +91,12 @@ namespace skill.manager.Implementation
                OrgId = OrgId,
                Name = entity.FirstName,
                IsOrgAdmin = false,
-               UserType = UserType.Worker,
+               UserType = resource.IsManager == true ? UserType.Manager:UserType.Worker,
                Password = encPassword,
                IsDeleted = false,
                IsLoginLocked = false,
-               BUID = BUID
+               BUID = BUID,
+              
             };
 
             await _userIdentityRepository.CreateUserIdentity(userEntity);
@@ -112,6 +113,31 @@ namespace skill.manager.Implementation
          }
 
          return null;
+      }
+
+      public List<EmployeeResource> GetListByManagerId(Guid managerId)
+      {
+         try
+         {
+            List<EmployeeResource> employeeList = null;
+            var employeeEntities = _employeeRepository.GetListByManagerId(managerId);
+            if(employeeEntities.Any())
+            {
+               employeeList = new List<EmployeeResource>();
+               foreach (var employeeEntity in employeeEntities)
+               {
+                  var employeeResource = EmployeeMapper.ToResource(employeeEntity);
+                  employeeList.Add(employeeResource);
+               }
+            }
+
+            return employeeList;
+
+         }
+         catch
+         {
+            throw;
+         }
       }
    }
 }

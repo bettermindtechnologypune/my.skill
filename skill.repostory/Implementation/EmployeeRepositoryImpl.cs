@@ -16,6 +16,29 @@ namespace skill.repository.Implementation
 
       }
 
+      public List<EmployeeEntity> GetListByManagerId(Guid managerId)
+      {
+         try
+         {
+            return _entities.Where(x => x.ManagerId == managerId).ToList();
+         }
+         catch (Exception ex)
+         {
+            throw new Exception(ex.Message, ex.InnerException);
+         }
+      }
+
+      public EmployeeEntity GetListByBUIDAndEmail(Guid buid, string email)
+      {
+         try
+         {
+            return _entities.Where(x => x.BUID == buid && x.Email == email).FirstOrDefault();
+         }
+         catch (Exception ex)
+         {
+            throw new Exception(ex.Message, ex.InnerException);
+         }
+      }
 
       public override async Task<EmployeeEntity> InsertAsync(EmployeeEntity entity)
       {
