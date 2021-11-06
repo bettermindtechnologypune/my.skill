@@ -13,5 +13,7 @@ namespace skill.manager.Interface
       Task<EmployeeResource> Create(EmployeeResource resource);
 
       List<EmployeeResource> GetListByManagerId(Guid managerId);
+
+      List<EmployeeResource> GetListByDepartmentId(Guid depatmentId);
    }
 }

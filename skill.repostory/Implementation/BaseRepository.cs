@@ -79,6 +79,20 @@ namespace skill.repository.Implementation
          _context.SaveChanges();
       }
 
+      public async Task<List<T>> UpdateListAsync(List<T> entityList)
+      {
+
+         if (!entityList.Any())
+         {
+            throw new ArgumentNullException("entity");
+         }
+
+         
+         await _context.SaveChangesAsync();
+
+         return entityList;
+      }
+
       public async Task<List<T>> BulkInsertAsync(List<T> entityList)
       {
          if (!entityList.Any())

@@ -24,6 +24,8 @@ namespace skill.manager.Implementation
       private readonly IEmailSettingsRepository _emailSettingsRepository;
       private readonly IEmailManager _emailManager;
       IEmployeeValidator _validator;
+      
+
       public EmployeeManagerImpl(IEmployeeRepository employeeRepository, ITenantContext tenantContext,
          IUserIdentityRepository userIdentityRepository, IEmployeeValidator validator,
          IEmailSettingsRepository emailSettingsRepository, IEmailManager emailManager)
@@ -95,11 +97,29 @@ namespace skill.manager.Implementation
                Password = encPassword,
                IsDeleted = false,
                IsLoginLocked = false,
-               BUID = BUID,
-              
+               BUID = BUID,              
             };
+            
 
             await _userIdentityRepository.CreateUserIdentity(userEntity);
+
+            if (resource.IsManager)
+            {
+               var employees = _employeeRepository.GetListByDepartmentId(resource.DepartmentId);
+               if (employees.Any())
+               {
+                  foreach (var emp in employees)
+                  {
+                     if (emp.ManagerId == Guid.Empty && emp.Id != resource.Id)
+                     {
+                        emp.ManagerId = resource.Id;
+                     }
+                  }
+
+                  await _employeeRepository.UpdateListAsync(employees);
+               }
+            }
+
 
             var emailRequest = new EmailRequest();
 
@@ -135,9 +155,15 @@ namespace skill.manager.Implementation
 
          }
          catch
+
          {
             throw;
          }
+      }
+
+      public List<EmployeeResource> GetListByDepartmentId(Guid depatmentId)
+      {
+         throw new NotImplementedException();
       }
    }
 }

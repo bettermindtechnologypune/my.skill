@@ -11,6 +11,8 @@ namespace skill.repository.Interface
    {
       List<EmployeeEntity> GetListByManagerId(Guid managerId);
 
-      EmployeeEntity GetListByBUIDAndEmail(Guid buid, string email);
+      EmployeeEntity GetByBUIDAndEmail(Guid buid, string email);
+
+      List<EmployeeEntity> GetListByDepartmentId(Guid depatmentId);
    }
 }

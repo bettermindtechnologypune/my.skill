@@ -53,8 +53,11 @@ namespace skill.AuthProvider
             if (user.UserType == UserType.Hr_Admin || user.UserType == UserType.Manager || user.UserType == UserType.Worker)
             {
                buIdClaim = new Claim("BUID", user.BUID.ToString());
-               businessUnitEntity =await  _businessUnitRepository.GetAsync(user.BUID);
-               employeeEntity = _employeeRepository.GetListByBUIDAndEmail(user.BUID, user.Email);
+               if(user.UserType == UserType.Manager || user.UserType == UserType.Worker)
+               {
+                  businessUnitEntity = await _businessUnitRepository.GetAsync(user.BUID);
+                  employeeEntity = _employeeRepository.GetByBUIDAndEmail(user.BUID, user.Email);
+               }              
 
             }
             //3. Create JETdescriptor
@@ -75,12 +78,16 @@ namespace skill.AuthProvider
             AuthResponseModel authResponseModel = new AuthResponseModel
             {
                Token = tokenHandler.WriteToken(token),
-               UserType = user.UserType,
-               BUID = businessUnitEntity.Id == Guid.Empty ? Guid.Empty : businessUnitEntity.Id,
-               BUName = businessUnitEntity?.Name,
-               EmpId = employeeEntity.Id == Guid.Empty ? Guid.Empty : employeeEntity.Id,
-               EmpName = employeeEntity?.FirstName
+               UserType = user.UserType               
             };
+
+            if(user.UserType == UserType.Manager || user.UserType == UserType.Worker)
+            {
+               authResponseModel.BUID = businessUnitEntity.Id;
+               authResponseModel.BUName = businessUnitEntity.Name;
+               authResponseModel.EmpId = employeeEntity.Id;
+               authResponseModel.EmpName = employeeEntity.FirstName;
+            }
             return authResponseModel;
          }
          return null;

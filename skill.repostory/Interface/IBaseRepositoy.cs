@@ -16,5 +16,6 @@ namespace skill.repository.Interface
       void DeleteAsync(T entity);
       Task<List<T>> GetPaginatedList(Guid BUID, int pageNumber, int pageSize);
 
+      Task<List<T>> UpdateListAsync(List<T> entityList);
    }
 }

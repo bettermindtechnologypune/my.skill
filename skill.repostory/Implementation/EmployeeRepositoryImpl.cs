@@ -28,11 +28,23 @@ namespace skill.repository.Implementation
          }
       }
 
-      public EmployeeEntity GetListByBUIDAndEmail(Guid buid, string email)
+      public EmployeeEntity GetByBUIDAndEmail(Guid buid, string email)
       {
          try
          {
             return _entities.Where(x => x.BUID == buid && x.Email == email).FirstOrDefault();
+         }
+         catch (Exception ex)
+         {
+            throw new Exception(ex.Message, ex.InnerException);
+         }
+      }
+
+      public List<EmployeeEntity> GetListByDepartmentId(Guid depatmentId)
+      {
+         try
+         {
+            return _entities.Where(x => x.DepartmentId == depatmentId).ToList();
          }
          catch (Exception ex)
          {
