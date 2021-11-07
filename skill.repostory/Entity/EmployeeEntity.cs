@@ -75,5 +75,14 @@ namespace skill.repository.Entity
 
       [DataType(DataType.DateTime)]
       public DateTime? ModifiedDate { get; set; }
+
+      [StringLength(50)]
+      public string Address { get; set; }
+
+      [StringLength(20)]
+      public string City { get; set; }
+
+      [StringLength(20)]
+      public string State { get; set; }
    }
 }
