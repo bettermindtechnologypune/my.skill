@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace skill.common.Model
 {
    public class EmployeeResource 
-   {      
-      [JsonIgnore]
+   {            
       public Guid Id { get; set; }
       
       [JsonIgnore]      
