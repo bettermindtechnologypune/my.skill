@@ -22,9 +22,11 @@ namespace skill.repository.Implementation
       {
          try
          {
-            searchText = searchText.ToLower();
+            //searchText = searchText.ToLower();
             List<EmployeeEntity> employeeEntities;
-            var query = _entities.Where(x => x.ManagerId == managerId && (x.FirstName.ToLower().Contains(searchText) || x.LastName.ToLower().Contains(searchText)));           
+            //var query = _entities.Where(x => x.ManagerId == managerId && (x.FirstName.ToLower().Contains(searchText) || x.LastName.ToLower().Contains(searchText)));
+
+            var query = _entities.Where(x => x.ManagerId == managerId);
 
             if (pageNumber > 0 && pageSize > 0)
             {
