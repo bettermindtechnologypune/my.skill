@@ -15,8 +15,7 @@ namespace skill.common.Model
       
       [JsonIgnore]      
       public Guid BUID { get; set; }
-
-      [JsonIgnore]
+      
       public Guid ManagerId { get; set; }
    
       public Guid DepartmentId { get; set; }
