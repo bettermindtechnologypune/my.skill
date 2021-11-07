@@ -13,5 +13,7 @@ namespace skill.manager.Interface
       List<RatingResource> GetListByEmpId(Guid empId);
 
       List<RatingResource> GetListByTaskId(Guid taskId);
+
+      Task<List<RatingResponseModel>> GetEmployeeRatingModel(Guid empId);
    }
 }

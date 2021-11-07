@@ -32,6 +32,14 @@ namespace skill.manager.Implementation
          }
       }
 
+      Guid BUID
+      {
+         get
+         {
+            return _tenantContext == null ? Guid.Empty : _tenantContext.BUId;
+         }
+      }
+
       public async Task<List<RatingResource>> CreateBulk(List<RatingResource> resources)
       {
          try
@@ -56,6 +64,11 @@ namespace skill.manager.Implementation
          }
 
          return null;
+      }
+
+      public Task<List<RatingResponseModel>> GetEmployeeRatingModel(Guid empId)
+      {
+         return _ratingRepository.GetEmployeeRatingModel(empId, BUID);
       }
 
       public List<RatingResource> GetListByEmpId(Guid empId)

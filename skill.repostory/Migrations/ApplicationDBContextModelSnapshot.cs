@@ -288,6 +288,9 @@ namespace skill.repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("BUID")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");

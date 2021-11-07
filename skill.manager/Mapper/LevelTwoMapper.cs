@@ -36,7 +36,8 @@ namespace skill.manager.Mapper
             LevelOneId = entity.LevelOneId,
             Id = entity.Id,
             IsLastLevel = entity.IsLastLevel,
-            Name = entity.Name
+            Name = entity.Name,
+            BUID = entity.BUID
          };
 
          return resource;

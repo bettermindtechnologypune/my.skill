@@ -26,7 +26,7 @@ namespace skills.Controllers
          _ratingManager = ratingManager;
       }
 
-      [Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
+      //[Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
       [HttpPost(nameof(CreateList))]
       public async Task<IActionResult> CreateList([FromBody] List<RatingResource> resources)
       {
@@ -51,12 +51,12 @@ namespace skills.Controllers
 
       [Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
       [HttpGet]
-      [Route("{empId}")]
+      [Route("list-by-empId/{empId}")]
       public IActionResult GetListByEmpId(Guid empId)
       {
          try
          {
-            var result = _ratingManager.GetListByEmpId(empId);
+            var result = _ratingManager.GetEmployeeRatingModel(empId);
             if (result != null)
                return Ok(result);
             return NotFound();
