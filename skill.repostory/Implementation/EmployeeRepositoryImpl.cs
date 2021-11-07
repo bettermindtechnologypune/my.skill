@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
+using skill.common.Helper;
+using skill.common.Model;
 using skill.repository.Entity;
 using skill.repository.Interface;
 using System;
@@ -16,11 +18,32 @@ namespace skill.repository.Implementation
 
       }
 
-      public List<EmployeeEntity> GetListByManagerId(Guid managerId)
+      public PagedResult<EmployeeEntity> GetListByManagerId(Guid managerId, int pageNumber, int pageSize, string searchText)
       {
          try
          {
-            return _entities.Where(x => x.ManagerId == managerId).ToList();
+            searchText = searchText.ToLower();
+            List<EmployeeEntity> employeeEntities;
+            var query = _entities.Where(x => x.ManagerId == managerId && (x.FirstName.ToLower().Contains(searchText) || x.LastName.ToLower().Contains(searchText)));           
+
+            if (pageNumber > 0 && pageSize > 0)
+            {
+               employeeEntities = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            }
+            else
+            {
+               employeeEntities = query.ToList();
+            }
+
+          
+            PagedResult<EmployeeEntity> result = new PagedResult<EmployeeEntity>();
+            result.Results = employeeEntities;
+            result.RowCount = query.Count();
+            result.PageSize = pageSize;
+            result.CurrentPage = pageNumber;
+            result.PageCount = (int)Math.Ceiling((double)result.RowCount / pageSize);
+
+            return result;
          }
          catch (Exception ex)
          {

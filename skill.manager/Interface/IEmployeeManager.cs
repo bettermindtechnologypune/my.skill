@@ -1,4 +1,5 @@
-﻿using skill.common.Model;
+﻿using skill.common.Helper;
+using skill.common.Model;
 using skill.repository.Entity;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace skill.manager.Interface
    {
       Task<EmployeeResource> Create(EmployeeResource resource);
 
-      List<EmployeeResource> GetListByManagerId(Guid managerId);
+      PagedResult<EmployeeResource> GetListByManagerId(Guid managerId, int pageNumber, int pageSize, string searchText);
 
       List<EmployeeResource> GetListByDepartmentId(Guid depatmentId);
    }

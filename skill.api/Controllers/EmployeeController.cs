@@ -48,17 +48,36 @@ namespace skills.Controllers
          }
       }
 
-      [Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
+      //[Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
       [HttpGet]
       [Route("{managerId}")]
-      public IActionResult GetListByManagerId(Guid managerId)
+      public IActionResult GetListByManagerId(Guid managerId,[FromQuery] EmployeePaginationModel employeePaginationModel)
       {
          try
          {
-            var result = _employeeManager.GetListByManagerId(managerId);
+            var result = _employeeManager.GetListByManagerId(managerId, employeePaginationModel.PageNumber, employeePaginationModel.PageSize, employeePaginationModel.SearchText);
             if (result != null)
                return Ok(result);
-            return NotFound();
+            return null;
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+
+      }
+
+      [HttpGet]
+      [Route("manager-list/{deptId}")]
+      public IActionResult GetManagerListByDeptId(Guid deptId)
+      {
+         try
+         {
+            var result = _employeeManager.GetListByDepartmentId(deptId);
+            if (result != null)
+               return Ok(result);
+            return null;
          }
          catch (Exception ex)
          {

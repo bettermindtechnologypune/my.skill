@@ -1,4 +1,6 @@
-﻿using skill.repository.Entity;
+﻿using skill.common.Helper;
+using skill.common.Model;
+using skill.repository.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace skill.repository.Interface
 {
    public interface IEmployeeRepository : IBaseRepositoy<EmployeeEntity>
    {
-      List<EmployeeEntity> GetListByManagerId(Guid managerId);
+      PagedResult<EmployeeEntity> GetListByManagerId(Guid managerId, int pageNumber, int pageSize, string searchText);
 
       EmployeeEntity GetByBUIDAndEmail(Guid buid, string email);
 

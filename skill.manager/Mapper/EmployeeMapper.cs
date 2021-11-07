@@ -32,7 +32,10 @@ namespace skill.manager.Mapper
             LastName = resource.LastName,
             ManagerId = resource.ManagerId,           
             OrgEmpId = resource.OrgEmpId,
-            Id = resource.Id            
+            Id = resource.Id ,
+            Address = resource.Address,
+            City = resource.City,
+            State = resource.State
          };
 
          return entity;
@@ -60,7 +63,10 @@ namespace skill.manager.Mapper
             LastName = entity.LastName,
             ManagerId = entity.ManagerId,           
             OrgEmpId = entity.OrgEmpId,
-            Id = entity.Id
+            Id = entity.Id,
+            Address = entity.Address,
+            City =entity.City,
+            State = entity.State
          };
 
          return resource;
