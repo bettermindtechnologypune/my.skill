@@ -21,7 +21,8 @@ namespace skill.manager.Mapper
             EmpId = resource.EmpId,
             IsManagerRating = resource.IsManagerRating,
             Rating = resource.Rating,
-            TaskId = resource.TaskId
+            TaskId = resource.TaskId,
+            Name = resource.Name
          };
 
          return entity;
@@ -38,7 +39,8 @@ namespace skill.manager.Mapper
             EmpId = entity.EmpId,
             IsManagerRating = entity.IsManagerRating,
             Rating = entity.Rating,
-            TaskId = entity.TaskId
+            TaskId = entity.TaskId,
+            Name = entity.Name
          };
 
          return resource;

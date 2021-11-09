@@ -51,12 +51,12 @@ namespace skills.Controllers
 
       [Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
       [HttpGet]
-      [Route("list-by-empId/{empId}")]
-      public IActionResult GetListByEmpId(Guid empId)
+      [Route("list-by-empId-ratingName/{empId}/{ratingName}")]
+      public IActionResult GetListByEmpIdAndRatingName(Guid empId, string ratingName)
       {
          try
          {
-            var result = _ratingManager.GetEmployeeRatingModel(empId);
+            var result = _ratingManager.GetEmployeeRatingModel(empId, ratingName);
             if (result != null)
                return Ok(result);
             return NotFound();
@@ -77,6 +77,26 @@ namespace skills.Controllers
          try
          {
             var result = _ratingManager.GetListByTaskId(taskId);
+            if (result != null)
+               return Ok(result);
+            return NotFound();
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+
+      }
+
+      //[Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
+      [HttpGet]
+      [Route("rating-names/{empId}")]
+      public IActionResult GetRatingNamesByEmpId(Guid empId)
+      {
+         try
+         {
+            var result = _ratingManager.GetRatingNameByEmpId(empId);
             if (result != null)
                return Ok(result);
             return NotFound();

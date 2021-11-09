@@ -42,60 +42,88 @@ namespace skill.repository.Implementation
          }
       }
 
-      public async Task<List<RatingResponseModel>> GetEmployeeRatingModel(Guid empId, Guid BUID)
+      public async Task<RatingResponseModel> GetEmployeeRatingModel(Guid empId, string ratingName, Guid BUID)
       {
          try
          {
             List<RatingResponseModel> ratingResponseModels = null;
-            string query = @"select distinct Id as BUID, Name as BUName,  secondLastLevel.rating, secondLastLevel.ManagerRating , secondLastLevel.SecondLastLevelId, secondLastLevel.SecondLastLevelName, secondLastLevel.LastLevelId, secondLastLevel.LastLevelName
+            RatingResponseModel ratingResponseModel = null;
+            string query = @"select distinct Id as BUID, Name as BUName,  secondLastLevel.rating, secondLastLevel.ManagerRating , 
+                               secondLastLevel.SecondLastLevelId, secondLastLevel.SecondLastLevelName, secondLastLevel.LastLevelId, secondLastLevel.LastLevelName
                               ,secondLastLevel.TaskName, secondLastLevel.TaskId from skill_db.business_unit bu inner join
-                              (select distinct lastLevel.TaskName, lastLevel.TaskId ,lastLevel.rating, lastLevel.ManagerRating, l2.Id as SecondLastLevelId ,l2.BUID,  l2.Name SecondLastLevelName, LastLevel.LastLevelId, lastLevel.LastLevelName  from skill_db.levelOne as l2 
+                              (select distinct lastLevel.TaskName, lastLevel.TaskId ,lastLevel.rating, lastLevel.ManagerRating, l2.Id as
+                              SecondLastLevelId ,l2.BUID,  l2.Name SecondLastLevelName, LastLevel.LastLevelId, lastLevel.LastLevelName  from skill_db.levelOne as l2 
                               right outer join
                               (select distinct case when ra.IsManagerRating = false then rating else null end as rating  ,(select r2.rating as ManagerRating from skill_db.Rating r2 where IsManagerRating = true
-                              and r2.TaskId = ra.TaskId
+                              and r2.Name = ra.Name
                               ) as ManagerRating , ta.Name as TaskName, ta.Id as TaskId, coalesce(lev1.Id, lev2.ID) as LastLevelId, coalesce(lev1.BUID, lev2.LevelOneId) as PrevLevelId, coalesce(lev1.Name, lev2.Name) as LastLevelName from skill_db.Rating ra
-                              inner join skill_db.task ta on ra.TaskId = ta.Id and ra.EmpId = @empId
+                              inner join skill_db.task ta on ra.TaskId = ta.Id and ra.Name = @ratingName
+                               and ra.EmpId = '40079595-ffb8-4832-8477-05e93c28631e' 
                               left join skill_db.leveltwo lev2 on lev2.Id = ta.LevelID
                               left join skill_db.levelone lev1 on lev1.Id = ta.LevelID where ra.IsManagerRating = false) as lastLevel
-                               on lastLevel.PrevLevelId = l2.Id ) secondLastLevel
-                               on secondLastLevel.BUID = bu.Id and bu.Id = @BUID ;";
+                               on lastLevel.PrevLevelId = l2.Id || lastLevel.PrevLevelId = l2.BUID ) secondLastLevel
+                               on secondLastLevel.BUID = bu.Id and bu.Id  = @BUID ;";
 
             using (var command = new MySqlCommand(query, Connection))
             {
                command.Parameters.AddWithValue("@empId", empId);
                command.Parameters.AddWithValue("@BUID", BUID);
+               command.Parameters.AddWithValue("@ratingName", ratingName);
                await Connection.OpenAsync();
 
                using (var reader = await command.ExecuteReaderAsync())
                {
-                  ratingResponseModels = new List<RatingResponseModel>();
+                  ratingResponseModels = new List<RatingResponseModel>();                 
                   while (reader.Read())
                   {
-                     RatingResponseModel ratingResponseModel = new RatingResponseModel
+                     if (ratingResponseModel == null)
                      {
-                        BUID = (Guid)reader["BUID"],
-                        BUName = (string)reader["BUName"],
-                        LevelOneId = (Guid)reader["SecondLastLevelId"],
-                        LevelOneName = (string)reader["SecondLastLevelName"],
-                        LevelTwoId = new Guid((string)reader["LastLevelId"]),
-                        LevelTwoName = (string)reader["LastLevelName"],
-                        TaskId = (Guid)reader["TaskId"],
-                        TaskName = (string)reader["TaskName"],
-                        EmpRating = Convert.ToInt32( reader["rating"]),
-                        MangerRating = reader["ManagerRating"] == DBNull.Value ? null: Convert.ToInt32(reader["ManagerRating"])
-                     };
+                        ratingResponseModel = new RatingResponseModel
+                        {
+                           BUID = (Guid)reader["BUID"],
+                           BUName = (string)reader["BUName"],
+                           LevelOneId = (Guid)reader["SecondLastLevelId"],
+                           LevelOneName = (string)reader["SecondLastLevelName"],
+                           LevelTwoId = new Guid((string)reader["LastLevelId"]),
+                           LevelTwoName = (string)reader["LastLevelName"],
+                           RatingReponseList = new List<RatingReponse>
+                           {
+                                    new RatingReponse
+                              {
+                                 TaskId = (Guid)reader["TaskId"],
+                                 TaskName = (string)reader["TaskName"],
+                                 EmpRating = Convert.ToInt32(reader["rating"]),
+                                 MangerRating = reader["ManagerRating"] == DBNull.Value ? null : Convert.ToInt32(reader["ManagerRating"])
+                              }
+                           }
+
+                        };
+                     }
+                     else
+                     {
+                        RatingReponse ratingReponse = new RatingReponse
+                        {
+                           TaskId = (Guid)reader["TaskId"],
+                           TaskName = (string)reader["TaskName"],
+                           EmpRating = Convert.ToInt32(reader["rating"]),
+                           MangerRating = reader["ManagerRating"] == DBNull.Value ? null : Convert.ToInt32(reader["ManagerRating"])
+                        };
+
+                        ratingResponseModel.RatingReponseList.Add(ratingReponse);
+                     }
 
                      ratingResponseModels.Add(ratingResponseModel);
                   }
                }
             }
 
-            return ratingResponseModels;
+           
+            return ratingResponseModel;
          }
          catch (Exception ex)
          {
             throw ex;
-         }
-      }
+         }         
+      }   
    }
 }

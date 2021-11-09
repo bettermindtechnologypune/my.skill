@@ -17,11 +17,13 @@ namespace skill.manager.Implementation
 
       ITenantContext _tenantContext;
       IRatingRepository _ratingRepository;
+      IEmployeeRepository _employeeRepository;
 
-      public RatingManagerImpl(IRatingRepository ratingRepository, ITenantContext tenantContext)
+      public RatingManagerImpl(IRatingRepository ratingRepository, ITenantContext tenantContext, IEmployeeRepository employeeRepository)
       {
          _ratingRepository = ratingRepository;
          _tenantContext = tenantContext;
+         _employeeRepository = employeeRepository;
       }
 
       Guid UserId
@@ -44,13 +46,16 @@ namespace skill.manager.Implementation
       {
          try
          {
+            var employee = await _employeeRepository.GetAsync(resources[0].EmpId);
             List<RatingEntity> entities = new List<RatingEntity>();
+            string  ratingName = $"{employee.FirstName} {employee.LastName} - {DateTime.UtcNow.Ticks}";
             foreach (var resource in resources)
             {
                resource.Id = Guid.NewGuid();
                var entity = RatingMapper.ToEntity(resource);
                entity.CreatedBy = UserId;
                entity.CreatedDate = DateTime.UtcNow;
+               entity.Name = ratingName;
                entities.Add(entity);
             }
 
@@ -66,9 +71,9 @@ namespace skill.manager.Implementation
          return null;
       }
 
-      public Task<List<RatingResponseModel>> GetEmployeeRatingModel(Guid empId)
+      public Task<RatingResponseModel> GetEmployeeRatingModel(Guid empId, string ratingName)
       {
-         return _ratingRepository.GetEmployeeRatingModel(empId, BUID);
+         return _ratingRepository.GetEmployeeRatingModel(empId, ratingName, BUID);
       }
 
       public List<RatingResource> GetListByEmpId(Guid empId)
@@ -92,6 +97,28 @@ namespace skill.manager.Implementation
          {
             throw;
          }
+      }
+
+      public List<RatingNameModel> GetRatingNameByEmpId(Guid empId)
+      {
+         List<RatingNameModel> ratingNameModels = null;
+         var ratingNameList = _ratingRepository.GetListByEmpId(empId).Select(x=>x.Name).Distinct();
+         if(ratingNameList.Any())
+         {
+            ratingNameModels = new List<RatingNameModel>();
+            foreach (var ratingName in ratingNameList)
+            {
+               RatingNameModel ratingNameModel = new RatingNameModel
+               {                  
+                  Name = ratingName
+               };
+
+               ratingNameModels.Add(ratingNameModel);
+            }
+         }
+
+         return ratingNameModels;
+
       }
 
       public List<RatingResource> GetListByTaskId(Guid taskId)

@@ -15,6 +15,6 @@ namespace skill.repository.Interface
       List<RatingEntity> GetListByTaskId(Guid taskId);
 
 
-      Task<List<RatingResponseModel>> GetEmployeeRatingModel(Guid empId, Guid BUID);
+      Task<RatingResponseModel> GetEmployeeRatingModel(Guid empId, string ratingName, Guid BUID);
    }
 }

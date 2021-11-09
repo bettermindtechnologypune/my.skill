@@ -288,9 +288,6 @@ namespace skill.repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("BUID")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
@@ -420,6 +417,10 @@ namespace skill.repository.Migrations
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");

@@ -20,12 +20,7 @@ namespace skill.common.Model
 
       public string LevelTwoName { get; set; }
 
-      public Guid TaskId { get; set; }
-
-      public string TaskName { get; set; }
-
-      public int EmpRating { get; set; }
-
-      public Nullable<int> MangerRating { get; set; }
+      public List<RatingReponse> RatingReponseList { get; set; }
+     
    }
 }
