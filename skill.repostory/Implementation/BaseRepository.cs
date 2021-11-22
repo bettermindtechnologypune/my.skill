@@ -53,8 +53,6 @@ namespace skill.repository.Implementation
 
       public async Task<T> GetAsync(Guid id)
       {
-       
-
          return await _entities.SingleOrDefaultAsync(s => s.Id == id);
       }
 
@@ -77,6 +75,8 @@ namespace skill.repository.Implementation
             throw new ArgumentNullException("entity");
          }
          _context.SaveChanges();
+
+         
       }
 
       public async Task<List<T>> UpdateListAsync(List<T> entityList)

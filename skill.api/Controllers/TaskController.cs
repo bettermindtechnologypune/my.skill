@@ -69,5 +69,26 @@ namespace skills.Controllers
          }
 
       }
+
+
+      //[Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
+      [HttpPatch]      
+      [Route("{taskId}")]
+      public async Task<IActionResult> Update(Guid taskId, [FromBody] TaskResource taskResource)
+      {
+         try
+         {
+            var result =await _taskManager.Update(taskId,taskResource);
+            if (result == true)
+               return Ok(result);
+            return NotFound();
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+
+      }
    }
 }

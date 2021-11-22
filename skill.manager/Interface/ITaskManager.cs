@@ -12,5 +12,7 @@ namespace skill.manager.Interface
       Task<List<TaskResource>> CreateBulk(List<TaskResource> resources);
 
       List<TaskResource> GetTaskListByLevelId(Guid levelId);
+
+      Task<bool> Update(Guid taskId, TaskResource taskResource);
    }
 }

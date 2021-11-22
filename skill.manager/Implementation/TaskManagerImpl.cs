@@ -79,5 +79,34 @@ namespace skill.manager.Implementation
                   throw;
                }
       }
+
+      public async Task<bool> Update(Guid taskId, TaskResource taskResource)
+      {
+         var existingEnity =await _taskRepository.GetAsync(taskId);
+
+         if(existingEnity !=null && existingEnity.Id == taskId)
+         {
+            if(taskResource.Name !=null)
+            {
+               existingEnity.Name = taskResource.Name;
+            }
+            if (taskResource.Wattage != 0)
+            {
+               existingEnity.Wattage = taskResource.Wattage;
+            }
+
+            existingEnity.ModifiedBy = UserId;
+            existingEnity.ModifiedDate = DateTime.UtcNow;
+            
+            _taskRepository.UpdateAsync(existingEnity);
+
+            return true;
+         }
+
+        else
+         {
+            throw new Exception($"Task with name: {taskResource.Name} does not exists");
+         }
+      }
    }
 }
