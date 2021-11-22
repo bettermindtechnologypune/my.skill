@@ -58,7 +58,7 @@ namespace skill.repository.Implementation
                               and r2.Name = ra.Name
                               ) as ManagerRating , ta.Name as TaskName, ta.Id as TaskId, coalesce(lev1.Id, lev2.ID) as LastLevelId, coalesce(lev1.BUID, lev2.LevelOneId) as PrevLevelId, coalesce(lev1.Name, lev2.Name) as LastLevelName from skill_db.Rating ra
                               inner join skill_db.task ta on ra.TaskId = ta.Id and ra.Name = @ratingName
-                               and ra.EmpId = '40079595-ffb8-4832-8477-05e93c28631e' 
+                               and ra.EmpId = @empId 
                               left join skill_db.leveltwo lev2 on lev2.Id = ta.LevelID
                               left join skill_db.levelone lev1 on lev1.Id = ta.LevelID where ra.IsManagerRating = false) as lastLevel
                                on lastLevel.PrevLevelId = l2.Id || lastLevel.PrevLevelId = l2.BUID ) secondLastLevel
