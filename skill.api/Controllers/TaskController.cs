@@ -90,5 +90,24 @@ namespace skills.Controllers
          }
 
       }
+
+      [HttpPatch(nameof(Update))]
+      
+      public async Task<IActionResult> Update([FromBody] List<TaskResource> taskResources)
+      {
+         try
+         {
+            var result = await _taskManager.UpdateListAsync(taskResources);
+            if (result != null)
+               return Ok(result);
+            return NotFound();
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+
+      }
    }
 }

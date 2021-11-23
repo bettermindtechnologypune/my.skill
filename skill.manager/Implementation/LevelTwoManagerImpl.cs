@@ -14,14 +14,14 @@ namespace skill.manager.Implementation
 {
    public class LevelTwoManagerImpl : IlevelTwoManager
    {
-         ITenantContext _tenantContext;
-         ILevelTwoRepository _levelTwoRepository;
+      ITenantContext _tenantContext;
+      ILevelTwoRepository _levelTwoRepository;
 
-         public LevelTwoManagerImpl(ILevelTwoRepository levelTwoRepository, ITenantContext tenantContext)
-         {
-            _levelTwoRepository = levelTwoRepository;
-            _tenantContext = tenantContext;
-         }
+      public LevelTwoManagerImpl(ILevelTwoRepository levelTwoRepository, ITenantContext tenantContext)
+      {
+         _levelTwoRepository = levelTwoRepository;
+         _tenantContext = tenantContext;
+      }
 
       Guid UserId
       {
@@ -38,7 +38,7 @@ namespace skill.manager.Implementation
             List<LevelTwoEntity> entities = new List<LevelTwoEntity>();
             foreach (var resource in resources)
             {
-               resource.Id = Guid.NewGuid();               
+               resource.Id = Guid.NewGuid();
                var entity = LevelTwoMapper.ToEntity(resource);
                entity.CreatedBy = UserId.ToString();
                entity.CreatedDate = DateTime.UtcNow;
@@ -78,6 +78,28 @@ namespace skill.manager.Implementation
          {
             throw;
          }
+      }
+
+      public async Task<bool> UpdateAsync(Guid levelTwoId, LevelTwoResource levelTwoResource)
+      {
+         var existingEntity = await _levelTwoRepository.GetAsync(levelTwoId);
+
+         if (existingEntity != null && existingEntity.Id == levelTwoId)
+         {
+            if (levelTwoResource.Name != null)
+            {
+               existingEntity.Name = levelTwoResource.Name;
+            }
+
+            existingEntity.ModifiedBy = UserId.ToString();
+            existingEntity.ModifiedDate = DateTime.UtcNow;
+
+            _levelTwoRepository.UpdateAsync(existingEntity);
+
+            return true;
+         }
+
+         return false;
       }
    }
 }

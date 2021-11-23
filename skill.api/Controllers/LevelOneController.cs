@@ -68,5 +68,25 @@ namespace skills.Controllers
             return StatusCode(500, ex.Message);
          }
       }
+
+
+      [HttpPatch]
+      [Route("{levelOneId}")]
+      public async Task<IActionResult> Update(Guid levelOneId, [FromBody] LevelOneResource levelOneResource)
+      {
+         try
+         {
+            var result = await _levelOneManager.UpdateAsync(levelOneId, levelOneResource);
+            if (result == true)
+               return Ok(result);
+            return NotFound();
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+
+      }
    }
 }

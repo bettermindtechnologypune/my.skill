@@ -81,12 +81,17 @@ namespace skill.AuthProvider
                UserType = user.UserType               
             };
 
-            if(user.UserType == UserType.Manager || user.UserType == UserType.Worker)
+            if(user.UserType == UserType.Manager || user.UserType == UserType.Worker || user.UserType == UserType.Hr_Admin)
             {
+
                authResponseModel.BUID = businessUnitEntity.Id;
                authResponseModel.BUName = businessUnitEntity.Name;
-               authResponseModel.EmpId = employeeEntity.Id;
-               authResponseModel.EmpName = employeeEntity.FirstName;
+               if(user.UserType != UserType.Hr_Admin)
+               {
+                  authResponseModel.EmpId = employeeEntity.Id;
+                  authResponseModel.EmpName = employeeEntity.FirstName;
+               }
+               
             }
             return authResponseModel;
          }

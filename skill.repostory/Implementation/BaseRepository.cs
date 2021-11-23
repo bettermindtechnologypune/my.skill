@@ -74,9 +74,7 @@ namespace skill.repository.Implementation
          {
             throw new ArgumentNullException("entity");
          }
-         _context.SaveChanges();
-
-         
+         _context.SaveChanges();         
       }
 
       public async Task<List<T>> UpdateListAsync(List<T> entityList)

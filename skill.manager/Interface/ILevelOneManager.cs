@@ -12,5 +12,7 @@ namespace skill.manager.Interface
       Task<List<LevelOneResource>> Create(List<LevelOneResource> resources);
 
       List<LevelOneResource> GetLevelOneListByBUID(Guid buid);
+
+      Task<bool> UpdateAsync(Guid leveloneId, LevelOneResource levelOneResource);
    }
 }

@@ -96,5 +96,27 @@ namespace skill.manager.Implementation
             throw;
          }
       }
+
+      public async Task<bool> UpdateAsync(Guid leveloneId, LevelOneResource levelOneResource)
+      {
+         var existingEntity =await _levelOneRepository.GetAsync(leveloneId);
+
+         if(existingEntity !=null && existingEntity.Id == leveloneId)
+         {
+            if(levelOneResource.Name != null)
+            {
+               existingEntity.Name = levelOneResource.Name;
+            }
+
+            existingEntity.ModifiedBy = UserId.ToString();
+            existingEntity.ModifiedDate = DateTime.UtcNow;
+
+           _levelOneRepository.UpdateAsync(existingEntity);
+
+            return true;
+         }
+
+         return false;
+      }
    }
 }

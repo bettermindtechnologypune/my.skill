@@ -14,5 +14,7 @@ namespace skill.manager.Interface
       List<TaskResource> GetTaskListByLevelId(Guid levelId);
 
       Task<bool> Update(Guid taskId, TaskResource taskResource);
+
+      Task<List<TaskResource>> UpdateListAsync(List<TaskResource> taskResources);
    }
 }

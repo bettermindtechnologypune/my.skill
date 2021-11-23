@@ -132,6 +132,7 @@ namespace skill
          services.AddScoped<IOrganizationValidator, OrganizationValidationImpl>();
          services.AddScoped<IBusinessUnitValidator, BusinessUnitValidationImpl>();
          services.AddScoped<IEmployeeValidator, EmployeeValidator>();
+         services.AddScoped<ITaskValidator, TaskValidator>();
 
          services.AddCors();
 

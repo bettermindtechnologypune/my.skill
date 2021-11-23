@@ -1,11 +1,14 @@
-﻿using skill.common.Model;
+﻿using skill.common.CustomException;
+using skill.common.Model;
 using skill.common.TenantContext;
 using skill.manager.Interface;
 using skill.manager.Mapper;
+using skill.manager.Validator.Interface;
 using skill.repository.Entity;
 using skill.repository.Interface;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,11 +19,13 @@ namespace skill.manager.Implementation
    {
       ITenantContext _tenantContext;
       ITaskRepository _taskRepository;
+      ITaskValidator _taskValidator;
 
-      public TaskManagerImpl(ITaskRepository taskRepository, ITenantContext tenantContext)
+      public TaskManagerImpl(ITaskRepository taskRepository, ITenantContext tenantContext, ITaskValidator taskValidator)
       {
          _taskRepository = taskRepository;
          _tenantContext = tenantContext;
+         _taskValidator = taskValidator;
       }
 
       Guid UserId
@@ -107,6 +112,35 @@ namespace skill.manager.Implementation
          {
             throw new Exception($"Task with name: {taskResource.Name} does not exists");
          }
+      }
+
+
+      public async Task<List<TaskResource>> UpdateListAsync(List<TaskResource> taskResources)
+      {
+         List<TaskEntity> taskEntities = new List<TaskEntity>();
+         var errors = _taskValidator.ValidateTaskList(taskResources);
+         if(errors.Any())
+         {
+            throw new ValidationException(string.Join(",", errors));
+         }
+         foreach (var task in taskResources)
+         {
+            if(task.Id != Guid.Empty)
+            {
+               taskEntities.Add(TaskMapper.ToEntity(task));
+            }
+            else
+            {
+               throw new Exception($"Task with name: {task.Name} has emptly Id");
+            }
+         }
+
+         var result =await _taskRepository.UpdateListAsync(taskEntities);
+         if(result.Any())
+         {
+            return taskResources;
+         }
+         return null;
       }
    }
 }
