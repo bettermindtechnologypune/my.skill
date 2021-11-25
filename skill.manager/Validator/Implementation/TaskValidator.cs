@@ -35,8 +35,9 @@ namespace skill.manager.Validator.Implementation
             value += resource.Wattage;
          }
 
-         if(value < 100)
+         if(value != 100)
          {
+            error = new Error();
             error.Message = $"The total task watage must be 100, currently it is {value}";
          }
 

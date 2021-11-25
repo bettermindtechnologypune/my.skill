@@ -125,13 +125,19 @@ namespace skill.manager.Implementation
          }
          foreach (var task in taskResources)
          {
-            if(task.Id != Guid.Empty)
+            var taskEnitiy = TaskMapper.ToEntity(task);
+            if (task.Id != Guid.Empty)
             {
-               taskEntities.Add(TaskMapper.ToEntity(task));
+               
+               taskEnitiy.ModifiedBy = UserId;
+               taskEnitiy.ModifiedDate = DateTime.UtcNow;
+               taskEntities.Add(taskEnitiy);
             }
             else
-            {
-               throw new Exception($"Task with name: {task.Name} has emptly Id");
+            {              
+               taskEnitiy.CreatedBy = UserId;
+               taskEnitiy.CreatedDate = DateTime.UtcNow;
+               await _taskRepository.InsertAsync(taskEnitiy);
             }
          }
 
