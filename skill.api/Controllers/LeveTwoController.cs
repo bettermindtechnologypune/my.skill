@@ -50,7 +50,26 @@ namespace skills.Controllers
       }
 
 
-      [Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
+      //[Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
+      [HttpGet]
+      [Route("get-list-by-buid/{buid}")]
+      public IActionResult GetListByBUID(Guid buid)
+      {
+         try
+         {
+            var result = _levelTwoManager.GetLevelOneListByBUID(buid);
+            if (result != null)
+               return Ok(result);
+            return NotFound();
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+
+      }
+
       [HttpGet]
       [Route("{levelOneId}")]
       public IActionResult GetList(Guid levelOneId)

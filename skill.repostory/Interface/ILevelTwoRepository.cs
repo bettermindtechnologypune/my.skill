@@ -10,5 +10,7 @@ namespace skill.repository.Interface
    public interface ILevelTwoRepository : IBaseRepositoy<LevelTwoEntity>
    {
       List<LevelTwoEntity> GetLevelOneListByLevelOneId(Guid levelOneId);
+
+      List<LevelTwoEntity> GetLevelOneListByBUID(Guid BUID);
    }
 }

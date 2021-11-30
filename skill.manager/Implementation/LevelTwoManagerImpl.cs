@@ -57,6 +57,22 @@ namespace skill.manager.Implementation
          return null;
       }
 
+      public List<LevelTwoResource> GetLevelOneListByBUID(Guid BUID)
+      {
+         List<LevelTwoResource> resourceList = null;
+         var entityList = _levelTwoRepository.GetLevelOneListByBUID(BUID);
+
+         if(entityList.Any())
+         {
+            resourceList = new List<LevelTwoResource>();
+            foreach (var entity in entityList)
+            {
+               resourceList.Add(LevelTwoMapper.ToResource(entity));
+            }
+         }
+         return resourceList;
+      }
+
       public List<LevelTwoResource> GetLevelTwoListByLevelOneId(Guid levelOneId)
       {
          try
