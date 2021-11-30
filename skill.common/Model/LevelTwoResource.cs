@@ -12,7 +12,6 @@ namespace skill.common.Model
 
       public Guid Id { get; set; }
 
-      [Required]
       public Guid LevelOneId { get; set; }
 
       [Required]     
