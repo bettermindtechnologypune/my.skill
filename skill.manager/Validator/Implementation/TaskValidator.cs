@@ -22,7 +22,8 @@ namespace skill.manager.Validator.Implementation
          _Errors = new List<Error>();
 
          _Errors.Add(ValidateWatage(resourceList));
-         
+
+         _Errors.RemoveAll(item => item == null);
          return _Errors;
       }
 
@@ -32,10 +33,13 @@ namespace skill.manager.Validator.Implementation
          Error error = null;
          foreach(var resource in resourceList)
          {
-            value += resource.Wattage;
+            if (resource.Wattage != 0)
+            {
+               value += resource.Wattage;
+            }
          }
 
-         if(value != 100)
+         if(value !=0 && value != 100)
          {
             error = new Error();
             error.Message = $"The total task watage must be 100, currently it is {value}";
