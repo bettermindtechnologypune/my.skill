@@ -117,5 +117,39 @@ namespace skill.manager.Implementation
 
          return false;
       }
+
+
+      public async Task<List<LevelTwoResource>> UpdateListAsync(List<LevelTwoResource> levelTwoResources)
+      {
+         List<LevelTwoEntity> entities = new List<LevelTwoEntity>();
+
+
+         foreach (var resource in levelTwoResources)
+         {
+            if (resource.Id != Guid.Empty)
+            {
+               var existingEnity = await _levelTwoRepository.GetAsync(resource.Id);
+               existingEnity.ModifiedBy = UserId.ToString();
+               existingEnity.ModifiedDate = DateTime.UtcNow;
+               existingEnity.Name = resource.Name;
+               existingEnity.IsLastLevel = resource.IsLastLevel;
+               entities.Add(existingEnity);
+            }
+            else
+            {
+               var taskEnitiy = LevelTwoMapper.ToEntity(resource);
+               taskEnitiy.CreatedBy = UserId.ToString();
+               taskEnitiy.CreatedDate = DateTime.UtcNow;
+               await _levelTwoRepository.InsertAsync(taskEnitiy);
+            }
+         }
+
+         var result = await _levelTwoRepository.UpdateListAsync(entities);
+         if (result.Any())
+         {
+            return levelTwoResources;
+         }
+         return null;
+      }
    }
 }
