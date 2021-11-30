@@ -39,7 +39,7 @@ namespace skill.repository.Implementation
                                 where l1.BUID == BUID
                                 select new LevelTwoEntity
                                 {
-                                   Id = l1.Id,
+                                   Id = l2.Id,
                                    LevelOneId = l2.LevelOneId,
                                    Name = l2.Name,
                                    CreatedBy = l2.CreatedBy,
