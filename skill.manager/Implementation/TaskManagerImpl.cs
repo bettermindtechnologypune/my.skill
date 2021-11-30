@@ -118,31 +118,34 @@ namespace skill.manager.Implementation
       public async Task<List<TaskResource>> UpdateListAsync(List<TaskResource> taskResources)
       {
          List<TaskEntity> taskEntities = new List<TaskEntity>();
+
          var errors = _taskValidator.ValidateTaskList(taskResources);
-         if(errors.Any())
+         if (errors.Any())
          {
             throw new ValidationException(string.Join(",", errors));
          }
          foreach (var task in taskResources)
-         {
-            var taskEnitiy = TaskMapper.ToEntity(task);
+         {            
             if (task.Id != Guid.Empty)
             {
-               
-               taskEnitiy.ModifiedBy = UserId;
-               taskEnitiy.ModifiedDate = DateTime.UtcNow;
-               taskEntities.Add(taskEnitiy);
+               var existingEnity = await _taskRepository.GetAsync(task.Id);
+               existingEnity.ModifiedBy = UserId;
+               existingEnity.ModifiedDate = DateTime.UtcNow;
+               existingEnity.Name = task.Name;
+               existingEnity.Wattage = task.Wattage;
+               taskEntities.Add(existingEnity);              
             }
             else
-            {              
+            {
+               var taskEnitiy = TaskMapper.ToEntity(task);
                taskEnitiy.CreatedBy = UserId;
                taskEnitiy.CreatedDate = DateTime.UtcNow;
                await _taskRepository.InsertAsync(taskEnitiy);
             }
          }
 
-         var result =await _taskRepository.UpdateListAsync(taskEntities);
-         if(result.Any())
+         var result = await _taskRepository.UpdateListAsync(taskEntities);
+         if (result.Any())
          {
             return taskResources;
          }
