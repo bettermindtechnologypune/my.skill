@@ -17,5 +17,7 @@ namespace skill.manager.Interface
       Task<RatingResponseModel> GetEmployeeRatingModel(Guid empId, string ratingName);
 
       List<RatingNameModel> GetRatingNameByEmpId(Guid empId);
+
+      Task<List<RatingResource>> UpdateListAsync(List<RatingResource> resourceList);
    }
 }

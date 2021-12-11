@@ -72,7 +72,7 @@ namespace skills.Controllers
       [Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
       [HttpGet]
       [Route("{taskId}")]
-      public IActionResult GetListByTadkId(Guid taskId)
+      public IActionResult GetListByTaskId(Guid taskId)
       {
          try
          {
@@ -97,6 +97,24 @@ namespace skills.Controllers
          try
          {
             var result = _ratingManager.GetRatingNameByEmpId(empId);
+            if (result != null)
+               return Ok(result);
+            return NotFound();
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+
+      }
+
+      [HttpPatch(nameof(Update))]
+      public async Task<IActionResult> Update([FromBody] List<RatingResource> resourceList)
+      {
+         try
+         {
+            var result = await _ratingManager.UpdateListAsync(resourceList);
             if (result != null)
                return Ok(result);
             return NotFound();

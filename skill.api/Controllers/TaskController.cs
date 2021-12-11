@@ -91,8 +91,7 @@ namespace skills.Controllers
 
       }
 
-      [HttpPatch(nameof(Update))]
-      
+      [HttpPatch(nameof(Update))]      
       public async Task<IActionResult> Update([FromBody] List<TaskResource> taskResources)
       {
          try

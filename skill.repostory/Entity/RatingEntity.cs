@@ -25,7 +25,7 @@ namespace skill.repository.Entity
 
       public int Rating { get; set; }
 
-      public bool IsManagerRating { get; set; }
+      public int ManagerRating { get; set; }
 
       [DataType(DataType.DateTime)]
       public DateTime CreatedDate { get; set; }

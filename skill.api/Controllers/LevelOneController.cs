@@ -88,5 +88,23 @@ namespace skills.Controllers
          }
 
       }
+
+      [HttpPatch(nameof(Update))]
+      public async Task<IActionResult> Update([FromBody] List<LevelOneResource> resourceList)
+      {
+         try
+         {
+            var result = await _levelOneManager.UpdateListAsync(resourceList);
+            if (result != null)
+               return Ok(result);
+            return NotFound();
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+
+      }
    }
 }

@@ -143,5 +143,31 @@ namespace skill.manager.Implementation
             throw;
          }
       }
+
+      public async Task<List<RatingResource>> UpdateListAsync(List<RatingResource> resourceList)
+      {
+         List<RatingEntity> entities = new List<RatingEntity>();
+
+
+         foreach (var resource in resourceList)
+         {
+            if (resource.Id != Guid.Empty)
+            {
+               var existingEnity = await _ratingRepository.GetAsync(resource.Id);
+               existingEnity.ModifiedBy = UserId;
+               existingEnity.ModifiedDate = DateTime.UtcNow;
+               existingEnity.Name = resource.Name;
+               existingEnity.ManagerRating = resource.ManagerRating;
+               existingEnity.Rating = resource.Rating;            
+               entities.Add(existingEnity);
+            }
+            else
+            {
+               throw new Exception("Rating does not Exists");
+            }
+         }
+         
+         return resourceList;
+      }
    }
 }

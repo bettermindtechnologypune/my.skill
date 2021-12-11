@@ -111,7 +111,6 @@ namespace skills.Controllers
 
 
       [HttpPatch(nameof(Update))]
-
       public async Task<IActionResult> Update([FromBody] List<LevelTwoResource> levelTwoResources)
       {
          try

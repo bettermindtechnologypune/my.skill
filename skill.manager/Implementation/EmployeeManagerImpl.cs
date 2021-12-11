@@ -135,7 +135,9 @@ namespace skill.manager.Implementation
 
             emailRequest.ToEmail = entity.Email;
             emailRequest.Subject = "Default Password for Skill Application";
-            emailRequest.Body = $"Hi {entity.FirstName},/n Your username is {entity.Email} and Password for skill application login is {plainText} . Please do not share the password with any one, Thank you!!";
+            var template = $"<div>Hi {entity.FirstName},<br> <div>Your username is {entity.Email} and Password for skill application login is {plainText} . <br>>Please do not share the password with any one, <br>Thank you!!< div></div>";
+            emailRequest.Body = template;
+
 
             await _emailManager.SendEmailAsync(emailRequest);
 

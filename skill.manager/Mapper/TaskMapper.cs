@@ -20,7 +20,7 @@ namespace skill.manager.Mapper
             Id = resource.Id,
             LevelId = resource.LevelId,
             Name = resource.Name,
-            Wattage = resource.Wattage
+            Wattage =  resource.Wattage
          };
 
          return entity;

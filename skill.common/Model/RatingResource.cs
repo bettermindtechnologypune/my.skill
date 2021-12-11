@@ -22,6 +22,7 @@ namespace skill.common.Model
 
       public int Rating { get; set; }
 
-      public bool IsManagerRating { get; set; }
+      public int ManagerRating { get; set; }
+
    }
 }

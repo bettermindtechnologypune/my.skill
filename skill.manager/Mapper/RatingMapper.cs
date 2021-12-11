@@ -19,7 +19,7 @@ namespace skill.manager.Mapper
          {
             Id = resource.Id,
             EmpId = resource.EmpId,
-            IsManagerRating = resource.IsManagerRating,
+            ManagerRating = resource.ManagerRating,
             Rating = resource.Rating,
             TaskId = resource.TaskId,
             Name = resource.Name
@@ -37,7 +37,7 @@ namespace skill.manager.Mapper
          {
             Id = entity.Id,
             EmpId = entity.EmpId,
-            IsManagerRating = entity.IsManagerRating,
+            ManagerRating = entity.ManagerRating,
             Rating = entity.Rating,
             TaskId = entity.TaskId,
             Name = entity.Name
