@@ -1,4 +1,5 @@
-﻿using skill.repository.Entity;
+﻿using skill.common.Model;
+using skill.repository.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace skill.repository.Interface
       List<LevelTwoEntity> GetLevelOneListByLevelOneId(Guid levelOneId);
 
       List<LevelTwoEntity> GetLevelOneListByBUID(Guid BUID);
+
+      Task<List<LevelTwoSkillModel>> GetSkillIndexForLevelTwoByLevelOneId(Guid levelOneId);
    }
 }

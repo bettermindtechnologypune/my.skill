@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using skill.common.Model;
 using skill.repository.Entity;
 using skill.repository.Interface;

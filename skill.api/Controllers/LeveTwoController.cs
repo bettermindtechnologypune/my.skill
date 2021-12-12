@@ -90,6 +90,26 @@ namespace skills.Controllers
       }
 
 
+      [HttpGet]
+      [Route("skill-index/{levelOneId}")]
+      public async Task<IActionResult> GetSkillIndexByLevelOneId(Guid levelOneId)
+      {
+         try
+         {
+            var result = await _levelTwoManager.GetSkillIndexForLevelTwoByLevelOneId(levelOneId);
+            if (result != null)
+               return Ok(result);
+            return NotFound();
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+
+      }
+
+
       [HttpPatch]
       [Route("{levelTwoId}")]
       public async Task<IActionResult> Update(Guid levelTwoId, [FromBody] LevelTwoResource levelTwoResource)

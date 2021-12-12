@@ -94,7 +94,7 @@ namespace skill.manager.Implementation
          {
             throw;
          }
-      }
+      }    
 
       public async Task<bool> UpdateAsync(Guid levelTwoId, LevelTwoResource levelTwoResource)
       {
@@ -150,6 +150,11 @@ namespace skill.manager.Implementation
             return levelTwoResources;
          }
          return null;
+      }
+
+      public async Task<List<LevelTwoSkillModel>> GetSkillIndexForLevelTwoByLevelOneId(Guid levelOneId)
+      {
+         return await _levelTwoRepository.GetSkillIndexForLevelTwoByLevelOneId(levelOneId);
       }
    }
 }
