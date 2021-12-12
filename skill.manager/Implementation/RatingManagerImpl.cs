@@ -71,9 +71,9 @@ namespace skill.manager.Implementation
          return null;
       }
 
-      public Task<RatingResponseModel> GetEmployeeRatingModel(Guid empId, string ratingName)
+      public async Task<RatingResponseModel> GetEmployeeRatingModel(Guid empId, string ratingName)
       {
-         return _ratingRepository.GetEmployeeRatingModel(empId, ratingName, BUID);
+         return await _ratingRepository.GetEmployeeRatingModel(empId, ratingName, BUID);
       }
 
       public List<RatingResource> GetListByEmpId(Guid empId)

@@ -52,11 +52,11 @@ namespace skills.Controllers
       [Authorize(UserType.Hr_Admin, UserType.Manager, UserType.Worker)]
       [HttpGet]
       [Route("list-by-empId-ratingName/{empId}/{ratingName}")]
-      public IActionResult GetListByEmpIdAndRatingName(Guid empId, string ratingName)
+      public async Task<IActionResult> GetListByEmpIdAndRatingName(Guid empId, string ratingName)
       {
          try
          {
-            var result = _ratingManager.GetEmployeeRatingModel(empId, ratingName);
+            var result = await _ratingManager.GetEmployeeRatingModel(empId, ratingName);
             if (result != null)
                return Ok(result);
             return NotFound();
