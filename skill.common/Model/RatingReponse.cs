@@ -8,6 +8,7 @@ namespace skill.common.Model
 {
    public class RatingReponse
    {
+      public Guid RatingId { get; set; }
       public Guid TaskId { get; set; }
 
       public string TaskName { get; set; }

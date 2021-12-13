@@ -48,13 +48,13 @@ namespace skill.repository.Implementation
          {
             List<RatingResponseModel> ratingResponseModels = null;
             RatingResponseModel ratingResponseModel = null;
-            string query = @"select distinct Id as BUID, Name as BUName,  secondLastLevel.rating, secondLastLevel.ManagerRating , 
+            string query = @"select distinct Id as BUID, Name as BUName,secondLastLevel.RatingId  ,secondLastLevel.rating, secondLastLevel.ManagerRating , 
                                secondLastLevel.SecondLastLevelId, secondLastLevel.SecondLastLevelName, secondLastLevel.LastLevelId, secondLastLevel.LastLevelName
                               ,secondLastLevel.TaskName, secondLastLevel.TaskId from skill_db.business_unit bu inner join
-                              (select distinct lastLevel.TaskName, lastLevel.TaskId ,lastLevel.rating, lastLevel.ManagerRating, l2.Id as
+                              (select distinct lastLevel.TaskName, lastLevel.TaskId ,lastLevel.RatingId,lastLevel.rating, lastLevel.ManagerRating, l2.Id as
                               SecondLastLevelId ,l2.BUID,  l2.Name SecondLastLevelName, LastLevel.LastLevelId, lastLevel.LastLevelName  from skill_db.levelOne as l2 
                               right outer join
-                              (select distinct ra.rating, ra.ManagerRating , ta.Name as TaskName, ta.Id as TaskId, coalesce(lev1.Id, lev2.ID) as LastLevelId, coalesce(lev1.BUID, lev2.LevelOneId) as PrevLevelId, coalesce(lev1.Name, lev2.Name) as LastLevelName from skill_db.Rating ra
+                              (select distinct ra.Id as RatingId, ra.rating, ra.ManagerRating , ta.Name as TaskName, ta.Id as TaskId, coalesce(lev1.Id, lev2.ID) as LastLevelId, coalesce(lev1.BUID, lev2.LevelOneId) as PrevLevelId, coalesce(lev1.Name, lev2.Name) as LastLevelName from skill_db.Rating ra
                               inner join skill_db.task ta on ra.TaskId = ta.Id and ra.Name = @ratingName
                                and ra.EmpId = @empId 
                               left join skill_db.leveltwo lev2 on lev2.Id = ta.LevelID
@@ -71,7 +71,7 @@ namespace skill.repository.Implementation
 
                using (var reader = await command.ExecuteReaderAsync())
                {
-                  ratingResponseModels = new List<RatingResponseModel>();                 
+                  ratingResponseModels = new List<RatingResponseModel>();
                   while (reader.Read())
                   {
                      if (ratingResponseModel == null)
@@ -88,6 +88,7 @@ namespace skill.repository.Implementation
                            {
                                     new RatingReponse
                               {
+                                 RatingId = (Guid)reader["RatingId"],
                                  TaskId = (Guid)reader["TaskId"],
                                  TaskName = (string)reader["TaskName"],
                                  EmpRating = Convert.ToInt32(reader["rating"]),
@@ -115,13 +116,13 @@ namespace skill.repository.Implementation
                }
             }
 
-           
+
             return ratingResponseModel;
          }
          catch (Exception ex)
          {
             throw ex;
-         }         
-      }   
+         }
+      }
    }
 }
