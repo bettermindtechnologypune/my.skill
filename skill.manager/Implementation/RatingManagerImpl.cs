@@ -164,8 +164,15 @@ namespace skill.manager.Implementation
                throw new Exception("Rating does not Exists");
             }
          }
+
+         var result =await _ratingRepository.UpdateListAsync(entities);
+
+         if(result.Any())
+         {
+            return resourceList;
+         }
          
-         return resourceList;
+         return null;
       }
    }
 }
