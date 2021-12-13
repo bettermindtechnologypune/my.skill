@@ -155,10 +155,8 @@ namespace skill.manager.Implementation
             {
                var existingEnity = await _ratingRepository.GetAsync(resource.Id);
                existingEnity.ModifiedBy = UserId;
-               existingEnity.ModifiedDate = DateTime.UtcNow;
-               existingEnity.Name = resource.Name;
-               existingEnity.ManagerRating = resource.ManagerRating;
-               existingEnity.Rating = resource.Rating;            
+               existingEnity.ModifiedDate = DateTime.UtcNow;             
+               existingEnity.ManagerRating = resource.ManagerRating;                           
                entities.Add(existingEnity);
             }
             else
