@@ -13,11 +13,9 @@ namespace skill.common.Model
       public Guid Id { get; set; }
 
       public string Name { get; set; }
-
-      [Required]
+      
       public Guid TaskId { get; set; }
-
-      [Required]
+      
       public Guid EmpId { get; set; }
 
       public int Rating { get; set; }
