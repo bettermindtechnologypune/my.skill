@@ -102,7 +102,8 @@ namespace skill.repository.Implementation
                      {
                         RatingReponse ratingReponse = new RatingReponse
                         {
-                           TaskId = (Guid)reader["TaskId"],
+                            RatingId = (Guid)reader["RatingId"],
+                            TaskId = (Guid)reader["TaskId"],
                            TaskName = (string)reader["TaskName"],
                            EmpRating = Convert.ToInt32(reader["rating"]),
                            MangerRating = reader["ManagerRating"] == DBNull.Value ? null : Convert.ToInt32(reader["ManagerRating"])
