@@ -20,5 +20,7 @@ namespace skill.manager.Interface
       Task<List<LevelTwoResource>> UpdateListAsync(List<LevelTwoResource> levelTwoResources);
 
       Task<List<LevelTwoSkillModel>> GetSkillIndexForLevelTwoByLevelOneId(Guid levelOneId);
+
+      Task<List<MultiSkillModelLevelTwo>> GetMultiSkillLevelTwoByLevelOneId(Guid levelOneId);
    }
 }

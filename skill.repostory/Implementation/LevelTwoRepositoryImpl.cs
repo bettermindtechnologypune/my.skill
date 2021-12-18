@@ -90,7 +90,7 @@ namespace skill.repository.Implementation
                {
                   levelTwoSkillModels = new List<LevelTwoSkillModel>();
                   while (reader.Read())
-                  {                     
+                  {
                      var levelTwoSkillModel = new LevelTwoSkillModel
                      {
                         LevelTwoId = (Guid)reader["LevelTwoId"],
@@ -109,6 +109,59 @@ namespace skill.repository.Implementation
             }
 
             return levelTwoSkillModels;
+         }
+         catch (Exception ex)
+         {
+            throw new Exception(ex.Message, ex.InnerException);
+         }
+      }
+
+
+      public async Task<List<MultiSkillModelLevelTwo>> GetMultiSkillLevelTwoByLevelOneId(Guid levelOneId)
+      {
+         List<MultiSkillModelLevelTwo> multiSkill = null;
+         try
+         {
+            string query = @"select temp4.LevelTwoId, temp4.LevelTwoName , (count(Multi) / (count(Multi) + count(single))) * 100 as MultiSkill,(count(single) / (count(Multi) + count(single)))  * 100 as SingleSkill from 
+                              (select temp3.LevelTwoId, temp3.LevelTwoName, case when cal > 2 then 1 end as 'Multi',
+                              case when cal < 1 then 1 end as 'Single'from 
+                              (select ll2.Id LevelTwoId, ll2.Name LevelTwoName , sum(rr.Rating * tt.wattage)/100 cal from 
+                              (select temp1.empId empId from
+                              (select e.Id as empId,l2.Id l2Id from LevelTwo l2
+                              inner join task t on t.levelId = l2.Id 
+                              inner join rating r on r.taskId = t.Id
+                              inner join employee e on e.Id = r.EmpId 
+                              group by e.Id, l2.Id 
+                              ) temp1 group by empId  having count(empId)> 1) temp2
+                              right join rating rr on rr.empid = temp2.empId
+                              right join task tt on tt.Id = rr.Taskid
+                              right join leveltwo ll2 on ll2.Id = tt.levelId where ll2.LevelOneId = @levelOneId
+                              group by ll2.Id) temp3) temp4 group by temp4.LevelTwoId";
+
+            using (var command = new MySqlCommand(query, Connection))
+            {
+               command.Parameters.AddWithValue("@levelOneId", levelOneId);
+
+               await Connection.OpenAsync();
+               using (var reader = await command.ExecuteReaderAsync())
+               {
+                  multiSkill = new List<MultiSkillModelLevelTwo>();
+                  while (reader.Read())
+                  {
+                     var levelTwoSkillModel = new MultiSkillModelLevelTwo
+                     {
+                        LevelTwoId = (Guid)reader["LevelTwoId"],
+                        LevelTwoName = (string)reader["LevelTwoName"],
+                        MultiSkill = reader["MultiSkill"] == DBNull.Value ? 0: Convert.ToInt64(reader["MultiSkill"]),
+                        SingleSkill = reader["SingleSkill"] == DBNull.Value ? 0: Convert.ToInt64(reader["SingleSkill"])
+                     };
+
+                     multiSkill.Add(levelTwoSkillModel);
+                  }
+               }
+            }
+
+            return multiSkill;
          }
          catch (Exception ex)
          {

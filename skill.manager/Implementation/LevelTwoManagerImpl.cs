@@ -156,5 +156,10 @@ namespace skill.manager.Implementation
       {
          return await _levelTwoRepository.GetSkillIndexForLevelTwoByLevelOneId(levelOneId);
       }
+
+      public async Task<List<MultiSkillModelLevelTwo>> GetMultiSkillLevelTwoByLevelOneId(Guid levelOneId)
+      {
+         return await _levelTwoRepository.GetMultiSkillLevelTwoByLevelOneId(levelOneId);
+      }
    }
 }

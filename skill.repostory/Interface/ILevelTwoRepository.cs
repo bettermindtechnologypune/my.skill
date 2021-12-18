@@ -15,5 +15,7 @@ namespace skill.repository.Interface
       List<LevelTwoEntity> GetLevelOneListByBUID(Guid BUID);
 
       Task<List<LevelTwoSkillModel>> GetSkillIndexForLevelTwoByLevelOneId(Guid levelOneId);
+
+      Task<List<MultiSkillModelLevelTwo>> GetMultiSkillLevelTwoByLevelOneId(Guid levelOneId);
    }
 }
