@@ -122,25 +122,25 @@ namespace skill.repository.Implementation
          List<MultiSkillModelLevelTwo> multiSkill = null;
          try
          {
-            string query = @"select temp4.LevelTwoId, temp4.LevelTwoName , (count(Multi) / (count(Multi) + count(single))) * 100 as MultiSkill,(count(single) / (count(Multi) + count(single)))  * 100 as SingleSkill
+            string query = @"select temp4.LevelTwoId, temp4.LevelTwoName , (count(Multi) / (count(Multi) + count(single))) * 100 as MultiSkill,(count(single) / (count(Multi) + count(single)))  * 100
                               , count(Multi) as CountMulti,count(single) as CountSingle  from 
                               (select temp3.SingleEmpId , temp3.LevelTwoId, temp3.LevelTwoName, case when cal > 2 then 1 end as 'Multi',
-                              case when cal < 1 then 1 end as 'Single'from 
+                              case when (cal < 1 || cal is null )then 1 end as 'Single'from 
                               (select temp2.SingleEmpId ,ll2.Id LevelTwoId, ll2.Name LevelTwoName ,
                               case when temp2.SingleEmpId is null then  sum(rr.ManagerRating * tt.wattage)/100 else 0 end as cal from 
                               (select case when  count(empId)> 1 then empId End as MultiEmpId,
-                              case when  count(empId)= 1 then empId End as SingleEmpId, temp1.empId empId from
+                              case when  count(empId)= 1 then empId End as SingleEmpId, DeliName from
                               (select 
-                              e.Id as empId,l2.Id l2Id from LevelTwo l2
+                              e.Id as empId,l2.Id l2Id, l2.Name as DeliName from LevelTwo l2
                               inner join task t on t.levelId = l2.Id 
                               inner join rating r on r.taskId = t.Id
                               inner join employee e on e.Id = r.EmpId 
                               group by e.Id, l2.Id 
                               ) temp1 group by empId) temp2
-                              inner join rating rr on rr.empid = temp2.MultiEmpId || temp2.SingleEmpId
+                              inner join rating rr on rr.empid = temp2.MultiEmpId
                               inner join task tt on tt.Id = rr.Taskid
                               right join leveltwo ll2 on ll2.Id = tt.levelId where ll2.LevelOneId = @levelOneId
-                              group by ll2.Id ,temp2.SingleEmpId) temp3) temp4 group by temp4.LevelTwoId";
+                              group by ll2.Id ) temp3) temp4 group by temp4.LevelTwoId";
 
             using (var command = new MySqlCommand(query, Connection))
             {
