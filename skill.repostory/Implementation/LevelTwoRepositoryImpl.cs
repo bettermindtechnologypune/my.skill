@@ -122,11 +122,12 @@ namespace skill.repository.Implementation
          List<MultiSkillModelLevelTwo> multiSkill = null;
          try
          {
-            string query = @"select temp4.LevelTwoId, temp4.LevelTwoName , (count(Multi) / (count(Multi) + count(single))) * 100 as MultiSkill,(count(single) / (count(Multi) + count(single)))  * 100 as SingleSkill from 
+            string query = @"select temp4.LevelTwoId, temp4.LevelTwoName , (count(Multi) / (count(Multi) + count(single))) * 100 as MultiSkill,(count(single) / (count(Multi) + count(single)))  * 100
+                              , count(Multi) as CountMulti,count(single) as CountSingle  from 
                               (select temp3.SingleEmpId , temp3.LevelTwoId, temp3.LevelTwoName, case when cal > 2 then 1 end as 'Multi',
                               case when cal < 1 then 1 end as 'Single'from 
                               (select temp2.SingleEmpId ,ll2.Id LevelTwoId, ll2.Name LevelTwoName ,
-                              case when temp2.SingleEmpId is null then  sum(rr.Rating * tt.wattage)/100 else 0 end as cal from 
+                              case when temp2.SingleEmpId is null then  sum(rr.ManagerRating * tt.wattage)/100 else 0 end as cal from 
                               (select case when  count(empId)> 1 then empId End as MultiEmpId,
                               case when  count(empId)= 1 then empId End as SingleEmpId, temp1.empId empId from
                               (select 
@@ -139,7 +140,7 @@ namespace skill.repository.Implementation
                               inner join rating rr on rr.empid = temp2.MultiEmpId || temp2.SingleEmpId
                               inner join task tt on tt.Id = rr.Taskid
                               right join leveltwo ll2 on ll2.Id = tt.levelId where ll2.LevelOneId = @levelOneId
-                              group by ll2.Id) temp3) temp4 group by temp4.LevelTwoId";
+                              group by ll2.Id ,temp2.SingleEmpId) temp3) temp4 group by temp4.LevelTwoId";
 
             using (var command = new MySqlCommand(query, Connection))
             {
@@ -156,7 +157,9 @@ namespace skill.repository.Implementation
                         LevelTwoId = (Guid)reader["LevelTwoId"],
                         LevelTwoName = (string)reader["LevelTwoName"],
                         MultiSkill = reader["MultiSkill"] == DBNull.Value ? 0: Convert.ToInt64(reader["MultiSkill"]),
-                        SingleSkill = reader["SingleSkill"] == DBNull.Value ? 0: Convert.ToInt64(reader["SingleSkill"])
+                        SingleSkill = reader["SingleSkill"] == DBNull.Value ? 0: Convert.ToInt64(reader["SingleSkill"]),
+                        MultiCount = reader["CountMulti"] == DBNull.Value ? 0 : Convert.ToInt32(reader["CountMulti"]),
+                        SingleCount = reader["CountSingle"] == DBNull.Value ? 0 : Convert.ToInt32(reader["CountSingle"])
                      };
 
                      multiSkill.Add(levelTwoSkillModel);

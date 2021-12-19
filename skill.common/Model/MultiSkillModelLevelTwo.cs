@@ -15,6 +15,10 @@ namespace skill.common.Model
       public long MultiSkill { get; set; }
 
       public long SingleSkill { get; set; }
+
+      public int MultiCount { get; set; }
+
+      public int SingleCount { get;set }
       
    }
 
