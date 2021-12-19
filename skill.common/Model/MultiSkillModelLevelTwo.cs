@@ -18,7 +18,7 @@ namespace skill.common.Model
 
       public int MultiCount { get; set; }
 
-      public int SingleCount { get;set }
+      public int SingleCount { get;set; }
       
    }
 
