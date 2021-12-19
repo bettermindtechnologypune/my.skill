@@ -122,7 +122,7 @@ namespace skill.repository.Implementation
          List<MultiSkillModelLevelTwo> multiSkill = null;
          try
          {
-            string query = @"select temp4.LevelTwoId, temp4.LevelTwoName , (count(Multi) / (count(Multi) + count(single))) * 100 as MultiSkill,(count(single) / (count(Multi) + count(single)))  * 100
+            string query = @"select temp4.LevelTwoId, temp4.LevelTwoName , (count(Multi) / (count(Multi) + count(single))) * 100 as MultiSkill,(count(single) / (count(Multi) + count(single)))  * 100 as SingleSkill
                               , count(Multi) as CountMulti,count(single) as CountSingle  from 
                               (select temp3.SingleEmpId , temp3.LevelTwoId, temp3.LevelTwoName, case when cal > 2 then 1 end as 'Multi',
                               case when cal < 1 then 1 end as 'Single'from 
