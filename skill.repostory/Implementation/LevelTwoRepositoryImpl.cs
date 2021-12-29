@@ -122,25 +122,38 @@ namespace skill.repository.Implementation
          List<MultiSkillModelLevelTwo> multiSkill = null;
          try
          {
-            string query = @"select temp4.LevelTwoId, temp4.LevelTwoName , (count(Multi) / (count(Multi) + count(single))) * 100 as MultiSkill,(count(single) / (count(Multi) + count(single)))  * 100 SingleSkill
-                              , count(Multi) as CountMulti,count(single) as CountSingle  from 
-                              (select temp3.SingleEmpId , temp3.LevelTwoId, temp3.LevelTwoName, case when cal > 2 then 1 end as 'Multi',
-                              case when (cal < 1 || cal is null )then 1 end as 'Single'from 
-                              (select temp2.SingleEmpId ,ll2.Id LevelTwoId, ll2.Name LevelTwoName ,
-                              case when temp2.SingleEmpId is null then  sum(rr.ManagerRating * tt.wattage)/100 else 0 end as cal from 
-                              (select case when  count(empId)> 1 then empId End as MultiEmpId,
-                              case when  count(empId)= 1 then empId End as SingleEmpId, DeliName from
-                              (select 
-                              e.Id as empId,l2.Id l2Id, l2.Name as DeliName from LevelTwo l2
-                              inner join task t on t.levelId = l2.Id 
-                              inner join rating r on r.taskId = t.Id
-                              inner join employee e on e.Id = r.EmpId 
-                              group by e.Id, l2.Id 
-                              ) temp1 group by empId) temp2
-                              inner join rating rr on rr.empid = temp2.MultiEmpId
-                              inner join task tt on tt.Id = rr.Taskid
-                              right join leveltwo ll2 on ll2.Id = tt.levelId where ll2.LevelOneId = @levelOneId
-                              group by ll2.Id ) temp3) temp4 group by temp4.LevelTwoId";
+            string query = @"select deliId as LevelTwoId , LevelTwoName , (sum(multi) / (sum(single) + sum(multi))) * 100 as MultiSkill , 
+                           (sum(single) / (sum(multi) + sum(single))) * 100 as SingleSkill , sum(multi) CountMulti, sum(single) CountSingle from
+                           (select deliId,LevelTwoName , 0 as Multi ,Count(DeliId)as Single from 
+	                           (select SingleEmpId , ll2.Id DeliId , ll2.Name as LevelTwoName from 
+	                           (select case when count(empId) <= 1 then empId  End as SingleEmpId from
+	                           (select e.Id empId , l2.Id as DID from skill_db.leveltwo l2 
+							                              inner join skill_db.task t on t.levelId = l2.Id
+							                              inner join skill_db.rating r on r.TaskId = t.Id
+							                              inner join skill_db.employee e on e.Id = r.EmpId
+							                              group by  e.Id, l2.Id
+	                           ) temp1 group by empId) temp2
+	                           inner join rating rr on rr.empid = temp2.SingleEmpId      
+	                           inner join task tt on tt.Id = rr.Taskid
+	                           inner join LevelTwo ll2 on ll2.Id = tt.levelID   where ll2.LevelOneId = @levelOneId
+	                           group by SingleEmpId , ll2.Id) as temp4 group by deliId
+                           union all
+                           select deliId, LevelTwoName, Count(temp4.MultiDeliId)as Multi ,0 as Single from 
+                           (select DeliId, LevelTwoName, case when cal > 2 then DeliId End as MultiDeliId,
+                           case when cal <= 2 || cal is null then DeliId End as SingleDeliId from
+	                           (select MultiEmpId , ll2.Id DeliId, ll2.Name as LevelTwoName,
+	                           sum(rr.ManagerRating * tt.wattage)/100 cal from 
+	                           (select case when count(empId)> 1 then empId  End as MultiEmpId from
+	                           (select e.Id empId , l2.Id as DID from skill_db.leveltwo l2 
+							                              inner join skill_db.task t on t.levelId = l2.Id
+							                              inner join skill_db.rating r on r.TaskId = t.Id
+							                              inner join skill_db.employee e on e.Id = r.EmpId
+							                              group by  e.Id, l2.Id
+	                           ) temp1 group by empId) temp2
+	                           inner join rating rr on rr.empid = temp2.MultiEmpId      
+	                           inner join task tt on tt.Id = rr.Taskid
+	                           inner join LevelTwo ll2 on ll2.Id = tt.levelID   where ll2.LevelOneId = @levelOneId
+	                           group by multiEmpId , ll2.Id) temp3) as temp4 group by temp4.deliId ) temp5 group by DeliId";
 
             using (var command = new MySqlCommand(query, Connection))
             {
