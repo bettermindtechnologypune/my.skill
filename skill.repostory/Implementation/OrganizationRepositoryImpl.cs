@@ -56,7 +56,7 @@ namespace skill.repository.Implementation
                            from
                            (select l2.Id DId, l2.Name, e.Id, sum(r.Rating * t.wattage)/100 cal from business_unit bu 
                            inner join skill_db.levelone l1 on l1.BUID = bu.Id and bu.OrgId = @orgId
-                           inner join skill_db.leveltwo l2 on l2.Id = l1.Id
+                           inner  join skill_db.leveltwo l2 on l2.LevelOneId = l1.Id
                            inner join skill_db.task t on t.levelId = l2.Id
                            inner join skill_db.rating r on r.TaskId = t.Id
                            inner join skill_db.employee e on e.Id = r.EmpId 
@@ -77,8 +77,8 @@ namespace skill.repository.Implementation
                      var buSkillModel = new BusinessUnitSkillModel
                      {
                         BUID = reader["Id"] == DBNull.Value ? Guid.Empty :  (Guid)reader["Id"],
-                        BusinessUnitName = (string)reader["Name"],
-                        BUSkillLevel = reader["BULevelSkill"] == DBNull.Value ? 0 : Convert.ToInt64(reader["BULevelSkill"])
+                        BusinessUnitName = reader["Name"] == DBNull.Value ? null : (string)reader["Name"],
+                        BUSkillLevel = reader["BULevelSkill"] == DBNull.Value ? 0 :(decimal)reader["BULevelSkill"]
                      };
 
                      businessUnitSkillModels.Add(buSkillModel);
