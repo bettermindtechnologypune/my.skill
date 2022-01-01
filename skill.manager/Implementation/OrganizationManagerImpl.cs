@@ -139,5 +139,10 @@ namespace skill.manager.Implementation
             throw;
          }
       }
+
+      public async Task<List<BusinessUnitSkillModel>> GetBUSkillLevel()
+      {
+         return await _organizationRepository.GetBUSkillLevel(OrgId);
+      }
    }
 }

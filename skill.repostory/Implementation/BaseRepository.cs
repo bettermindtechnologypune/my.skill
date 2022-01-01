@@ -17,7 +17,7 @@ namespace skill.repository.Implementation
       protected DbSet<T> _entities;
       string errorMessage = string.Empty;
 
-      protected MySqlConnection Connection;
+      public MySqlConnection Connection;
       private IConfiguration configuration;
       private readonly IConfiguration _configuration;
     

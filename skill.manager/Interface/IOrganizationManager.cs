@@ -11,5 +11,7 @@ namespace skill.manager.Interface
    public interface IOrganizationManager
    {
       Task<OrganizationResource> CreateOrganization(OrganizationResource resource);
+
+      Task<List<BusinessUnitSkillModel>> GetBUSkillLevel();
    }
 }

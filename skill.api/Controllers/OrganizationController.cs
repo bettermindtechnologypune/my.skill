@@ -70,5 +70,24 @@ namespace skill.Controllers
             return StatusCode(500, ex.Message);
          }
       }
+
+      [HttpGet]
+      [Route("skill-index")]
+      public async Task<IActionResult> GetSkillIndex()
+      {
+         try
+         {
+            var result = await _organizationManager.GetBUSkillLevel();
+            if (result != null)
+               return Ok(result);
+            return NotFound();
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+
+      }
    }
 }
