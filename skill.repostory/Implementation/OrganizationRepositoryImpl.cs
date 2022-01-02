@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using MySqlConnector;
+using System.Data;
 
 namespace skill.repository.Implementation
 {
@@ -92,6 +93,13 @@ namespace skill.repository.Implementation
          catch (Exception ex)
          {
             throw new Exception(ex.Message, ex.InnerException);
+         }
+         finally
+         {
+            if (Connection.State == ConnectionState.Open)
+            {
+               Connection.Close();
+            }
          }
       }
    }

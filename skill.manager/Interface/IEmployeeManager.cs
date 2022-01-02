@@ -16,5 +16,7 @@ namespace skill.manager.Interface
       PagedResult<EmployeeResource> GetListByManagerId(Guid managerId, int pageNumber, int pageSize, string searchText);
 
       List<EmployeeResource> GetListByDepartmentId(Guid depatmentId);
+
+      Task<StringBuilder> GetEmployeeSkillMeasurement(Guid buid);
    }
 }

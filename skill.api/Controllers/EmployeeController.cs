@@ -86,5 +86,29 @@ namespace skills.Controllers
          }
 
       }
+
+      [HttpGet]
+      [Route("skill-measurement/{buid}")]
+      public async Task<IActionResult> GetEmployeeSkillMeasurement(Guid buid)
+      {
+         try
+         {
+            var result = await _employeeManager.GetEmployeeSkillMeasurement(buid);
+            if (result != null)
+            {
+               HttpContext.Response.Headers.Add("content-disposition", "attachment; filename=EmployeeSkillMeasurement" + DateTime.Now.Year.ToString() + ".xls");
+               this.Response.ContentType = "application/vnd.ms-excel";
+               byte[] temp = System.Text.Encoding.UTF8.GetBytes(result.ToString());
+               return File(temp, "application/vnd.ms-excel");
+            }
+            return null;
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+
+      }
    }
 }

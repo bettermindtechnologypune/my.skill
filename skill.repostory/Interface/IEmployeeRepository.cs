@@ -16,5 +16,7 @@ namespace skill.repository.Interface
       EmployeeEntity GetByBUIDAndEmail(Guid buid, string email);
 
       List<EmployeeEntity> GetListByDepartmentId(Guid depatmentId, bool? isManager);
+
+      Task<List<EmployeeSkillMeasurement>> GetEmployeeSkillMeasurement(Guid buid);
    }
 }

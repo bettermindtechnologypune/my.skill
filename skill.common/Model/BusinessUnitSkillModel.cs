@@ -10,6 +10,6 @@ namespace skill.common.Model
    {
       public Guid BUID { get; set; }
       public string BusinessUnitName { get; set; }
-      public float BUSkillLevel { get; set; }
+      public decimal BUSkillLevel { get; set; }
    }
 }

@@ -5,6 +5,7 @@ using skill.repository.Entity;
 using skill.repository.Interface;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -114,6 +115,13 @@ namespace skill.repository.Implementation
          {
             throw new Exception(ex.Message, ex.InnerException);
          }
+         finally
+         {
+            if (Connection.State == ConnectionState.Open)
+            {
+               Connection.Close();
+            }
+         }
       }
 
 
@@ -185,6 +193,14 @@ namespace skill.repository.Implementation
          catch (Exception ex)
          {
             throw new Exception(ex.Message, ex.InnerException);
+         }
+
+         finally
+         {
+            if (Connection.State == ConnectionState.Open)
+            {
+               Connection.Close();
+            }
          }
       }
    }

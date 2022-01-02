@@ -196,5 +196,37 @@ namespace skill.manager.Implementation
 
          return employeeList;
       }
+
+      private StringBuilder GetStringBuilder(List<EmployeeSkillMeasurement> employeeSkillMeasurements)
+      {
+         StringBuilder str = new StringBuilder();
+         str.Append("<table border=`" + "1px" + "`b>");
+         str.Append("<tr>");
+         str.Append("<td><b><font face=Arial Narrow size=3>Employee Code</font></b></td>");
+         str.Append("<td><b><font face=Arial Narrow size=3>Employee Name</font></b></td>");
+         str.Append("<td><b><font face=Arial Narrow size=3>No. of Skill Above 1</font></b></td>");
+         str.Append("</tr>");
+
+         foreach (var value in employeeSkillMeasurements)
+         {
+            str.Append("<tr>");
+            str.Append("<td><font face=Arial Narrow size=" + "14px" + ">" + value.EmployeeCode.ToString() + "</font></td>");
+            str.Append("<td><font face=Arial Narrow size=" + "14px" + ">" + value.EmployeeName.ToString() + "</font></td>");
+            str.Append("<td><font face=Arial Narrow size=" + "14px" + ">" + value.SkillCount.ToString() + "</font></td>");
+            str.Append("</tr>");
+         }
+         str.Append("</table>");
+
+         return str;
+      }
+
+      public async Task<StringBuilder> GetEmployeeSkillMeasurement(Guid buid)
+      {
+         var employeeSkillMeasurement =await _employeeRepository.GetEmployeeSkillMeasurement(buid);
+
+         var stringBuilder = GetStringBuilder(employeeSkillMeasurement);
+
+         return stringBuilder;
+      }
    }
 }
