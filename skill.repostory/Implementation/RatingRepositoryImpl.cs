@@ -124,6 +124,13 @@ namespace skill.repository.Implementation
          {
             throw ex;
          }
+         finally
+         {
+            if (Connection.State == ConnectionState.Open)
+            {
+               Connection.Close();
+            }
+         }
       }
    }
 }
