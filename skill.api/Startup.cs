@@ -106,6 +106,7 @@ namespace skill
          services.AddScoped<IlevelTwoManager, LevelTwoManagerImpl>();
          services.AddScoped<ITaskManager, TaskManagerImpl>();
          services.AddScoped<IRatingManager, RatingManagerImpl>();
+         services.AddScoped<IPasswordManager, PasswordManager>();
 
          //Auth injection//
          services.AddScoped<IAuth, Auth>();
@@ -127,12 +128,14 @@ namespace skill
          services.AddScoped<ILevelTwoRepository, LevelTwoRepositoryImpl>();
          services.AddScoped<ITaskRepository, TaskRepositoryImpl>();
          services.AddScoped<IRatingRepository, RatingRepositoryImpl>();
-
+         services.AddScoped<IPasswordResetRequestRepository, PasswordResetRequestRepository>();
+        
          //Validation Injection//
          services.AddScoped<IOrganizationValidator, OrganizationValidationImpl>();
          services.AddScoped<IBusinessUnitValidator, BusinessUnitValidationImpl>();
          services.AddScoped<IEmployeeValidator, EmployeeValidator>();
          services.AddScoped<ITaskValidator, TaskValidator>();
+         services.AddScoped<IPasswordValidator, PasswordValidator>();
 
          services.AddCors();
 
