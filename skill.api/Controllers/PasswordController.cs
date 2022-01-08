@@ -59,5 +59,24 @@ namespace skills.Controllers
          }
 
       }
+
+      [HttpPost]
+      [Route("change-password")]
+      public async Task<IActionResult> ChangePassword([FromBody] ChangePassword changePassword)
+      {
+         try
+         {
+            var result = await _passwordResetRequestManager.ChangePassword(changePassword);
+            if (result)
+               return Ok(result);
+            return NotFound();
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex.Message, ex.InnerException);
+            return StatusCode(500, ex.Message);
+         }
+
+      }
    }
 }

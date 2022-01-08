@@ -78,7 +78,8 @@ namespace skill.AuthProvider
             AuthResponseModel authResponseModel = new AuthResponseModel
             {
                Token = tokenHandler.WriteToken(token),
-               UserType = user.UserType
+               UserType = user.UserType,
+               UserId = user.Id
             };
 
             if (user.UserType == UserType.Manager || user.UserType == UserType.Worker || user.UserType == UserType.Hr_Admin)

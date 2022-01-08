@@ -14,5 +14,7 @@ namespace skill.repository.Interface
       Task<UserIdentityEntity> GetUserIdentityByEmail(string email, string password = null);
 
       Task<UserIdentityEntity> GetUserIdentityById(string Id);
+
+      Task<bool> UpdatePassword(string password);
    }
 }

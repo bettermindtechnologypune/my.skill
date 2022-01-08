@@ -12,5 +12,7 @@ namespace skill.manager.Interface
       Task<bool> RegisterPasswordResetRequest(string email);
 
       Task<bool> ResetPassword(ChangePassword changePassword);
+
+      Task<bool> ChangePassword(ChangePassword changePassword);
    }
 }

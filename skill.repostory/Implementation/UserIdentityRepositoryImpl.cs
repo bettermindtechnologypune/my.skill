@@ -203,6 +203,34 @@ namespace skill.repository.Implementation
 
          return userIdentityEntity;
       }
+
+      public async Task<bool> UpdatePassword(string password)
+      {
+         try
+         {
+            string query = $"update user_identity set password = @password ; ";
+
+            using (var command = new MySqlCommand(query, Connection))
+            {
+               command.Parameters.AddWithValue("@password", password);
+               await Connection.OpenAsync();
+               command.ExecuteNonQuery();
+            }
+
+            return true;
+         }
+         catch
+         {
+            throw;
+         }
+         finally
+         {
+            if (Connection.State == ConnectionState.Open)
+            {
+               Connection.Close();
+            }
+         }
+      }
    }
 
 

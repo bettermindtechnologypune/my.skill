@@ -394,6 +394,29 @@ namespace skill.repository.Migrations
                     b.ToTable("Organization");
                 });
 
+            modelBuilder.Entity("skill.repository.Entity.PasswordResetRequestEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Login")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ResetCode")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("passwordResetRequest");
+                });
+
             modelBuilder.Entity("skill.repository.Entity.RatingEntity", b =>
                 {
                     b.Property<Guid>("Id")

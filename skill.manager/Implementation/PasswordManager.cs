@@ -63,7 +63,8 @@ namespace skill.manager.Implementation
             var template = @$"<div>Hi {userIdentity.FullName},<br> 
                               There was a request to reset your password! <br> 
                               If you did not make this request then please ignore this email. <br> 
-                              Otherwise, please enter the code <b>{uniqueResetCode}</b> in reset password page</div>";
+                              Otherwise, please enter the code <b>{uniqueResetCode}</b> in reset password page
+                              <b>Note: request code is valid for 10 minutes</b></div>";
 
             emailRequest.Body = template;
 
@@ -102,7 +103,7 @@ namespace skill.manager.Implementation
 
          var userIdentiy = await _userIdentityRepository.GetUserIdentityByEmail(changePassword.Email);
 
-         if(userIdentiy ==null)
+         if (userIdentiy == null)
          {
             throw new Exception("User not found");
          }
@@ -122,5 +123,29 @@ namespace skill.manager.Implementation
 
          return true;
       }
+
+      public async Task<bool> ChangePassword(ChangePassword changePassword)
+      {
+         var userIdentiy = await _userIdentityRepository.GetUserIdentityById(changePassword.UserId);
+
+         if(userIdentiy == null)
+         {
+            throw new Exception("User not found");
+         }
+
+         var errors = _validator.Validate(changePassword);
+         if (errors.Any())
+         {
+            throw new ValidationException(string.Join(",", errors));
+         }
+         var key = await _emailSettingsRepository.GetSymmetricKey();
+
+         var encPassword = AesOperation.EncryptString(key, changePassword.NewPassword);
+
+         await _userIdentityRepository.UpdatePassword(encPassword);
+
+         return true;
+      }
+
    }
 }

@@ -22,6 +22,8 @@ namespace skill.repository.Implementation
 
       public DbSet<RatingEntity> Rating { get; set; }
 
+      public DbSet<PasswordResetRequestEntity> passwordResetRequest { get; set; }
+
       public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
           : base(options)
       {
@@ -43,6 +45,7 @@ namespace skill.repository.Implementation
          modelBuilder.Entity<LevelTwoEntity>();
          modelBuilder.Entity<TaskEntity>();
          modelBuilder.Entity<RatingEntity>();
+         modelBuilder.Entity<PasswordResetRequestEntity>();
 
          // Configure Primary Keys  
          modelBuilder.Entity<OrganizationEntity>().HasKey(ug => ug.Id).HasName("Idx_PK_Organization");

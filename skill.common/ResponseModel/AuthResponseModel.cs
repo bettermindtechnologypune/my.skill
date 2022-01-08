@@ -20,5 +20,7 @@ namespace skill.common.ResponseModel
       public string BUName { get; set; }
 
       public string EmpName { get; set; }
+
+      public Guid UserId { get; set; }
    }
 }

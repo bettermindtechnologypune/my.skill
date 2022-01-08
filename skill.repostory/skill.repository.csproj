@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <Compile Remove="Interface\EmailSettingRepository.cs" />
+    <Compile Remove="Interface\IPasswordRepository.cs" />
+    <Compile Remove="Interface\PasswordRepository.cs" />
     <Compile Remove="Migrations\20210929140647_BusinessUnit.cs" />
     <Compile Remove="Migrations\20210929140647_BusinessUnit.Designer.cs" />
   </ItemGroup>
