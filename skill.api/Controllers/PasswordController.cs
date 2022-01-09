@@ -22,8 +22,8 @@ namespace skills.Controllers
          _logger = logger;
       }
 
-      [HttpGet]
-      [Route("forget-password/{email}")]
+      [HttpPost]
+      [Route("forget-password")]
       public async Task<IActionResult> ForgetPasswordRequest(string email)
       {
          try
