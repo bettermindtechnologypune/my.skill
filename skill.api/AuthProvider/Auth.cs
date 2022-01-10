@@ -79,7 +79,8 @@ namespace skill.AuthProvider
             {
                Token = tokenHandler.WriteToken(token),
                UserType = user.UserType,
-               UserId = user.Id
+               UserId = user.Id,
+               IsFirstLogin = user.IsFirstLogin
             };
 
             if (user.UserType == UserType.Manager || user.UserType == UserType.Worker || user.UserType == UserType.Hr_Admin)

@@ -22,5 +22,7 @@ namespace skill.common.ResponseModel
       public string EmpName { get; set; }
 
       public Guid UserId { get; set; }
+
+      public bool IsFirstLogin {get;set;}
    }
 }

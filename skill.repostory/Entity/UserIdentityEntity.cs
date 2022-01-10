@@ -30,5 +30,6 @@ namespace skill.repository.Entity
       public Guid CreatedBy { get; set; }
       public Guid ModifiedBy { get; set; } 
       public Guid BUID { get; set; }
+      public bool IsFirstLogin { get; set; }
    }
 }

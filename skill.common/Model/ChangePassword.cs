@@ -18,5 +18,7 @@ namespace skill.common.Model
       public string NewPassword { get; set; }
 
       public string UserId { get; set; }
+
+      public bool IsFirstTimeChange { get; set; }
    }
 }

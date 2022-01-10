@@ -33,9 +33,9 @@ namespace skill.repository.Implementation
          {
             string query = @"INSERT INTO user_identity(`Id`,`NAME`,`PHONE_NUMBER`,`EMAIL`,`PASSWORD`,`IS_DELETED`,`FAILED_LOGIN_COUNT`,
                         `LAST_LOGIN_ATTEMPT_AT`,`LAST_SUCCESSFUL_LOGIN_AT`, `PASSWORD_CHANGED_AT`,`CREATED_AT`,`MODIFIED_AT`,
-                        `IS_LOGIN_LOCKED`,`FULL_NAME`,`ORG_ID`,`IS_ORG_ADMIN`,`USER_TYPE`, `BU_ID`)
+                        `IS_LOGIN_LOCKED`,`FULL_NAME`,`ORG_ID`,`IS_ORG_ADMIN`,`USER_TYPE`, `BU_ID`,`IS_FIRST_LOGIN`)
                      VALUES(@Id, @Name, @PhoneNumber, @Email, @Password, @IsDeleted, @FailedLoginCount, @LastLoginAttemptAt,
-                              @LastSuccessfulLoginAt, @PasswordChangedAt, @CreatedAt, @ModifiedAt, @IsloginLocked, @FullName , @OrgId, @IsOrgAdmin, @UserType, @BUID)";
+                              @LastSuccessfulLoginAt, @PasswordChangedAt, @CreatedAt, @ModifiedAt, @IsloginLocked, @FullName , @OrgId, @IsOrgAdmin, @UserType, @BUID, @FirstLogin)";
 
             using (var command = new MySqlCommand(query, Connection))
             {
@@ -57,6 +57,7 @@ namespace skill.repository.Implementation
                command.Parameters.AddWithValue("@OrgId", userIdentityEntity.OrgId);
                command.Parameters.AddWithValue("@UserType", userIdentityEntity.UserType);
                command.Parameters.AddWithValue("@BUID", userIdentityEntity.BUID);
+               command.Parameters.AddWithValue("@FirstLogin", true);
 
                await Connection.OpenAsync();
 
@@ -196,6 +197,7 @@ namespace skill.repository.Implementation
                   IsOrgAdmin = Convert.ToBoolean((sbyte)reader["IS_ORG_ADMIN"]),
                   UserType = (UserType)reader["USER_TYPE"],
                   BUID = reader["BU_ID"] == DBNull.Value ? Guid.Empty : new Guid((string)reader["BU_ID"]),
+                  IsFirstLogin = Convert.ToBoolean((sbyte)reader["IS_FIRST_LOGIN"])
                };
 
             }
@@ -204,15 +206,26 @@ namespace skill.repository.Implementation
          return userIdentityEntity;
       }
 
-      public async Task<bool> UpdatePassword(string password)
+      public async Task<bool> UpdatePassword(string password,Guid userId, bool IsFirstLogin = false)
       {
          try
          {
-            string query = $"update user_identity set password = @password ; ";
+            string colums = null;
+            if (IsFirstLogin == true)
+            {
+               colums = ", IS_FIRST_LOGIN = @IsFirstLogin";
+            }
+            string query = $"update user_identity set password = @password {colums} where Id = @UserId; ";
 
             using (var command = new MySqlCommand(query, Connection))
             {
                command.Parameters.AddWithValue("@password", password);
+               command.Parameters.AddWithValue("@UserId", userId);
+               if (IsFirstLogin == false)
+               {
+                  command.Parameters.AddWithValue("@IsFirstLogin", !IsFirstLogin);
+               }
+             
                await Connection.OpenAsync();
                command.ExecuteNonQuery();
             }
