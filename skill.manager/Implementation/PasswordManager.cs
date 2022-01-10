@@ -117,7 +117,7 @@ namespace skill.manager.Implementation
 
          var encPassword = AesOperation.EncryptString(key, changePassword.NewPassword);
 
-         await _userIdentityRepository.UpdatePassword(encPassword, changePassword.IsFirstTimeChange);
+         await _userIdentityRepository.UpdatePassword(encPassword,userIdentiy.Id, changePassword.IsFirstTimeChange);
 
          _passwordResetRequestRepository.DeleteByLogin(changePassword.Email);
 
@@ -128,10 +128,10 @@ namespace skill.manager.Implementation
       {
          var userIdentiy = await _userIdentityRepository.GetUserIdentityById(changePassword.UserId);
 
-         if(userIdentiy == null)
+         if (userIdentiy == null)
          {
             throw new Exception("User not found");
-         }         
+         }
 
          var errors = _validator.Validate(changePassword);
          if (errors.Any())
@@ -142,12 +142,9 @@ namespace skill.manager.Implementation
 
          var encPassword = AesOperation.EncryptString(key, changePassword.NewPassword);
 
-         await _userIdentityRepository.UpdatePassword(encPassword, changePassword.IsFirstTimeChange);
+         await _userIdentityRepository.UpdatePassword(encPassword, userIdentiy.Id, changePassword.IsFirstTimeChange);
 
-         if(changePassword.IsFirstTimeChange)
-         {
-            
-         }
+        
          return true;
       }
 

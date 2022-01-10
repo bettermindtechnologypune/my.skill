@@ -15,6 +15,6 @@ namespace skill.repository.Interface
 
       Task<UserIdentityEntity> GetUserIdentityById(string Id);
 
-      Task<bool> UpdatePassword(string password, bool isFirstLogin = false);
+      Task<bool> UpdatePassword(string password, Guid UserId, bool isFirstLogin = false);
    }
 }
