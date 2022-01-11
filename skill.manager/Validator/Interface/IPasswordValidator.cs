@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace skill.manager.Validator.Implementation
+namespace skill.manager.Validator.Interface
 {
    public interface IPasswordValidator : IValidator<ChangePassword>
    {

@@ -1,7 +1,7 @@
 ﻿using skill.common.Model;
 using skill.common.Operation;
 using skill.manager.Interface;
-using skill.manager.Validator.Implementation;
+using skill.manager.Validator.Interface;
 using skill.repository.Entity;
 using skill.repository.Interface;
 using System;
