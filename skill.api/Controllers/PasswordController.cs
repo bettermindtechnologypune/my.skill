@@ -24,7 +24,7 @@ namespace skills.Controllers
 
       [HttpPost]
       [Route("forget-password")]
-      public async Task<IActionResult> ForgetPasswordRequest([FromBody]string email)
+      public async Task<IActionResult> ForgetPasswordRequest(string email)
       {
          try
          {
