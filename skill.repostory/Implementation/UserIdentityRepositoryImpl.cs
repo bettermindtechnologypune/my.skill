@@ -221,7 +221,7 @@ namespace skill.repository.Implementation
             {
                command.Parameters.AddWithValue("@password", password);
                command.Parameters.AddWithValue("@UserId", userId);
-               if (IsFirstLogin == false)
+               if (IsFirstLogin == true)
                {
                   command.Parameters.AddWithValue("@IsFirstLogin", !IsFirstLogin);
                }
