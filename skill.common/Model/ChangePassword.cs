@@ -11,12 +11,13 @@ namespace skill.common.Model
    {
       public string ResetCode { get; set; }
 
-      [Required]
+
       public string Email {get;set;}
 
       [Required]
       public string NewPassword { get; set; }
 
+      [Required]
       public string UserId { get; set; }
 
       public bool IsFirstTimeChange { get; set; }
